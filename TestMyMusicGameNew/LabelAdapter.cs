@@ -28,6 +28,11 @@ namespace TestMyMusicGameNew
             {
                 return Instance.ToString().Replace("System.Windows.Controls.Label: ", "");
             }
+
+            public bool Contains(string str)
+            {
+                return Content().Contains(str);
+            }
         }
     }
 }

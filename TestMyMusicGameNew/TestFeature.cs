@@ -53,8 +53,8 @@ namespace TestMyMusicGameNew
         [TestMethod]
         public void TestDisplaySelectMusic()
         {
-            Assert.IsTrue(Driver.GameStatus.Content().Contains("Select"));
-            Assert.IsTrue(Driver.GameStatus.Content().Contains("Music"));
+            Assert.IsTrue(Driver.GameStatus.Contains("Select"));
+            Assert.IsTrue(Driver.GameStatus.Contains("Music"));
         }
 
         [TestMethod]
@@ -62,14 +62,14 @@ namespace TestMyMusicGameNew
         {
             Driver.MusicList.ChangeSelectedIndex(TestSelectMusicList);
             Driver.GameStartButton.Click();
-            Assert.IsTrue(Driver.GameStatus.Content().Contains("Playing"));
+            Assert.IsTrue(Driver.GameStatus.Contains("Playing"));
         }
 
         [TestMethod]
         public void TestNotStartOfGameWhenNotSelectMusicAndCallStartOfGame()
         {
             Driver.GameStartButton.Click();
-            Assert.IsFalse(Driver.GameStatus.Content().Contains("Playing"));
+            Assert.IsFalse(Driver.GameStatus.Contains("Playing"));
         }
 
         [TestMethod]
@@ -78,8 +78,8 @@ namespace TestMyMusicGameNew
             Assert.IsTrue(Driver.PlayingMusicStatus.Content().Contains("Not"));
             Driver.MusicList.ChangeSelectedIndex(TestSelectMusicList);
             Driver.GameStartButton.Click();
-            Assert.IsFalse(Driver.PlayingMusicStatus.Content().Contains("Not"));
-            Assert.IsTrue(Driver.PlayingMusicStatus.Content().Contains("Playing"));
+            Assert.IsFalse(Driver.PlayingMusicStatus.Contains("Not"));
+            Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Playing"));
         }
     }
 }
