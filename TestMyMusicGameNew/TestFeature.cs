@@ -64,5 +64,12 @@ namespace TestMyMusicGameNew
             Driver.GameStartButton.Click();
             Assert.IsTrue(Driver.GameStatus.Content().Contains("Playing"));
         }
+
+        [TestMethod]
+        public void TestNotStartOfGameWhenNotSelectMusicAndCallStartOfGame()
+        {
+            Driver.GameStartButton.Click();
+            Assert.IsFalse(Driver.GameStatus.Content().Contains("Playing"));
+        }
     }
 }

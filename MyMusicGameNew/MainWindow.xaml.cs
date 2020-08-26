@@ -31,7 +31,15 @@ namespace MyMusicGameNew
 
         private void GameStartButtonClick(object sender, RoutedEventArgs e)
         {
-            SetGameStatus("Playing");
+            if (MusicSelected())
+            {
+                SetGameStatus("Playing");
+            }
+        }
+
+        private bool MusicSelected()
+        {
+            return (MusicListBox.SelectedIndex >= 0);
         }
 
         private void SetGameStatus(string status)
