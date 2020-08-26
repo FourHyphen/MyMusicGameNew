@@ -26,6 +26,7 @@ namespace MyMusicGameNew
         private void InitDisplay()
         {
             MusicListBox.Items.Add("Music1");
+            GameStatus.Content = "Select Music";
         }
     }
 }

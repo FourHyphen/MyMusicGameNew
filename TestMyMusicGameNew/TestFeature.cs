@@ -47,5 +47,12 @@ namespace TestMyMusicGameNew
         {
             Assert.IsTrue(Driver.MusicList.Count() >= 1);
         }
+
+        [TestMethod]
+        public void TestDisplayStartOfGameWhenSelectedMusicAndCallStartOfGame()
+        {
+            Assert.IsTrue(Driver.GameStatus.Content().Contains("Select"));
+            Assert.IsTrue(Driver.GameStatus.Content().Contains("Music"));
+        }
     }
 }

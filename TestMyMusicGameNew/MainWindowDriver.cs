@@ -13,20 +13,22 @@ namespace TestMyMusicGameNew
     {
         public class MainWindowDriver
         {
+            // 個人的メモ：本来はCodeer.Friendly APIに依存しないようインタフェースでラップすべきだが、UIテスト可能なAPIを他に知らないのでこのままにする
             private dynamic MainWindow { get; }
             private IWPFDependencyObjectCollection<System.Windows.DependencyObject> Tree { get; set; }
             public MusicListAdapter MusicList { get; }
+            public GameStatusAdapter GameStatus { get; }
             public MainWindowDriver(dynamic mainWindow)
             {
                 MainWindow = mainWindow;
                 Tree = new WindowControl(mainWindow).LogicalTree();
                 MusicList = new MusicListAdapter(Tree, "MusicListBox");
+                GameStatus = new GameStatusAdapter(Tree, "GameStatus");
             }
         }
 
         public class MusicListAdapter
         {
-            // 個人的メモ：本来はCodeer.Friendly APIに依存しないようインタフェースでラップすべきだが、UIテスト可能なAPIを他に知らないのでこのままにする
             private WPFListBox MusicList { get; }
 
             public MusicListAdapter(IWPFDependencyObjectCollection<System.Windows.DependencyObject> logicalTree, string listBoxName)
@@ -50,6 +52,36 @@ namespace TestMyMusicGameNew
             public int Count()
             {
                 return MusicList.ItemCount;
+            }
+
+            private void Failure(string methodName, string elementName)
+            {
+                FailureGetElement("class " + this.GetType().Name + ", method " + methodName, elementName);
+            }
+        }
+
+        public class GameStatusAdapter
+        {
+            private Codeer.Friendly.AppVar Instance { get; }
+
+            public GameStatusAdapter(IWPFDependencyObjectCollection<System.Windows.DependencyObject> logicalTree, string labelName)
+            {
+                Instance = GetLabel(logicalTree, labelName);
+            }
+
+            public string Content()
+            {
+                return Instance.ToString().Replace("System.Windows.Controls.Label: ", "");
+            }
+
+            private Codeer.Friendly.AppVar GetLabel(IWPFDependencyObjectCollection<System.Windows.DependencyObject> logicalTree, string labelName)
+            {
+                var label = logicalTree.ByType<System.Windows.Controls.Label>().ByName(labelName).Single();
+                if (label == null)
+                {
+                    Failure(MethodBase.GetCurrentMethod().Name, labelName);
+                }
+                return label;
             }
 
             private void Failure(string methodName, string elementName)
