@@ -49,7 +49,7 @@ namespace TestMyMusicGameNew
         }
 
         [TestMethod]
-        public void TestDisplayStartOfGameWhenSelectedMusicAndCallStartOfGame()
+        public void TestDisplaySelectMusic()
         {
             Assert.IsTrue(Driver.GameStatus.Content().Contains("Select"));
             Assert.IsTrue(Driver.GameStatus.Content().Contains("Music"));
