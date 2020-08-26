@@ -90,7 +90,7 @@
   <ItemGroup>
     <Compile Include="ButtonAdapter.cs" />
     <Compile Include="DisplayControl.cs" />
-    <Compile Include="GameStatusAdapter.cs" />
+    <Compile Include="LabelAdapter.cs" />
     <Compile Include="MainWindowDriver.cs" />
     <Compile Include="MusicListAdapter.cs" />
     <Compile Include="TestFeature.cs" />

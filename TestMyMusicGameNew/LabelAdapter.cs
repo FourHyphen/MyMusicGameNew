@@ -5,11 +5,11 @@ namespace TestMyMusicGameNew
 {
     public partial class TestFeature
     {
-        public class GameStatusAdapter : DisplayControl
+        public class LabelAdapter : DisplayControl
         {
             private Codeer.Friendly.AppVar Instance { get; }
 
-            public GameStatusAdapter(IWPFDependencyObjectCollection<System.Windows.DependencyObject> logicalTree, string labelName)
+            public LabelAdapter(IWPFDependencyObjectCollection<System.Windows.DependencyObject> logicalTree, string labelName)
             {
                 Instance = GetLabel(logicalTree, labelName);
             }

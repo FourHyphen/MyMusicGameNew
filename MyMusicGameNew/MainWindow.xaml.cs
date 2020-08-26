@@ -20,13 +20,31 @@ namespace MyMusicGameNew
         public MainWindow()
         {
             InitializeComponent();
+            SetEnvironmentCurrentDirectory(Environment.CurrentDirectory + "../../../");  // F5開始を想定
             InitDisplay();
+        }
+
+        private void SetEnvironmentCurrentDirectory(string environmentDirPath)
+        {
+            // TODO: 配布を考えると、ここと同階層にGameDataディレクトリがある場合/ない場合で分岐すべき
+            Environment.CurrentDirectory = environmentDirPath;
         }
 
         private void InitDisplay()
         {
             MusicListBox.Items.Add("Music1");
             SetGameStatus("Select Music");
+            SetPlayingMusicStatus("Not");
+        }
+
+        private void SetGameStatus(string status)
+        {
+            GameStatus.Content = status;
+        }
+
+        private void SetPlayingMusicStatus(string status)
+        {
+            PlayingMusicStatus.Content = status;
         }
 
         private void GameStartButtonClick(object sender, RoutedEventArgs e)
@@ -38,6 +56,7 @@ namespace MyMusicGameNew
         {
             if (MusicSelected())
             {
+                PlayMusic();
                 SetGameStatus("Playing");
             }
         }
@@ -47,9 +66,11 @@ namespace MyMusicGameNew
             return (MusicListBox.SelectedIndex >= 0);
         }
 
-        private void SetGameStatus(string status)
+        private void PlayMusic()
         {
-            GameStatus.Content = status;
+            System.Media.SoundPlayer Player = new System.Media.SoundPlayer("GameData/Music/carenginestart1.wav");
+            Player.Play();  // 非同期再生
+            SetPlayingMusicStatus("Playing");
         }
     }
 }

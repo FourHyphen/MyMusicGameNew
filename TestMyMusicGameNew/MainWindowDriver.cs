@@ -15,15 +15,17 @@ namespace TestMyMusicGameNew
             private dynamic MainWindow { get; }
             private IWPFDependencyObjectCollection<System.Windows.DependencyObject> Tree { get; set; }
             public MusicListAdapter MusicList { get; }
-            public GameStatusAdapter GameStatus { get; }
+            public LabelAdapter GameStatus { get; }
             public ButtonAdapter GameStartButton { get; }
+            public LabelAdapter PlayingMusicStatus { get; }
             public MainWindowDriver(dynamic mainWindow)
             {
                 MainWindow = mainWindow;
                 Tree = new WindowControl(mainWindow).LogicalTree();
                 MusicList = new MusicListAdapter(Tree, "MusicListBox");
-                GameStatus = new GameStatusAdapter(Tree, "GameStatus");
+                GameStatus = new LabelAdapter(Tree, "GameStatus");
                 GameStartButton = new ButtonAdapter(Tree, "GameStartButton");
+                PlayingMusicStatus = new LabelAdapter(Tree, "PlayingMusicStatus");
             }
         }
     }

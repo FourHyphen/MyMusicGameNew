@@ -32,6 +32,8 @@
 
             <Grid Grid.Column="0" Grid.Row="1">
                 <Label x:Name="GameStatus"/>
+                <Label x:Name="PlayingMusicStatus"
+                       Visibility="Hidden"/>
             </Grid>
 
             <Grid Grid.Column="0" Grid.Row="2">
