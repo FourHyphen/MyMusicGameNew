@@ -31,6 +31,11 @@ namespace MyMusicGameNew
 
         private void GameStartButtonClick(object sender, RoutedEventArgs e)
         {
+            GameStartCore();
+        }
+
+        private void GameStartCore()
+        {
             if (MusicSelected())
             {
                 SetGameStatus("Playing");
