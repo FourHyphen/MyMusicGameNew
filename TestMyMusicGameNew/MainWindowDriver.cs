@@ -18,12 +18,14 @@ namespace TestMyMusicGameNew
             private IWPFDependencyObjectCollection<System.Windows.DependencyObject> Tree { get; set; }
             public MusicListAdapter MusicList { get; }
             public GameStatusAdapter GameStatus { get; }
+            public ButtonAdapter GameStartButton { get; }
             public MainWindowDriver(dynamic mainWindow)
             {
                 MainWindow = mainWindow;
                 Tree = new WindowControl(mainWindow).LogicalTree();
                 MusicList = new MusicListAdapter(Tree, "MusicListBox");
                 GameStatus = new GameStatusAdapter(Tree, "GameStatus");
+                GameStartButton = new ButtonAdapter(Tree, "GameStartButton");
             }
         }
 
@@ -54,6 +56,11 @@ namespace TestMyMusicGameNew
                 return MusicList.ItemCount;
             }
 
+            public void ChangeSelectedIndex(int index)
+            {
+                MusicList.EmulateChangeSelectedIndex(index);
+            }
+
             private void Failure(string methodName, string elementName)
             {
                 FailureGetElement("class " + this.GetType().Name + ", method " + methodName, elementName);
@@ -82,6 +89,39 @@ namespace TestMyMusicGameNew
                     Failure(MethodBase.GetCurrentMethod().Name, labelName);
                 }
                 return label;
+            }
+
+            private void Failure(string methodName, string elementName)
+            {
+                FailureGetElement("class " + this.GetType().Name + ", method " + methodName, elementName);
+            }
+        }
+
+        public class ButtonAdapter
+        {
+            private WPFButtonBase GameStartButton { get; }
+
+            public ButtonAdapter(IWPFDependencyObjectCollection<System.Windows.DependencyObject> logicalTree, string buttonName)
+            {
+                GameStartButton = GetButton(logicalTree, buttonName);
+            }
+
+            private WPFButtonBase GetButton(IWPFDependencyObjectCollection<System.Windows.DependencyObject> logicalTree, string buttonName)
+            {
+                try
+                {
+                    return new WPFButtonBase(logicalTree.ByType<System.Windows.Controls.Button>().ByName<System.Windows.Controls.Button>(buttonName).Single());
+                }
+                catch (Exception)
+                {
+                    Failure(MethodBase.GetCurrentMethod().Name, buttonName);
+                    return null;
+                }
+            }
+
+            public void Click()
+            {
+                GameStartButton.EmulateClick();
             }
 
             private void Failure(string methodName, string elementName)

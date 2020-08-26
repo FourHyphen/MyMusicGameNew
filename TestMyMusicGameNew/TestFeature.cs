@@ -24,6 +24,8 @@ namespace TestMyMusicGameNew
         private dynamic MainWindow;
         private MainWindowDriver Driver;
 
+        private readonly int TestSelectMusicList = 0;
+
         [TestInitialize]
         public void Init()
         {
@@ -53,6 +55,14 @@ namespace TestMyMusicGameNew
         {
             Assert.IsTrue(Driver.GameStatus.Content().Contains("Select"));
             Assert.IsTrue(Driver.GameStatus.Content().Contains("Music"));
+        }
+
+        [TestMethod]
+        public void TestStartOfGameWhenSelectedMusicAndCallStartOfGame()
+        {
+            Driver.MusicList.ChangeSelectedIndex(TestSelectMusicList);
+            Driver.GameStartButton.Click();
+            Assert.IsTrue(Driver.GameStatus.Content().Contains("Playing"));
         }
     }
 }

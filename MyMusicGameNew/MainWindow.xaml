@@ -25,6 +25,9 @@
             <!--MusicList-->
             <StackPanel Grid.Column="0" Grid.Row="0">
                 <ListBox x:Name="MusicListBox"/>
+                <Button x:Name="GameStartButton"
+                        Content="GameStart"
+                        Click="GameStartButtonClick"/>
             </StackPanel>
 
             <Grid Grid.Column="0" Grid.Row="1">

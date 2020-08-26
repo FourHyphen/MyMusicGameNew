@@ -28,5 +28,10 @@ namespace MyMusicGameNew
             MusicListBox.Items.Add("Music1");
             GameStatus.Content = "Select Music";
         }
+
+        private void GameStartButtonClick(object sender, RoutedEventArgs e)
+        {
+            GameStatus.Content = "Playing";
+        }
     }
 }
