@@ -15,14 +15,17 @@ using System.Windows.Shapes;
 
 namespace MyMusicGameNew
 {
-    /// <summary>
-    /// MainWindow.xaml の相互作用ロジック
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+            InitDisplay();
+        }
+
+        private void InitDisplay()
+        {
+            MusicListBox.Items.Add("Music1");
         }
     }
 }
