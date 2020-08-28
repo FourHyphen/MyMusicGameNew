@@ -41,5 +41,13 @@ namespace TestMyMusicGameNew
             Assert.IsTrue(test.Contains("test2"));
             Assert.IsFalse(test.Contains("test3"));
         }
+
+        [TestMethod]
+        public void TestCreateTimeSpan()
+        {
+            TimeSpan actual = MyMusicGameNew.Common.CreateTimeSpan("mm:ss.ffffff", "01:23.456000");
+            TimeSpan expected = new TimeSpan(0, 0, 1, 23, 456);
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

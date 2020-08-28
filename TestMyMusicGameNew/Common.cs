@@ -16,7 +16,7 @@ namespace TestMyMusicGameNew
             if (!System.IO.Directory.Exists(master + "/GameData"))
             {
                 // テストスイートによる全テスト実行時
-                master = Environment.CurrentDirectory + "../../../../TestMyMusicGame";
+                master = Environment.CurrentDirectory + "../../../../TestMyMusicGameNew";
             }
 
             return master;

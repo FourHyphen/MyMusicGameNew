@@ -32,5 +32,11 @@ namespace MyMusicGameNew
             string jsonStr = ReadFile(jsonPath);
             return JsonConvert.DeserializeObject<List<string>>(jsonStr);
         }
+
+        public static TimeSpan CreateTimeSpan(string format, string time)
+        {
+            string formatRe = format.Replace(":", @"\:").Replace(".", @"\.");
+            return TimeSpan.ParseExact(time, formatRe, null);
+        }
     }
 }
