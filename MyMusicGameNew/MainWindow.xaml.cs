@@ -73,7 +73,7 @@ namespace MyMusicGameNew
         {
             if (MusicSelected())
             {
-                PlayMusic();
+                PlayMusic(GetSelectedMusicName());
                 SetGameStatus("Playing");
             }
         }
@@ -83,9 +83,14 @@ namespace MyMusicGameNew
             return (MusicListBox.SelectedIndex >= 0);
         }
 
-        private void PlayMusic()
+        private string GetSelectedMusicName()
         {
-            System.Media.SoundPlayer Player = new System.Media.SoundPlayer("GameData/Music/carenginestart1.wav");
+            return (string)MusicListBox.Items[MusicListBox.SelectedIndex];
+        }
+
+        private void PlayMusic(string musicName)
+        {
+            System.Media.SoundPlayer Player = new System.Media.SoundPlayer("GameData/Music/" + musicName + ".wav");
             Player.Play();  // 非同期再生
             SetPlayingMusicStatus("Playing");
         }
