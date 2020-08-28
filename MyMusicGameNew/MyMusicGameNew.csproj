@@ -75,6 +75,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Note.cs" />
     <Compile Include="PlayingMusic.cs" />
     <Compile Include="PlayingMusicFactory.cs" />
     <Compile Include="PlayingMusicFake.cs" />

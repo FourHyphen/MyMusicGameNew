@@ -26,6 +26,7 @@ namespace TestMyMusicGameNew
 
         private readonly int ExpectedMusicListNum = 2;
         private readonly int TestSelectMusicList = 0;
+        private readonly int ExpectedNotesNum = 2;
 
         [TestInitialize]
         public void Init()
@@ -81,6 +82,14 @@ namespace TestMyMusicGameNew
             Driver.GameStartButton.Click();
             Assert.IsFalse(Driver.PlayingMusicStatus.Contains("Not"));
             Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Playing"));
+        }
+
+        [TestMethod]
+        public void TestGetNotesWhenStartOfGame()
+        {
+            Driver.MusicList.ChangeSelectedIndex(TestSelectMusicList);
+            Driver.GameStartButton.Click();
+            Assert.AreEqual(expected: ExpectedNotesNum, actual: int.Parse(Driver.NotesNum.Content()));
         }
     }
 }

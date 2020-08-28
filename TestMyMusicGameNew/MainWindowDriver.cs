@@ -18,6 +18,8 @@ namespace TestMyMusicGameNew
             public LabelAdapter GameStatus { get; }
             public ButtonAdapter GameStartButton { get; }
             public LabelAdapter PlayingMusicStatus { get; }
+            public LabelAdapter NotesNum { get; }
+
             public MainWindowDriver(dynamic mainWindow)
             {
                 MainWindow = mainWindow;
@@ -26,6 +28,7 @@ namespace TestMyMusicGameNew
                 GameStatus = new LabelAdapter(Tree, "GameStatus");
                 GameStartButton = new ButtonAdapter(Tree, "GameStartButton");
                 PlayingMusicStatus = new LabelAdapter(Tree, "PlayingMusicStatus");
+                NotesNum = new LabelAdapter(Tree, "NotesNum");
             }
         }
     }

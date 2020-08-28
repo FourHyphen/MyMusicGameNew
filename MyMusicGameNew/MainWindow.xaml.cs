@@ -21,6 +21,8 @@ namespace MyMusicGameNew
 
         private List<string> MusicList { get; set; }
 
+        private List<Note> Notes { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -69,16 +71,15 @@ namespace MyMusicGameNew
 
         private void GameStartButtonClick(object sender, RoutedEventArgs e)
         {
-            GameStartCore();
+            GameStart();
         }
 
-        private void GameStartCore()
+        private void GameStart()
         {
             if (MusicSelected())
             {
-                PlayMusic(GetSelectedMusicName());
-                SetGameStatus("Playing");
-                SetPlayingMusicStatus("Playing");
+                string musicName = GetSelectedMusicName();
+                GameStartCore(musicName);
             }
         }
 
@@ -90,6 +91,22 @@ namespace MyMusicGameNew
         private string GetSelectedMusicName()
         {
             return (string)MusicListBox.Items[MusicListBox.SelectedIndex];
+        }
+
+        private void GameStartCore(string musicName)
+        {
+            GetNotes(musicName);
+            PlayMusic(musicName);
+            SetGameStatus("Playing");
+            SetPlayingMusicStatus("Playing");
+        }
+
+        private void GetNotes(string musicName)
+        {
+            string jsonPath = Common.GetFilePathOfDependentEnvironment("/GameData/Note/" + musicName + ".json");
+            string jsonStr = Common.ReadFile(jsonPath);
+            Notes = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Note>>(jsonStr);
+            NotesNum.Content = Notes.Count.ToString();
         }
 
         private void PlayMusic(string musicName)

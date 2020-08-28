@@ -19,7 +19,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="8*"/>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="4*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="3*"/>
             </Grid.RowDefinitions>
 
             <!--MusicList-->
@@ -30,13 +31,33 @@
                         Click="GameStartButtonClick"/>
             </StackPanel>
 
+            <!--Game Status-->
             <Grid Grid.Column="0" Grid.Row="1">
-                <Label x:Name="GameStatus"/>
-                <Label x:Name="PlayingMusicStatus"
-                       Visibility="Hidden"/>
+                <Label x:Name="GameStatus"
+                       HorizontalAlignment="Center"/>
             </Grid>
 
             <Grid Grid.Column="0" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <Label Grid.Column="0"
+                           Content="Notes: "
+                           Visibility="Hidden"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <Label x:Name="NotesNum"
+                           Content="---"
+                           Visibility="Hidden"/>
+                    <Label x:Name="PlayingMusicStatus"
+                           Visibility="Hidden"/>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Column="0" Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="*"/>
