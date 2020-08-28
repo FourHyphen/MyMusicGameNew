@@ -75,6 +75,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PlayingMusic.cs" />
+    <Compile Include="PlayingMusicFactory.cs" />
+    <Compile Include="PlayingMusicFake.cs" />
+    <Compile Include="PlayingMusicWav.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

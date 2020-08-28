@@ -17,6 +17,8 @@ namespace MyMusicGameNew
 {
     public partial class MainWindow : Window
     {
+        private bool IsTest { get; set; }
+
         private List<string> MusicList { get; set; }
 
         public MainWindow()
@@ -31,6 +33,7 @@ namespace MyMusicGameNew
         {
             // TODO: 配布を考えると、ここと同階層にGameDataディレクトリがある場合/ない場合で分岐すべき
             Environment.CurrentDirectory = environmentDirPath;
+            IsTest = (Environment.CurrentDirectory.Contains("TestMyMusicGameNew"));
         }
 
         private void InitMusicList()
@@ -75,6 +78,7 @@ namespace MyMusicGameNew
             {
                 PlayMusic(GetSelectedMusicName());
                 SetGameStatus("Playing");
+                SetPlayingMusicStatus("Playing");
             }
         }
 
@@ -90,9 +94,8 @@ namespace MyMusicGameNew
 
         private void PlayMusic(string musicName)
         {
-            System.Media.SoundPlayer Player = new System.Media.SoundPlayer("GameData/Music/" + musicName + ".wav");
-            Player.Play();  // 非同期再生
-            SetPlayingMusicStatus("Playing");
+            PlayingMusic play = PlayingMusicFactory.Create(musicName, IsTest);
+            play.PlayAsync();
         }
     }
 }
