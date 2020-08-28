@@ -17,10 +17,13 @@ namespace MyMusicGameNew
 {
     public partial class MainWindow : Window
     {
+        private List<string> MusicList { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
             SetEnvironmentCurrentDirectory(Environment.CurrentDirectory + "../../../");  // F5開始を想定
+            InitMusicList();
             InitDisplay();
         }
 
@@ -30,11 +33,25 @@ namespace MyMusicGameNew
             Environment.CurrentDirectory = environmentDirPath;
         }
 
+        private void InitMusicList()
+        {
+            string musicsFilePath = Common.GetFilePathOfDependentEnvironment("/GameData/MusicList.json");
+            MusicList = Common.GetStringListInJson(musicsFilePath);
+        }
+
         private void InitDisplay()
         {
-            MusicListBox.Items.Add("Music1");
+            SetMusicListBox();
             SetGameStatus("Select Music");
             SetPlayingMusicStatus("Not");
+        }
+
+        private void SetMusicListBox()
+        {
+            foreach (string name in MusicList)
+            {
+                MusicListBox.Items.Add(name);
+            }
         }
 
         private void SetGameStatus(string status)

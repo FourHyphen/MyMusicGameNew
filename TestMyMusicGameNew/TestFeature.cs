@@ -24,6 +24,7 @@ namespace TestMyMusicGameNew
         private dynamic MainWindow;
         private MainWindowDriver Driver;
 
+        private readonly int ExpectedMusicListNum = 2;
         private readonly int TestSelectMusicList = 0;
 
         [TestInitialize]
@@ -47,7 +48,7 @@ namespace TestMyMusicGameNew
         [TestMethod]
         public void TestDisplayMusicList()
         {
-            Assert.IsTrue(Driver.MusicList.Count() >= 1);
+            Assert.AreEqual(expected: ExpectedMusicListNum, actual: Driver.MusicList.Count());
         }
 
         [TestMethod]
