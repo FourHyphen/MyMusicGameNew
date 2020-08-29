@@ -8,7 +8,7 @@ namespace MyMusicGameNew
 {
     class PlayingMusicFake : PlayingMusic
     {
-        public PlayingMusicFake(string musicName) : base(musicName) { }
+        public PlayingMusicFake(string dataPath) : base(dataPath) { }
 
         public override void PlayAsync()
         {

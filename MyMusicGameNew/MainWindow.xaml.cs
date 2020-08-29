@@ -23,12 +23,23 @@ namespace MyMusicGameNew
 
         private List<Note> Notes { get; set; }
 
+        private System.Timers.Timer GameFinishTimer { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
             SetEnvironmentCurrentDirectory(Environment.CurrentDirectory + "../../../");  // F5開始を想定
             InitMusicList();
             InitDisplay();
+        }
+
+        ~MainWindow()
+        {
+            if (GameFinishTimer != null)
+            {
+                GameFinishTimer.Stop();
+                GameFinishTimer.Dispose();
+            }
         }
 
         private void SetEnvironmentCurrentDirectory(string environmentDirPath)
@@ -95,24 +106,44 @@ namespace MyMusicGameNew
 
         private void GameStartCore(string musicName)
         {
-            GetNotes(musicName);
-            PlayMusic(musicName);
+            Music music = new MusicFactory().Create(musicName, isTest: IsTest);
+            PlayMusic(music);
+            SetNotesNum(music);
+            SetGameFinishedTimer(music.TimeSecond);
             SetGameStatus("Playing");
             SetPlayingMusicStatus("Playing");
         }
 
-        private void GetNotes(string musicName)
+        private void PlayMusic(Music music)
         {
-            string jsonPath = Common.GetFilePathOfDependentEnvironment("/GameData/Note/" + musicName + ".json");
-            string jsonStr = Common.ReadFile(jsonPath);
-            Notes = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Note>>(jsonStr);
-            NotesNum.Content = Notes.Count.ToString();
+            music.PlayAsync();
         }
 
-        private void PlayMusic(string musicName)
+        private void SetNotesNum(Music music)
         {
-            PlayingMusic play = PlayingMusicFactory.Create(musicName, IsTest);
-            play.PlayAsync();
+            NotesNum.Content = music.Notes.Count.ToString();
+        }
+
+        private void SetGameFinishedTimer(int musicTimeSecond)
+        {
+            GameFinishTimer = new System.Timers.Timer();
+            GameFinishTimer.Interval = (musicTimeSecond + 1) * 1000;  // 1[s]余裕を持たせる
+            GameFinishTimer.Elapsed += (s, e) =>
+            {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    ProcessGameFinished();
+                }));
+            };
+            GameFinishTimer.Start();
+        }
+
+        private void ProcessGameFinished()
+        {
+            GameFinishTimer.Stop();
+            GameFinishTimer.Dispose();
+            SetGameStatus("Finished");
+            SetPlayingMusicStatus("Finished");
         }
     }
 }

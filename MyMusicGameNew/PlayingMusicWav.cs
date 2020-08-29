@@ -8,12 +8,11 @@ namespace MyMusicGameNew
 {
     public class PlayingMusicWav : PlayingMusic
     {
-        public PlayingMusicWav(string musicName) : base(musicName) { }
+        public PlayingMusicWav(string dataPath) : base(dataPath) { }
 
         public override void PlayAsync()
         {
-            string wavFilePath = GetMusicFilePathWithoutExtension() + ".wav";
-            System.Media.SoundPlayer Player = new System.Media.SoundPlayer(wavFilePath);
+            System.Media.SoundPlayer Player = new System.Media.SoundPlayer(GetMusicFileFullPath());
             Player.Play();
         }
     }

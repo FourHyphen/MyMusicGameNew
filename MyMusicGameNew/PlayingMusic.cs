@@ -8,18 +8,18 @@ namespace MyMusicGameNew
 {
     public abstract class PlayingMusic
     {
-        protected string MusicName { get; }
+        protected string DataPath { get; }
 
-        public PlayingMusic(string musicName)
+        public PlayingMusic(string dataPath)
         {
-            MusicName = musicName;
+            DataPath = dataPath;
         }
 
         public abstract void PlayAsync();
 
-        protected string GetMusicFilePathWithoutExtension()
+        protected string GetMusicFileFullPath()
         {
-            return Common.GetFilePathOfDependentEnvironment("/GameData/Music/" + MusicName);
+            return Common.GetFilePathOfDependentEnvironment(DataPath);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Dynamic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Codeer.Friendly.Dynamic;
 using Codeer.Friendly.Windows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,8 +26,10 @@ namespace TestMyMusicGameNew
         private MainWindowDriver Driver;
 
         private readonly int ExpectedMusicListNum = 2;
-        private readonly int TestSelectMusicList = 0;
-        private readonly int ExpectedNotesNum = 2;
+        private readonly int ExpectedTest1NotesNum = 2;
+        private readonly int Test1MusicIndex = 0;
+        private readonly int Test2MusicIndex = 1;
+        private readonly int Test2MusicTimeSecond = 2;
 
         [TestInitialize]
         public void Init()
@@ -62,7 +65,7 @@ namespace TestMyMusicGameNew
         [TestMethod]
         public void TestStartOfGameWhenSelectedMusicAndCallStartOfGame()
         {
-            Driver.MusicList.ChangeSelectedIndex(TestSelectMusicList);
+            Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
             Driver.GameStartButton.Click();
             Assert.IsTrue(Driver.GameStatus.Contains("Playing"));
         }
@@ -78,7 +81,7 @@ namespace TestMyMusicGameNew
         public void TestPlayMusicWhenStartOfGame()
         {
             Assert.IsTrue(Driver.PlayingMusicStatus.Content().Contains("Not"));
-            Driver.MusicList.ChangeSelectedIndex(TestSelectMusicList);
+            Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
             Driver.GameStartButton.Click();
             Assert.IsFalse(Driver.PlayingMusicStatus.Contains("Not"));
             Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Playing"));
@@ -87,9 +90,29 @@ namespace TestMyMusicGameNew
         [TestMethod]
         public void TestGetNotesWhenStartOfGame()
         {
-            Driver.MusicList.ChangeSelectedIndex(TestSelectMusicList);
+            Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
             Driver.GameStartButton.Click();
-            Assert.AreEqual(expected: ExpectedNotesNum, actual: int.Parse(Driver.NotesNum.Content()));
+            Assert.AreEqual(expected: ExpectedTest1NotesNum, actual: int.Parse(Driver.NotesNum.Content()));
+        }
+
+        [TestMethod]
+        public void TestGameFinishWhenEndMusic()
+        {
+            Driver.MusicList.ChangeSelectedIndex(Test2MusicIndex);
+            Driver.GameStartButton.Click();
+            Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Playing"));
+            Sleep(Test2MusicTimeSecond + 1);  // 1[s]余裕を持たせる
+            Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Finish"));
+        }
+
+        private void Sleep(double second)
+        {
+            Task task = Task.Run(() =>
+            {
+                System.Threading.Thread.Sleep((int)(second * 1000.0));
+            });
+
+            Task.WaitAll(task);
         }
     }
 }
