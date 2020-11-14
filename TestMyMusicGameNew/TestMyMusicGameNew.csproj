@@ -91,6 +91,7 @@
     <Compile Include="ButtonAdapter.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="DisplayControl.cs" />
+    <Compile Include="DisplayNotesAdapter.cs" />
     <Compile Include="LabelAdapter.cs" />
     <Compile Include="MainWindowDriver.cs" />
     <Compile Include="MusicListAdapter.cs" />

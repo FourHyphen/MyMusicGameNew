@@ -2,9 +2,11 @@
   {
     "FormatOfJudgeFromMusicStart": "mm:ss.fffffff",
     "StringOfJudgeFromMusicStart": "00:01.0000000",
+    "XJudgeLinePosition": 1
   },
   {
     "FormatOfJudgeFromMusicStart": "mm:ss.fffffff",
     "StringOfJudgeFromMusicStart": "00:02.5000000",
+    "XJudgeLinePosition": 2
   }
 ]

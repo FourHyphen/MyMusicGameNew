@@ -19,6 +19,8 @@ namespace TestMyMusicGameNew
             public ButtonAdapter GameStartButton { get; }
             public LabelAdapter PlayingMusicStatus { get; }
             public LabelAdapter NotesNum { get; }
+            private DisplayNotesAdapter DisplayNotes { get; }
+            private LabelAdapter DisplayNotesNearestJudgeLine { get; }
 
             public MainWindowDriver(dynamic mainWindow)
             {
@@ -29,6 +31,27 @@ namespace TestMyMusicGameNew
                 GameStartButton = new ButtonAdapter(Tree, "GameStartButton");
                 PlayingMusicStatus = new LabelAdapter(Tree, "PlayingMusicStatus");
                 NotesNum = new LabelAdapter(Tree, "NotesNum");
+                DisplayNotes = new DisplayNotesAdapter("Note");
+                DisplayNotesNearestJudgeLine = new LabelAdapter(Tree, "DisplayNotesNearestJudgeLine");
+            }
+
+            public int GetDisplayNotesNum()
+            {
+                Tree = new WindowControl(MainWindow).LogicalTree();  // 現在の画面状況を取得
+                return DisplayNotes.GetDisplayNum(Tree);
+            }
+
+            public System.Windows.Point GetDisplayNotesNearestJudgeLine()
+            {
+                string str = DisplayNotesNearestJudgeLine.Content();
+                int xStart = "(".Length;
+                int xLength = 7;
+                int x = int.Parse(str.Substring(xStart, xLength));
+
+                int yStart = xStart + xLength + ", ".Length;
+                int yLength = 7;
+                int y = int.Parse(str.Substring(yStart, yLength));
+                return new System.Windows.Point(x, y);
             }
         }
     }

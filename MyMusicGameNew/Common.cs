@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 using Newtonsoft.Json;
 
 namespace MyMusicGameNew
@@ -37,6 +38,38 @@ namespace MyMusicGameNew
         {
             string formatRe = format.Replace(":", @"\:").Replace(".", @"\.");
             return TimeSpan.ParseExact(time, formatRe, null);
+        }
+
+        public static System.Windows.Media.Imaging.BitmapSource GetImage(string imagePath)
+        {
+            Bitmap bitmap = new Bitmap(imagePath);
+            return GetImage(bitmap);
+        }
+
+        private static System.Windows.Media.Imaging.BitmapSource GetImage(Bitmap bitmap)
+        {
+            return CreateBitmapSourceImage(bitmap);
+        }
+
+        [System.Runtime.InteropServices.DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
+        public static extern bool DeleteObject(IntPtr hObject);
+
+        public static System.Windows.Media.Imaging.BitmapSource CreateBitmapSourceImage(Bitmap bitmapImage)
+        {
+            // 参考: http://qiita.com/KaoruHeart/items/dc130d5fc00629c1b6ea
+            IntPtr handle = bitmapImage.GetHbitmap();
+            try
+            {
+                return System.Windows.Interop.Imaging.
+                    CreateBitmapSourceFromHBitmap(handle,
+                                                  IntPtr.Zero,
+                                                  System.Windows.Int32Rect.Empty,
+                                                  System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+            }
+            finally
+            {
+                DeleteObject(handle);
+            }
         }
     }
 }

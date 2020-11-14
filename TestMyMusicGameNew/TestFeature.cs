@@ -30,6 +30,8 @@ namespace TestMyMusicGameNew
         private readonly int Test1MusicIndex = 0;
         private readonly int Test2MusicIndex = 1;
         private readonly int Test2MusicTimeSecond = 2;
+        private readonly int NoDisplayNote = 0;
+        private readonly int DisplayNote1AndMore = 1;
 
         [TestInitialize]
         public void Init()
@@ -103,6 +105,22 @@ namespace TestMyMusicGameNew
             Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Playing"));
             Sleep(Test2MusicTimeSecond + 1);  // 1[s]余裕を持たせる
             Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Finish"));
+        }
+
+        [TestMethod]
+        public void TestNoteDisplayAndNearbyJudgeLineAfterGameStart()
+        {
+            Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
+            Assert.AreEqual(expected: NoDisplayNote, actual: Driver.GetDisplayNotesNum());
+
+            Driver.GameStartButton.Click();
+            Assert.AreEqual(expected: DisplayNote1AndMore, actual: Driver.GetDisplayNotesNum());
+
+            System.Windows.Point start = Driver.GetDisplayNotesNearestJudgeLine();
+            Sleep(0.5);  // sleepしすぎるとノートが画面外に出てしまうので少しの時間にする
+            System.Windows.Point moving = Driver.GetDisplayNotesNearestJudgeLine();
+            Assert.IsTrue(start.X == moving.X);
+            Assert.IsTrue(start.Y < moving.Y);  // 画面下方向を正とする
         }
 
         private void Sleep(double second)

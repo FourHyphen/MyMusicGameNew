@@ -9,10 +9,10 @@ namespace MyMusicGameNew
 {
     public class MusicFactory
     {
-        public Music Create(string musicName, bool isTest=false)
+        public Music Create(string musicName, int playAreaWidth, int playAreaHeight, bool isTest=false)
         {
             MusicInfo info = GetMusicInfo(musicName);
-            List<Note> notes = GetNotes(info.Note);
+            List<Note> notes = GetNotes(info.Note, playAreaWidth, playAreaHeight);
             PlayingMusic play = GetPlayingMusic(info.MusicData, isTest);
             return new Music(musicName, info.TimeSecond, notes, play);
         }
@@ -24,11 +24,24 @@ namespace MyMusicGameNew
             return JsonConvert.DeserializeObject<MusicInfo>(jsonStr);
         }
 
-        private List<Note> GetNotes(string notePath)
+        private List<Note> GetNotes(string notePath, int playAreaWidth, int playAreaHeight)
+        {
+            List<NoteData> noteData = GetNoteData(notePath);
+            List<Note> noteList = new List<Note>();
+            foreach (NoteData nd in noteData)
+            {
+                Note n = new Note(nd, playAreaWidth, playAreaHeight);
+                noteList.Add(n);
+            }
+
+            return noteList;
+        }
+
+        private List<NoteData> GetNoteData(string notePath)
         {
             string jsonPath = Common.GetFilePathOfDependentEnvironment(notePath);
             string jsonStr = Common.ReadFile(jsonPath);
-            return JsonConvert.DeserializeObject<List<Note>>(jsonStr);
+            return JsonConvert.DeserializeObject<List<NoteData>>(jsonStr);
         }
 
         private PlayingMusic GetPlayingMusic(string musicDataPath, bool isTest)

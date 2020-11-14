@@ -42,6 +42,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -69,6 +70,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Common.cs" />
+    <Compile Include="GameMusicSelect.cs" />
+    <Compile Include="GamePlaying.cs" />
+    <Compile Include="GameState.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -79,6 +83,7 @@
     <Compile Include="MusicFactory.cs" />
     <Compile Include="MusicInfo.cs" />
     <Compile Include="Note.cs" />
+    <Compile Include="NoteData.cs" />
     <Compile Include="PlayingMusic.cs" />
     <Compile Include="PlayingMusicFactory.cs" />
     <Compile Include="PlayingMusicFake.cs" />
