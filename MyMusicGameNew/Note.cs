@@ -35,7 +35,7 @@ namespace MyMusicGameNew
         public void CalcNowPoint(TimeSpan now)
         {
             double diffMillsec = DiffMillisecond(_NoteData.JudgeOfJustTiming, now);
-            NowX = CalcNowX(diffMillsec);
+            NowX = CalcNowX();
             NowY = CalcNowY(diffMillsec);
         }
 
@@ -45,7 +45,7 @@ namespace MyMusicGameNew
             return basis.Subtract(subtract).TotalMilliseconds;
         }
 
-        private double CalcNowX(double diffMillisec)
+        private double CalcNowX()
         {
             int basis = (int)((double)PlayAreaWidth * 0.33333);
             return basis * _NoteData.XJudgeLinePosition;
