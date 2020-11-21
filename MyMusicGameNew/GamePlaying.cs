@@ -5,9 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace MyMusicGameNew
 {
@@ -21,12 +19,10 @@ namespace MyMusicGameNew
 
         private Task DisplayingNotesTask { get; set; }
 
-        private BitmapSource NotesBitmap { get; set; }
-
         public GamePlaying(MainWindow main, Music music) : base(main)
         {
             Music = music;
-            InitNotesImage();
+            InitMusicNoteImage();
         }
 
         ~GamePlaying()
@@ -43,16 +39,10 @@ namespace MyMusicGameNew
             }
         }
 
-        private void InitNotesImage(string noteImagePath = "./GameData/NoteImage/note.png")
-        {
-            // TODO: Note画像を管理するクラスに分離
-            NotesBitmap = Common.GetImage(noteImagePath);
-        }
-
         public void Start()
         {
             var cts = new CancellationTokenSource();
-            InitMusicNoteImage();
+            DisplayNotesCore(Music.Notes, new TimeSpan());
             DisplayInfo();
             SetGameFinishedTimer(Music.TimeSecond, cts);
             StartDisplayingNotes(Music.Notes, cts.Token);
@@ -65,21 +55,9 @@ namespace MyMusicGameNew
             for (int i = 0; i < Music.Notes.Count; i++)
             {
                 Note n = Music.Notes[i];
-                n.Image = CreateDisplayNotes(i);
+                NoteImage ni = new NoteImage(i);
+                n.Image = ni;
             }
-            DisplayNotesCore(Music.Notes, new TimeSpan());
-        }
-
-        private Image CreateDisplayNotes(int index)
-        {
-            Image noteImage = new Image();
-            noteImage.Source = NotesBitmap.Clone();
-            noteImage.Stretch = Stretch.None;
-            noteImage.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            noteImage.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-            noteImage.Name = "Note" + index.ToString();
-
-            return noteImage;
         }
 
         private void DisplayInfo()
@@ -157,46 +135,42 @@ namespace MyMusicGameNew
         {
             for (int i = 0; i < notes.Count; i++)
             {
-                Note n = notes[i];
-
-                // TODO：すでに判定済み等、表示しなくてよいNoteをスキップする
-                AddNotesForPlayArea(n, now);
-
-                // テスト用: 現在座標の表示
-                if (i == 0)
+                Note note = notes[i];
+                if (DoNoteNeedDisplayingForPlayArea(note, now))
                 {
-                    string x = ((int)n.NowX).ToString().PadLeft(7);
-                    string y = ((int)n.NowY).ToString().PadLeft(7);
-                    Main.DisplayNotesNearestJudgeLine.Content = "(" + x + ", " + y + ")";
+                    DisplayNotePlayArea(note.Image);
                 }
+
+                SetTestString(note, i);
             }
         }
 
-        private void AddNotesForPlayArea(Note note, TimeSpan now)
+        private bool DoNoteNeedDisplayingForPlayArea(Note note, TimeSpan now)
         {
+            // TODO：すでに判定済み等、表示しなくてよいNoteをスキップする
             note.CalcNowPoint(now);
-            if (note.IsInsidePlayArea())
+            return (note.IsInsidePlayArea());
+        }
+
+        private void DisplayNotePlayArea(NoteImage noteImage)
+        {
+            System.Windows.Controls.Image image = noteImage.DisplayImage;
+            if (!Main.PlayArea.Children.Contains(image))
             {
-                AddNoteImageForPlayArea(note);
+                noteImage.SetVisible();
+                Main.PlayArea.Children.Add(image);
             }
         }
 
-        private void AddNoteImageForPlayArea(Note note)
+        private void SetTestString(Note note, int index)
         {
-            note.Image.RenderTransform = GetNotesTransform(note.NowX, note.NowY);
-            if (!Main.PlayArea.Children.Contains(note.Image))
+            // テスト用: 現在座標の表示
+            if (index == 0)
             {
-                note.Image.Visibility = System.Windows.Visibility.Visible;
-                Main.PlayArea.Children.Add(note.Image);
+                string x = ((int)note.NowX).ToString().PadLeft(7);
+                string y = ((int)note.NowY).ToString().PadLeft(7);
+                Main.DisplayNotesNearestJudgeLine.Content = "(" + x + ", " + y + ")";
             }
-        }
-
-        private Transform GetNotesTransform(double x, double y)
-        {
-            var transform = new TransformGroup();
-            transform.Children.Add(new TranslateTransform(x, y));
-
-            return transform;
         }
 
         //private void RemoveNotesForPlayArea(Notes notes)

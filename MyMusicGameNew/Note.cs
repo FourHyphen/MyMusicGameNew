@@ -18,7 +18,7 @@ namespace MyMusicGameNew
 
         private NoteData _NoteData { get; set; }
 
-        public System.Windows.Controls.Image Image { get; set; }
+        public NoteImage Image { get; set; }
 
         public double NowX { get; set; }
 
@@ -38,6 +38,10 @@ namespace MyMusicGameNew
             double diffMillsec = DiffMillisecond(_NoteData.JudgeOfJustTiming, now);
             NowX = CalcNowX();
             NowY = CalcNowY(diffMillsec);
+            if (Image != null)
+            {
+                Image.SetNowCoordinate(NowX, NowY);
+            }
         }
 
         private double DiffMillisecond(TimeSpan basis, TimeSpan subtract)

@@ -84,6 +84,7 @@
     <Compile Include="MusicInfo.cs" />
     <Compile Include="Note.cs" />
     <Compile Include="NoteData.cs" />
+    <Compile Include="NoteImage.cs" />
     <Compile Include="PlayingMusic.cs" />
     <Compile Include="PlayingMusicFactory.cs" />
     <Compile Include="PlayingMusicFake.cs" />
