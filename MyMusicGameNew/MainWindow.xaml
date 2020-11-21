@@ -14,7 +14,15 @@
 
         <Grid Grid.Row="0" Grid.Column="0"
               x:Name="PlayArea"
-              Background="Black"/>
+              Background="Black">
+            <Line x:Name="JudgeLine"
+                  Stroke="White"
+                  StrokeThickness="1"
+                  X1="100"
+                  X2="700"
+                  Y1="500"
+                  Y2="500"/>
+        </Grid>
 
         <Grid Grid.Row="0" Grid.Column="1">
             <Grid.RowDefinitions>

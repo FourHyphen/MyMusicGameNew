@@ -114,6 +114,7 @@ namespace TestMyMusicGameNew
             Assert.AreEqual(expected: NoDisplayNote, actual: Driver.GetDisplayNotesNum());
 
             Driver.GameStartButton.Click();
+            Assert.IsTrue(Driver.ExistJudgeLine());
             Assert.AreEqual(expected: DisplayNote1AndMore, actual: Driver.GetDisplayNotesNum());
 
             System.Windows.Point start = Driver.GetDisplayNotesNearestJudgeLine();

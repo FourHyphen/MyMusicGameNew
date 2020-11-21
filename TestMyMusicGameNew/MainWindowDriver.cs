@@ -21,6 +21,7 @@ namespace TestMyMusicGameNew
             public LabelAdapter NotesNum { get; }
             private DisplayNotesAdapter DisplayNotes { get; }
             private LabelAdapter DisplayNotesNearestJudgeLine { get; }
+            private LineAdapter JudgeLine { get; }
 
             public MainWindowDriver(dynamic mainWindow)
             {
@@ -33,6 +34,7 @@ namespace TestMyMusicGameNew
                 NotesNum = new LabelAdapter(Tree, "NotesNum");
                 DisplayNotes = new DisplayNotesAdapter("Note");
                 DisplayNotesNearestJudgeLine = new LabelAdapter(Tree, "DisplayNotesNearestJudgeLine");
+                JudgeLine = new LineAdapter(Tree, "JudgeLine");
             }
 
             public int GetDisplayNotesNum()
@@ -52,6 +54,11 @@ namespace TestMyMusicGameNew
                 int yLength = 7;
                 int y = int.Parse(str.Substring(yStart, yLength));
                 return new System.Windows.Point(x, y);
+            }
+
+            public bool ExistJudgeLine()
+            {
+                return (JudgeLine != null);
             }
         }
     }

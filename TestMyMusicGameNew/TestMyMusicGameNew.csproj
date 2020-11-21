@@ -93,6 +93,7 @@
     <Compile Include="DisplayControl.cs" />
     <Compile Include="DisplayNotesAdapter.cs" />
     <Compile Include="LabelAdapter.cs" />
+    <Compile Include="LineAdapter.cs" />
     <Compile Include="MainWindowDriver.cs" />
     <Compile Include="MusicListAdapter.cs" />
     <Compile Include="TestCommon.cs" />
