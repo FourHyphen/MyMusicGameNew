@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
 
 namespace MyMusicGameNew
 {
@@ -54,9 +53,7 @@ namespace MyMusicGameNew
         {
             for (int i = 0; i < Music.Notes.Count; i++)
             {
-                Note n = Music.Notes[i];
-                NoteImage ni = new NoteImage(i);
-                n.Image = ni;
+                Music.Notes[i].InitImage(i);
             }
         }
 
@@ -136,7 +133,9 @@ namespace MyMusicGameNew
             for (int i = 0; i < notes.Count; i++)
             {
                 Note note = notes[i];
-                if (DoNoteNeedDisplayingForPlayArea(note, now))
+
+                note.CalcNowPoint(now);
+                if (DoNoteNeedDisplayingForPlayArea(note))
                 {
                     DisplayNotePlayArea(note.Image);
                 }
@@ -145,10 +144,9 @@ namespace MyMusicGameNew
             }
         }
 
-        private bool DoNoteNeedDisplayingForPlayArea(Note note, TimeSpan now)
+        private bool DoNoteNeedDisplayingForPlayArea(Note note)
         {
             // TODO：すでに判定済み等、表示しなくてよいNoteをスキップする
-            note.CalcNowPoint(now);
             return (note.IsInsidePlayArea());
         }
 

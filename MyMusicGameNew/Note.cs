@@ -18,7 +18,7 @@ namespace MyMusicGameNew
 
         private NoteData _NoteData { get; set; }
 
-        public NoteImage Image { get; set; }
+        public NoteImage Image { get; private set; }
 
         public double NowX { get; set; }
 
@@ -66,6 +66,11 @@ namespace MyMusicGameNew
         {
             return ((0.0 <= NowX && NowX < PlayAreaWidth) &&
                     (0.0 <= NowY && NowY < PlayAreaHeight));
+        }
+
+        public void InitImage(int index)
+        {
+            Image = new NoteImage(index);
         }
     }
 }
