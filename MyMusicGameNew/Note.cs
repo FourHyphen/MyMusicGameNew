@@ -8,9 +8,9 @@ namespace MyMusicGameNew
 {
     public class Note
     {
-        // TOOD: 可変にする
-        private const double NoteSpeedYPerSec = 300.0;
-        private int JudgeLineYFromAreaTop;
+        private double NoteSpeedYPerSec { get; set; }
+
+        public int JudgeLineYFromAreaTop { get; private set; }
 
         private int PlayAreaWidth { get; set; }
 
@@ -24,11 +24,12 @@ namespace MyMusicGameNew
 
         public double NowY { get; set; }
 
-        public Note(NoteData noteData, int playAreaWidth, int playAreaHeight)
+        public Note(NoteData noteData, int playAreaWidth, int playAreaHeight, double noteSpeedYPerSec = 300.0)
         {
             _NoteData = noteData;
             PlayAreaWidth = playAreaWidth;
             PlayAreaHeight = playAreaHeight;
+            NoteSpeedYPerSec = noteSpeedYPerSec;
             JudgeLineYFromAreaTop = playAreaHeight - 100;
         }
 

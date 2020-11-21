@@ -18,7 +18,11 @@ namespace MyMusicGameNew
         [JsonProperty("XJudgeLinePosition")]
         public int XJudgeLinePosition { get; private set; }
 
-        public NoteData() { }
+        public NoteData(int xJudgeLinePosition, TimeSpan judgeOfJustTiming)
+        {
+            XJudgeLinePosition = xJudgeLinePosition;
+            _JudgeOfJustTiming = judgeOfJustTiming;
+        }
 
         private TimeSpan _JudgeOfJustTiming { get; set; }
 
