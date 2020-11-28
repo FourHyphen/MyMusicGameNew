@@ -20,7 +20,9 @@ namespace MyMusicGameNew
     {
         private bool IsTest { get; set; }
 
-        private GameMusicSelect MusicSelect { get; set; }
+        private GameMusicSelect MusicSelect { get; set; } = null;
+
+        private GamePlaying GamePlay { get; set; } = null;
 
         public MainWindow()
         {
@@ -54,8 +56,27 @@ namespace MyMusicGameNew
         private void GameStartCore(string musicName)
         {
             Music music = new MusicFactory().Create(musicName, (int)PlayArea.ActualWidth, (int)PlayArea.ActualHeight, isTest: IsTest);
-            GamePlaying play = new GamePlaying(this, music);
-            play.Start();
+            GamePlay = new GamePlaying(this, music);
+            GamePlay.Start();
+        }
+
+        private void PlayAreaMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (DoGamePlaying())
+            {
+                Point p = e.GetPosition(this);
+                Judge(p);
+            }
+        }
+
+        private bool DoGamePlaying()
+        {
+            return (GamePlay != null);
+        }
+
+        private void Judge(System.Windows.Point p)
+        {
+            GamePlay.Judge(p);
         }
     }
 }

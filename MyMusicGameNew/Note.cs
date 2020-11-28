@@ -8,6 +8,14 @@ namespace MyMusicGameNew
 {
     public class Note
     {
+        public enum JudgeType
+        {
+            Perfect,
+            Good,
+            Bad,
+            NotYet
+        }
+
         private double NoteSpeedYPerSec { get; set; }
 
         public int JudgeLineYFromAreaTop { get; private set; }
@@ -20,9 +28,19 @@ namespace MyMusicGameNew
 
         public NoteImage Image { get; private set; }
 
+        public JudgeType JudgeResult { get; private set; } = JudgeType.NotYet;
+
         public double NowX { get; set; }
 
         public double NowY { get; set; }
+
+        public int XLine
+        {
+            get
+            {
+                return _NoteData.XJudgeLinePosition;
+            }
+        }
 
         public Note(NoteData noteData, int playAreaWidth, int playAreaHeight, double noteSpeedYPerSec = 300.0)
         {
@@ -71,6 +89,46 @@ namespace MyMusicGameNew
         public void InitImage(int index)
         {
             Image = new NoteImage(index);
+        }
+
+        public void Judge(TimeSpan time)
+        {
+            double diffMillsec = Math.Abs(DiffMillisecond(_NoteData.JudgeOfJustTiming, time));
+
+            // TODO: 判定タイミングの外部管理化
+            if (diffMillsec < 100)  // 1[ms]
+            {
+                JudgeResult = JudgeType.Perfect;
+            }
+            else if (diffMillsec < 200)  // 2[ms]
+            {
+                JudgeResult = JudgeType.Good;
+            }
+            else if (diffMillsec < 400)  // 4[ms]
+            {
+                JudgeResult = JudgeType.Bad;
+            }
+            else
+            {
+                JudgeResult = JudgeType.NotYet;
+            }
+        }
+
+        public int ConvertXLine(double x)
+        {
+            double halfWidth = PlayAreaWidth / 2;
+            if (x <= halfWidth)
+            {
+                return 1;
+            }
+            else if (x > halfWidth)
+            {
+                return 2;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using RM.Friendly.WPFStandardControls;
+using System;
 using System.Reflection;
 
 namespace TestMyMusicGameNew
@@ -32,6 +33,20 @@ namespace TestMyMusicGameNew
             public bool Contains(string str)
             {
                 return Content().Contains(str);
+            }
+
+            public int Number()
+            {
+                string str = Content();
+                try
+                {
+                    return int.Parse(str);
+                }
+                catch (Exception ex)
+                {
+                    string exStr = "Label.Content = {" + str + "} の数値変換エラー";
+                    throw new Exception(exStr, ex);
+                }
             }
         }
     }

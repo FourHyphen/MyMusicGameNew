@@ -124,6 +124,22 @@ namespace TestMyMusicGameNew
             Assert.IsTrue(start.Y < moving.Y);  // 画面下方向を正とする
         }
 
+        [TestMethod]
+        public void TestJudgeNoteNearbyJudgeLineWhenLeftClicked()
+        {
+            // 左クリック入力時のPerfect判定を拾う
+            EmurateNote1 emurateNote1 = new EmurateNote1();
+            System.Windows.Point justTimingPoint = emurateNote1.EmurateCalcJustTimingPoint();
+
+            Assert.AreEqual(expected: 0, actual: Driver.ResultPerfect.Number());
+            Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
+            Driver.GameStartButton.Click();
+            Sleep(EmurateNote1.JustTiming.TotalSeconds);
+
+            Driver.EmurateLeftClickGamePlaying(justTimingPoint);
+            Assert.AreEqual(expected: 1, actual: Driver.ResultPerfect.Number());
+        }
+
         private void Sleep(double second)
         {
             Task task = Task.Run(() =>

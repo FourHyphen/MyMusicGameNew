@@ -12,8 +12,10 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
+        <!--Play Area-->
         <Grid Grid.Row="0" Grid.Column="0"
               x:Name="PlayArea"
+              MouseDown="PlayAreaMouseDown"
               Background="Black">
             <Line x:Name="JudgeLine"
                   Stroke="White"
@@ -24,6 +26,7 @@
                   Y2="500"/>
         </Grid>
 
+        <!--Information-->
         <Grid Grid.Row="0" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="8*"/>
@@ -46,7 +49,28 @@
                        HorizontalAlignment="Center"/>
             </Grid>
 
+            <!--Judge Result-->
             <Grid Grid.Column="0" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <Label Content="Perfect: "/>
+                    <Label Content="Good: "/>
+                    <Label Content="Bad: "/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1">
+                    <Label x:Name="ResultPerfect" Content="0"/>
+                    <Label x:Name="ResultGood" Content="0"/>
+                    <Label x:Name="ResultBad" Content="0"/>
+                </StackPanel>
+            </Grid>
+
+            <!--Debug Info-->
+            <Grid Grid.Column="0" Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="*"/>
@@ -67,13 +91,6 @@
                     <Label x:Name="DisplayNotesNearestJudgeLine"
                            Visibility="Hidden"/>
                 </StackPanel>
-            </Grid>
-
-            <Grid Grid.Column="0" Grid.Row="3">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
             </Grid>
         </Grid>
     </Grid>

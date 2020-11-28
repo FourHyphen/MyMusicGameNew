@@ -18,6 +18,8 @@ namespace MyMusicGameNew
 
         private Task DisplayingNotesTask { get; set; }
 
+        private int PerfectNum { get; set; } = 0;
+
         public GamePlaying(MainWindow main, Music music) : base(main)
         {
             Music = music;
@@ -183,6 +185,42 @@ namespace MyMusicGameNew
         {
             GameTimer = new System.Diagnostics.Stopwatch();
             GameTimer.Start();
+        }
+
+        public void Judge(System.Windows.Point mouseClicked)
+        {
+            Note note = GetLatestUnjudgedNoteForLine(mouseClicked.X, mouseClicked.Y);
+            if (note is null)
+            {
+                return;
+            }
+
+            TimeSpan now = GameTimer.Elapsed;
+            note.Judge(now);
+            UpdateJudgeResult(note.JudgeResult);
+        }
+
+        private Note GetLatestUnjudgedNoteForLine(double x, double y)
+        {
+            foreach (Note n in Music.Notes)
+            {
+                int line = n.ConvertXLine(x);
+                if (n.XLine == line && n.JudgeResult == Note.JudgeType.NotYet)
+                {
+                    return n;
+                }
+            }
+
+            return null;
+        }
+
+        private void UpdateJudgeResult(Note.JudgeType result)
+        {
+            if (result == Note.JudgeType.Perfect)
+            {
+                PerfectNum++;
+                Main.ResultPerfect.Content = PerfectNum.ToString();
+            }
         }
     }
 }
