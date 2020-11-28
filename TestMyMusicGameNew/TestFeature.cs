@@ -127,17 +127,25 @@ namespace TestMyMusicGameNew
         [TestMethod]
         public void TestJudgeNoteNearbyJudgeLineWhenLeftClicked()
         {
-            // 左クリック入力時のPerfect判定を拾う
-            EmurateNote1 emurateNote1 = new EmurateNote1();
-            System.Windows.Point justTimingPoint = emurateNote1.EmurateCalcJustTimingPoint();
+            // 左クリック入力時のPerfect判定およびBad判定のテスト
+            // (Good判定はテスト環境次第で安定しなさそうなのでテストしない)
+            EmurateNote emurateNote1 = new EmurateNote(1);
+            System.Windows.Point clickPointNote1 = emurateNote1.EmurateCalcJustJudgeLinePoint();
+            EmurateNote emurateNote2 = new EmurateNote(2);
+            System.Windows.Point clickPointNote2 = emurateNote2.EmurateCalcJustJudgeLinePoint();
 
             Assert.AreEqual(expected: 0, actual: Driver.ResultPerfect.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.ResultBad.Number());
             Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
             Driver.GameStartButton.Click();
-            Sleep(EmurateNote1.JustTiming.TotalSeconds);
 
-            Driver.EmurateLeftClickGamePlaying(justTimingPoint);
+            Sleep(emurateNote1.JustTiming.TotalSeconds);
+            Driver.EmurateLeftClickGamePlaying(clickPointNote1);
             Assert.AreEqual(expected: 1, actual: Driver.ResultPerfect.Number());
+
+            Sleep(emurateNote2.BadTooFastTiming.TotalSeconds - emurateNote1.JustTiming.TotalSeconds);
+            Driver.EmurateLeftClickGamePlaying(clickPointNote2);
+            Assert.AreEqual(expected: 1, actual: Driver.ResultBad.Number());
         }
 
         private void Sleep(double second)

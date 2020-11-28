@@ -92,7 +92,7 @@
     <Compile Include="Common.cs" />
     <Compile Include="DisplayControl.cs" />
     <Compile Include="DisplayNotesAdapter.cs" />
-    <Compile Include="EmurateNote1.cs" />
+    <Compile Include="EmurateNote.cs" />
     <Compile Include="LabelAdapter.cs" />
     <Compile Include="LineAdapter.cs" />
     <Compile Include="MainWindowDriver.cs" />

@@ -20,6 +20,10 @@ namespace MyMusicGameNew
 
         private int PerfectNum { get; set; } = 0;
 
+        private int GoodNum { get; set; } = 0;
+
+        private int BadNum { get; set; } = 0;
+
         public GamePlaying(MainWindow main, Music music) : base(main)
         {
             Music = music;
@@ -220,6 +224,16 @@ namespace MyMusicGameNew
             {
                 PerfectNum++;
                 Main.ResultPerfect.Content = PerfectNum.ToString();
+            }
+            else if (result == Note.JudgeType.Good)
+            {
+                GoodNum++;
+                Main.ResultGood.Content = GoodNum.ToString();
+            }
+            else if (result == Note.JudgeType.Bad)
+            {
+                BadNum++;
+                Main.ResultBad.Content = BadNum.ToString();
             }
         }
     }

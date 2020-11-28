@@ -7,13 +7,23 @@ using MyMusicGameNew;
 
 namespace TestMyMusicGameNew
 {
-    public class EmurateNote1
+    public class EmurateNote
     {
         private static readonly int PlayAreaX = 800;
         private static readonly int PlayAreaY = 600;
         private static readonly double NoteSpeedYPerSec = 300.0;
-        private static readonly int XLine = 1;
-        public static TimeSpan JustTiming { get; private set; } = new TimeSpan(0, 0, 0, 1, 0);  // 1[s]
+
+        public int XLine { get; private set; }
+
+        public TimeSpan JustTiming { get; private set; }
+
+        public TimeSpan BadTooFastTiming
+        {
+            get
+            {
+                return JustTiming.Subtract(new TimeSpan(0, 0, 0, 0, 350));    // 400[ms]早ければBad判定、少し余裕をもたせて350[ms]
+            }
+        }
 
         private static readonly double NotInsidePlayAreaWhenMusicStartJustTiming = PlayAreaY * 2;
 
@@ -23,13 +33,23 @@ namespace TestMyMusicGameNew
 
         public double NowY { get { return Note.NowY; } }
 
-        public EmurateNote1()
+        public EmurateNote(int noteNumber)
         {
-            Init();
+            Init(noteNumber);
         }
 
-        private void Init()
+        private void Init(int noteNumber)
         {
+            if (noteNumber == 1)
+            {
+                XLine = 1;
+                JustTiming = new TimeSpan(0, 0, 0, 1, 0);  // 1[s]
+            }
+            else if (noteNumber == 2)
+            {
+                XLine = 2;
+                JustTiming = new TimeSpan(0, 0, 0, 2, 500);  // 2.5[s]
+            }
             NoteData nd = new NoteData(XLine, JustTiming);
             Note = new Note(nd, PlayAreaX, PlayAreaY, NoteSpeedYPerSec);
         }
@@ -47,7 +67,7 @@ namespace TestMyMusicGameNew
             return new System.Windows.Point(note1XPoint, note1YPoint);
         }
 
-        public System.Windows.Point EmurateCalcJustTimingPoint()
+        public System.Windows.Point EmurateCalcJustJudgeLinePoint()
         {
             double note1XPoint = XLine * (int)((double)PlayAreaX * 0.33333);
             double note1YPoint = Note.JudgeLineYFromAreaTop;
@@ -59,9 +79,10 @@ namespace TestMyMusicGameNew
             return Note.IsInsidePlayArea();
         }
 
-        public static Note GetNoteNotInsidePlayAreaWhenMusicStartJustTiming()
+        public static Note GetNoteNotInsidePlayAreaWhenMusicStartJustTiming(int noteNumber)
         {
-            NoteData nd = new NoteData(XLine, JustTiming);
+            EmurateNote en = new EmurateNote(noteNumber);
+            NoteData nd = new NoteData(en.XLine, en.JustTiming);
             return new Note(nd, PlayAreaX, PlayAreaY, NotInsidePlayAreaWhenMusicStartJustTiming);
         }
     }

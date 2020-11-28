@@ -14,7 +14,7 @@ namespace TestMyMusicGameNew
         [TestMethod]
         public void TestCorrectNoteCoordinateAtTheTime()
         {
-            EmurateNote1 emurateNote1 = new EmurateNote1();
+            EmurateNote emurateNote1 = new EmurateNote(1);
 
             // 初期座標の確認
             emurateNote1.SetNowPoint(ZeroTime);
@@ -23,8 +23,8 @@ namespace TestMyMusicGameNew
             Assert.AreEqual(expected: initPoint.Y, actual: emurateNote1.NowY);
 
             // 判定線とちょうど重なるときの確認
-            emurateNote1.SetNowPoint(EmurateNote1.JustTiming);
-            System.Windows.Point justTimingPoint = emurateNote1.EmurateCalcJustTimingPoint();
+            emurateNote1.SetNowPoint(emurateNote1.JustTiming);
+            System.Windows.Point justTimingPoint = emurateNote1.EmurateCalcJustJudgeLinePoint();
 
             Assert.AreEqual(expected: justTimingPoint.X, actual: emurateNote1.NowX);
             Assert.AreEqual(expected: justTimingPoint.Y, actual: emurateNote1.NowY);
@@ -33,11 +33,11 @@ namespace TestMyMusicGameNew
         [TestMethod]
         public void TestCorrectWhetherInsidePlayArea()
         {
-            Note noteOutside = EmurateNote1.GetNoteNotInsidePlayAreaWhenMusicStartJustTiming();
+            Note noteOutside = EmurateNote.GetNoteNotInsidePlayAreaWhenMusicStartJustTiming(1);
             noteOutside.CalcNowPoint(ZeroTime);
             Assert.IsFalse(noteOutside.IsInsidePlayArea());
 
-            EmurateNote1 emurateNote1 = new EmurateNote1();
+            EmurateNote emurateNote1 = new EmurateNote(1);
             emurateNote1.SetNowPoint(ZeroTime);
             Assert.IsTrue(emurateNote1.IsInsidePlayArea());
         }
