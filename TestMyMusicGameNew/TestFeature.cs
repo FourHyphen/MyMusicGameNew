@@ -158,6 +158,22 @@ namespace TestMyMusicGameNew
             Assert.AreEqual(expected: 0, actual: Driver.GetDisplayNotesNum(1));
         }
 
+        [TestMethod]
+        public void TestNotJudgeNoteIfTooFarJudgeLine()
+        {
+            EmurateNote emurateNote1 = new EmurateNote(1);
+            System.Windows.Point clickPointNote1 = emurateNote1.EmurateCalcJustJudgeLinePoint();
+
+            Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
+            Driver.GameStartButton.Click();
+
+            // 曲開始直後だとゲームが始まってないかもしれないため少しだけwait
+            Sleep(0.1);
+            Driver.EmurateLeftClickGamePlaying(clickPointNote1);
+            Assert.AreEqual(expected: 0, actual: Driver.ResultPerfect.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.ResultBad.Number());
+        }
+
         private void Sleep(double second)
         {
             Task task = Task.Run(() =>
