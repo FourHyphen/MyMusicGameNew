@@ -97,13 +97,17 @@ namespace MyMusicGameNew
         public bool AlreadyJudged(double x)
         {
             int line = _GamePlayingArea.ConvertXLine(x);
-            bool notJudged = (XLine == line && JudgeResult == NoteJudge.JudgeType.NotYet);
-            return !notJudged;
+            if (XLine == line)
+            {
+                return false;
+            }
+
+            return AlreadyJudged();
         }
 
         public bool AlreadyJudged()
         {
-            return !(JudgeResult == NoteJudge.JudgeType.NotYet);
+            return (JudgeResult != NoteJudge.JudgeType.NotYet);
         }
 
         public void SetVisible()
