@@ -10,11 +10,7 @@ namespace MyMusicGameNew
     {
         private double NoteSpeedYPerSec { get; set; }
 
-        public int JudgeLineYFromAreaTop { get; private set; }
-
-        private int PlayAreaWidth { get; set; }
-
-        private int PlayAreaHeight { get; set; }
+        private GamePlayingArea _GamePlayingArea { get; set; }
 
         private NoteData _NoteData { get; set; }
 
@@ -22,9 +18,23 @@ namespace MyMusicGameNew
 
         private NoteJudge _NoteJudge { get; set; }
 
-        public double NowX { get; set; }
+        public System.Windows.Point NowPoint { get; set; }
 
-        public double NowY { get; set; }
+        public double NowX
+        {
+            get
+            {
+                return NowPoint.X;
+            }
+        }
+
+        public double NowY
+        {
+            get
+            {
+                return NowPoint.Y;
+            }
+        }
 
         public int XLine
         {
@@ -42,43 +52,23 @@ namespace MyMusicGameNew
             }
         }
 
-        public Note(NoteData noteData, int playAreaWidth, int playAreaHeight, double noteSpeedYPerSec = 300.0)
+        public Note(NoteData noteData, GamePlayingArea area, double noteSpeedYPerSec = 300.0)
         {
+            _GamePlayingArea = area;
             _NoteData = noteData;
             _NoteJudge = new NoteJudge(_NoteData);
-            PlayAreaWidth = playAreaWidth;
-            PlayAreaHeight = playAreaHeight;
+            NowPoint = new System.Windows.Point();
             NoteSpeedYPerSec = noteSpeedYPerSec;
-            JudgeLineYFromAreaTop = playAreaHeight - 100;
         }
 
         public void CalcNowPoint(TimeSpan now)
         {
-            double diffMillsec = Common.DiffMillisecond(_NoteData.JudgeOfJustTiming, now);
-            NowX = CalcNowX();
-            NowY = CalcNowY(diffMillsec);
+            NowPoint = _GamePlayingArea.CalcNowPoint(_NoteData, now, NoteSpeedYPerSec);
+            
             if (Image != null)
             {
-                Image.SetNowCoordinate(NowX, NowY);
+                Image.SetNowCoordinate(NowPoint);
             }
-        }
-
-        private double CalcNowX()
-        {
-            int basis = (int)((double)PlayAreaWidth * 0.33333);
-            return basis * _NoteData.XJudgeLinePosition;
-        }
-
-        private double CalcNowY(double diffMillisec)
-        {
-            double dist = (diffMillisec / 1000.0) * NoteSpeedYPerSec;
-            return JudgeLineYFromAreaTop - dist;
-        }
-
-        public bool IsInsidePlayArea()
-        {
-            return ((0.0 <= NowX && NowX < PlayAreaWidth) &&
-                    (0.0 <= NowY && NowY < PlayAreaHeight));
         }
 
         public void InitImage(int index)
@@ -91,22 +81,16 @@ namespace MyMusicGameNew
             _NoteJudge.Judge(time);
         }
 
-        public int ConvertXLine(double x)
+        public bool IsInsidePlayArea()
         {
-            // TODO: 汚い...
-            double halfWidth = PlayAreaWidth / 2;
-            if (x <= halfWidth)
-            {
-                return 1;
-            }
-            else if (x > halfWidth)
-            {
-                return 2;
-            }
-            else
-            {
-                return 0;
-            }
+            return _GamePlayingArea.IsInsidePlayArea(NowPoint);
+        }
+
+        public bool AlreadyJudged(double x)
+        {
+            int line = _GamePlayingArea.ConvertXLine(x);
+            bool notJudged = (XLine == line && JudgeResult == NoteJudge.JudgeType.NotYet);
+            return !notJudged;
         }
     }
 }

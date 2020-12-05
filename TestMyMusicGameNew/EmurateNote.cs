@@ -12,6 +12,7 @@ namespace TestMyMusicGameNew
         private static readonly int PlayAreaX = 800;
         private static readonly int PlayAreaY = 600;
         private static readonly double NoteSpeedYPerSec = 300.0;
+        private static readonly double JudgeLineYFromAreaTop = PlayAreaY - 100.0;
 
         public int XLine { get; private set; }
 
@@ -51,7 +52,8 @@ namespace TestMyMusicGameNew
                 JustTiming = new TimeSpan(0, 0, 0, 2, 500);  // 2.5[s]
             }
             NoteData nd = new NoteData(XLine, JustTiming);
-            Note = new Note(nd, PlayAreaX, PlayAreaY, NoteSpeedYPerSec);
+            GamePlayingArea area = new GamePlayingArea(PlayAreaX, PlayAreaY);
+            Note = new Note(nd, area, NoteSpeedYPerSec);
         }
 
         public void SetNowPoint(TimeSpan time)
@@ -63,14 +65,14 @@ namespace TestMyMusicGameNew
         {
             double note1XPoint = XLine * (int)((double)PlayAreaX * 0.33333);
             double diff = JustTiming.Subtract(elapsedTimeFromGameStart).TotalMilliseconds;
-            double note1YPoint = Note.JudgeLineYFromAreaTop - (diff * NoteSpeedYPerSec / 1000);
+            double note1YPoint = JudgeLineYFromAreaTop - (diff * NoteSpeedYPerSec / 1000);
             return new System.Windows.Point(note1XPoint, note1YPoint);
         }
 
         public System.Windows.Point EmurateCalcJustJudgeLinePoint()
         {
             double note1XPoint = XLine * (int)((double)PlayAreaX * 0.33333);
-            double note1YPoint = Note.JudgeLineYFromAreaTop;
+            double note1YPoint = JudgeLineYFromAreaTop;
             return new System.Windows.Point(note1XPoint, note1YPoint);
         }
 
@@ -83,7 +85,8 @@ namespace TestMyMusicGameNew
         {
             EmurateNote en = new EmurateNote(noteNumber);
             NoteData nd = new NoteData(en.XLine, en.JustTiming);
-            return new Note(nd, PlayAreaX, PlayAreaY, NotInsidePlayAreaWhenMusicStartJustTiming);
+            GamePlayingArea area = new GamePlayingArea(PlayAreaX, PlayAreaY);
+            return new Note(nd, area, NotInsidePlayAreaWhenMusicStartJustTiming);
         }
     }
 }

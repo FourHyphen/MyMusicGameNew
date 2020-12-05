@@ -208,8 +208,7 @@ namespace MyMusicGameNew
         {
             foreach (Note n in Music.Notes)
             {
-                int line = n.ConvertXLine(x);
-                if (n.XLine == line && n.JudgeResult == NoteJudge.JudgeType.NotYet)
+                if (!n.AlreadyJudged(x))
                 {
                     return n;
                 }

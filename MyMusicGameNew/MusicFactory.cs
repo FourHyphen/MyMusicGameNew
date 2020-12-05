@@ -28,9 +28,10 @@ namespace MyMusicGameNew
         {
             List<NoteData> noteData = GetNoteData(notePath);
             List<Note> noteList = new List<Note>();
+            GamePlayingArea area = new GamePlayingArea(playAreaWidth, playAreaHeight);
             foreach (NoteData nd in noteData)
             {
-                Note n = new Note(nd, playAreaWidth, playAreaHeight);
+                Note n = new Note(nd, area);
                 noteList.Add(n);
             }
 

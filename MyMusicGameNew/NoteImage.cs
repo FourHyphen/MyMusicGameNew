@@ -41,9 +41,9 @@ namespace MyMusicGameNew
             DisplayImage.Name = "Note" + index.ToString();
         }
 
-        public void SetNowCoordinate(double x, double y)
+        public void SetNowCoordinate(System.Windows.Point nowPoint)
         {
-            DisplayImage.RenderTransform = GetNotesTransform(x, y);
+            DisplayImage.RenderTransform = GetNotesTransform(nowPoint.X, nowPoint.Y);
         }
 
         private Transform GetNotesTransform(double x, double y)
