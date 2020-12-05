@@ -14,10 +14,10 @@ namespace TestMyMusicGameNew
             NoteDisplayName = noteDisplayName;
         }
 
-        public int GetDisplayNum(IWPFDependencyObjectCollection<System.Windows.DependencyObject> logicalTree)
+        public int GetDisplayNum(IWPFDependencyObjectCollection<System.Windows.DependencyObject> logicalTree, int startIndex)
         {
             int notesNum = 0;
-            for (int i = 0; i < MaxDisplayNotesNum; i++)
+            for (int i = startIndex; i < MaxDisplayNotesNum; i++)
             {
                 if (ExistNote(logicalTree, i))
                 {

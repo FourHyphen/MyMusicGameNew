@@ -111,11 +111,11 @@ namespace TestMyMusicGameNew
         public void TestNoteDisplayAndNearbyJudgeLineAfterGameStart()
         {
             Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
-            Assert.AreEqual(expected: NoDisplayNote, actual: Driver.GetDisplayNotesNum());
+            Assert.AreEqual(expected: NoDisplayNote, actual: Driver.GetDisplayNotesNum(0));
 
             Driver.GameStartButton.Click();
             Assert.IsTrue(Driver.ExistJudgeLine());
-            Assert.AreEqual(expected: DisplayNote1AndMore, actual: Driver.GetDisplayNotesNum());
+            Assert.AreEqual(expected: DisplayNote1AndMore, actual: Driver.GetDisplayNotesNum(0));
 
             System.Windows.Point start = Driver.GetDisplayNotesNearestJudgeLine();
             Sleep(0.5);  // sleepしすぎるとノートが画面外に出てしまうので少しの時間にする
@@ -143,9 +143,19 @@ namespace TestMyMusicGameNew
             Driver.EmurateLeftClickGamePlaying(clickPointNote1);
             Assert.AreEqual(expected: 1, actual: Driver.ResultPerfect.Number());
 
+            // 結果が判定されたノートは、結果判定直後に画面から消す(非表示にする)
+            Assert.AreEqual(expected: 1, actual: Driver.GetDisplayNotesNum(1));
+
+            // Badのタイミングまでwait
             Sleep(emurateNote2.BadTooFastTiming.TotalSeconds - emurateNote1.JustTiming.TotalSeconds);
+            Assert.AreEqual(expected: 1, actual: Driver.GetDisplayNotesNum(1));
+
+            // Badで拾う
             Driver.EmurateLeftClickGamePlaying(clickPointNote2);
+
+            Assert.AreEqual(expected: 1, actual: Driver.ResultPerfect.Number());
             Assert.AreEqual(expected: 1, actual: Driver.ResultBad.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.GetDisplayNotesNum(1));
         }
 
         private void Sleep(double second)

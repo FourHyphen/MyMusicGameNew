@@ -101,6 +101,11 @@ namespace MyMusicGameNew
             return !notJudged;
         }
 
+        public bool AlreadyJudged()
+        {
+            return !(JudgeResult == NoteJudge.JudgeType.NotYet);
+        }
+
         public void SetVisible()
         {
             Image.SetVisible();

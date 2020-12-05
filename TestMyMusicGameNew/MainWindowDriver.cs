@@ -43,10 +43,10 @@ namespace TestMyMusicGameNew
                 ResultBad = new LabelAdapter(Tree, "ResultBad");
             }
 
-            public int GetDisplayNotesNum()
+            public int GetDisplayNotesNum(int startIndex)
             {
                 Tree = new WindowControl(MainWindow).LogicalTree();  // 現在の画面状況を取得
-                return DisplayNotes.GetDisplayNum(Tree);
+                return DisplayNotes.GetDisplayNum(Tree, startIndex);
             }
 
             public System.Windows.Point GetDisplayNotesNearestJudgeLine()

@@ -152,8 +152,18 @@ namespace MyMusicGameNew
 
         private bool DoNoteNeedDisplayingForPlayArea(Note note)
         {
-            // TODO：すでに判定済み等、表示しなくてよいNoteをスキップする
-            return (note.IsInsidePlayArea());
+            // TODO：表示しなくてよいNoteをスキップする
+            if (note.AlreadyJudged())
+            {
+                return false;
+            }
+
+            if (!note.IsInsidePlayArea())
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private void DisplayNotePlayArea(Note note)
@@ -177,14 +187,6 @@ namespace MyMusicGameNew
             }
         }
 
-        //private void RemoveNotesForPlayArea(Notes notes)
-        //{
-        //    if (PlayArea.Children.Contains(notes.Image))
-        //    {
-        //        PlayArea.Children.Remove(notes.Image);
-        //    }
-        //}
-
         private void StartGameTimer()
         {
             GameTimer = new System.Diagnostics.Stopwatch();
@@ -201,7 +203,11 @@ namespace MyMusicGameNew
 
             TimeSpan now = GameTimer.Elapsed;
             note.Judge(now);
-            UpdateJudgeResult(note.JudgeResult);
+            if (note.AlreadyJudged())
+            {
+                RemoveNotePlayArea(note);
+                UpdateJudgeResult(note.JudgeResult);
+            }
         }
 
         private Note GetLatestUnjudgedNoteForLine(double x, double y)
@@ -215,6 +221,15 @@ namespace MyMusicGameNew
             }
 
             return null;
+        }
+
+        private void RemoveNotePlayArea(Note note)
+        {
+            System.Windows.Controls.Image image = note.DisplayImage;
+            if (Main.PlayArea.Children.Contains(image))
+            {
+                Main.PlayArea.Children.Remove(image);
+            }
         }
 
         private void UpdateJudgeResult(NoteJudge.JudgeType result)
