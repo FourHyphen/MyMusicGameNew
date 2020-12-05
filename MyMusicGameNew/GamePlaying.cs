@@ -10,6 +10,8 @@ namespace MyMusicGameNew
 {
     public class GamePlaying : GameState
     {
+        private GamePlayingArea _GamePlayingArea { get; set; }
+
         private Music Music { get; }
 
         private System.Diagnostics.Stopwatch GameTimer { get; set; }
@@ -24,9 +26,10 @@ namespace MyMusicGameNew
 
         private int BadNum { get; set; } = 0;
 
-        public GamePlaying(MainWindow main, Music music) : base(main)
+        public GamePlaying(MainWindow main, GamePlayingArea area, string musicName, bool IsTest) : base(main)
         {
-            Music = music;
+            _GamePlayingArea = area;
+            Music = new MusicFactory().Create(musicName, isTest: IsTest);
             InitMusicNoteImage();
         }
 
@@ -140,7 +143,7 @@ namespace MyMusicGameNew
             {
                 Note note = notes[i];
 
-                note.CalcNowPoint(now);
+                note.CalcNowPoint(_GamePlayingArea, now);
                 if (DoNoteNeedDisplayingForPlayArea(note))
                 {
                     DisplayNotePlayArea(note);
@@ -158,7 +161,7 @@ namespace MyMusicGameNew
                 return false;
             }
 
-            if (!note.IsInsidePlayArea())
+            if (!_GamePlayingArea.IsInsidePlayArea(note))
             {
                 return false;
             }
@@ -195,7 +198,7 @@ namespace MyMusicGameNew
 
         public void Judge(System.Windows.Point mouseClicked)
         {
-            Note note = GetLatestUnjudgedNoteForLine(mouseClicked.X, mouseClicked.Y);
+            Note note = GetLatestUnjudgedNoteForLine(mouseClicked);
             if (note is null)
             {
                 return;
@@ -210,11 +213,17 @@ namespace MyMusicGameNew
             }
         }
 
-        private Note GetLatestUnjudgedNoteForLine(double x, double y)
+        private Note GetLatestUnjudgedNoteForLine(System.Windows.Point input)
         {
             foreach (Note n in Music.Notes)
             {
-                if (!n.AlreadyJudged(x))
+                if (n.AlreadyJudged())
+                {
+                    continue;
+                }
+
+                int inputLine = _GamePlayingArea.ConvertXLine(input.X);
+                if (inputLine == n.XLine)
                 {
                     return n;
                 }

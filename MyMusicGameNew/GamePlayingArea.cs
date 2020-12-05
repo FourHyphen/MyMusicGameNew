@@ -21,10 +21,12 @@ namespace MyMusicGameNew
             JudgeLineYFromAreaTop = playAreaHeight - 100;
         }
 
-        public bool IsInsidePlayArea(System.Windows.Point p)
+        public bool IsInsidePlayArea(Note note)
         {
-            return ((0.0 <= p.X && p.X < PlayAreaWidth) &&
-                    (0.0 <= p.Y && p.Y < PlayAreaHeight));
+            double x = note.NowX;
+            double y = note.NowY;
+            return ((0.0 <= x && x < PlayAreaWidth) &&
+                    (0.0 <= y && y < PlayAreaHeight));
         }
 
         public System.Windows.Point CalcNowPoint(NoteData noteData, TimeSpan now, double noteSpeedYPerSec)

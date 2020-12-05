@@ -10,11 +10,13 @@ namespace TestMyMusicGameNew
     public class TestNote
     {
         private static readonly TimeSpan ZeroTime = new TimeSpan(0, 0, 0, 0, 0);
+        private static readonly int PlayAreaX = 800;
+        private static readonly int PlayAreaY = 600;
 
         [TestMethod]
         public void TestCorrectNoteCoordinateAtTheTime()
         {
-            EmurateNote emurateNote1 = new EmurateNote(1);
+            EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
 
             // 初期座標の確認
             emurateNote1.SetNowPoint(ZeroTime);
@@ -33,11 +35,15 @@ namespace TestMyMusicGameNew
         [TestMethod]
         public void TestCorrectWhetherInsidePlayArea()
         {
-            Note noteOutside = EmurateNote.GetNoteNotInsidePlayAreaWhenMusicStartJustTiming(1);
-            noteOutside.CalcNowPoint(ZeroTime);
-            Assert.IsFalse(noteOutside.IsInsidePlayArea());
+            EmurateNote en = new EmurateNote(PlayAreaX, PlayAreaY, 1);
+            NoteData nd = new NoteData(en.XLine, en.JustTiming);
+            Note noteOutside = new Note(nd, PlayAreaY * 10);    // 10倍ならNoteSpeedYPerSecによらず、確実に初期値が画面外になる
 
-            EmurateNote emurateNote1 = new EmurateNote(1);
+            GamePlayingArea area = new GamePlayingArea(PlayAreaX, PlayAreaY);
+            noteOutside.CalcNowPoint(area, ZeroTime);
+            Assert.IsFalse(area.IsInsidePlayArea(noteOutside));
+
+            EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
             emurateNote1.SetNowPoint(ZeroTime);
             Assert.IsTrue(emurateNote1.IsInsidePlayArea());
         }

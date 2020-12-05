@@ -25,6 +25,9 @@ namespace TestMyMusicGameNew
         private dynamic MainWindow;
         private MainWindowDriver Driver;
 
+        private static readonly int PlayAreaX = 800;
+        private static readonly int PlayAreaY = 600;
+
         private readonly int ExpectedMusicListNum = 2;
         private readonly int ExpectedTest1NotesNum = 2;
         private readonly int Test1MusicIndex = 0;
@@ -129,9 +132,9 @@ namespace TestMyMusicGameNew
         {
             // 左クリック入力時のPerfect判定およびBad判定のテスト
             // (Good判定はテスト環境次第で安定しなさそうなのでテストしない)
-            EmurateNote emurateNote1 = new EmurateNote(1);
+            EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
             System.Windows.Point clickPointNote1 = emurateNote1.EmurateCalcJustJudgeLinePoint();
-            EmurateNote emurateNote2 = new EmurateNote(2);
+            EmurateNote emurateNote2 = new EmurateNote(PlayAreaX, PlayAreaY, 2);
             System.Windows.Point clickPointNote2 = emurateNote2.EmurateCalcJustJudgeLinePoint();
 
             Assert.AreEqual(expected: 0, actual: Driver.ResultPerfect.Number());
@@ -161,7 +164,7 @@ namespace TestMyMusicGameNew
         [TestMethod]
         public void TestNotJudgeNoteIfTooFarJudgeLine()
         {
-            EmurateNote emurateNote1 = new EmurateNote(1);
+            EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
             System.Windows.Point clickPointNote1 = emurateNote1.EmurateCalcJustJudgeLinePoint();
 
             Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
@@ -171,6 +174,29 @@ namespace TestMyMusicGameNew
             Sleep(0.1);
             Driver.EmurateLeftClickGamePlaying(clickPointNote1);
             Assert.AreEqual(expected: 0, actual: Driver.ResultPerfect.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.ResultBad.Number());
+        }
+
+        [TestMethod]
+        public void TestOnlyOneJudgeNoteIfMultiClicked()
+        {
+            EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
+            System.Windows.Point clickPointNote1 = emurateNote1.EmurateCalcJustJudgeLinePoint();
+
+            Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
+            Driver.GameStartButton.Click();
+
+            Sleep(emurateNote1.JustTiming.TotalSeconds);
+            Driver.EmurateLeftClickGamePlaying(clickPointNote1);
+            Driver.EmurateLeftClickGamePlaying(clickPointNote1);
+            Driver.EmurateLeftClickGamePlaying(clickPointNote1);
+            Assert.AreEqual(expected: 1, actual: Driver.ResultPerfect.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.ResultBad.Number());
+
+            Sleep(emurateNote1.BadTooSlowTiming.TotalSeconds - emurateNote1.JustTiming.TotalSeconds);
+            Driver.EmurateLeftClickGamePlaying(clickPointNote1);
+            Driver.EmurateLeftClickGamePlaying(clickPointNote1);
+            Assert.AreEqual(expected: 1, actual: Driver.ResultPerfect.Number());
             Assert.AreEqual(expected: 0, actual: Driver.ResultBad.Number());
         }
 

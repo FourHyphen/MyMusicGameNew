@@ -9,10 +9,7 @@ namespace TestMyMusicGameNew
 {
     public class EmurateNote
     {
-        private static readonly int PlayAreaX = 800;
-        private static readonly int PlayAreaY = 600;
         private static readonly double NoteSpeedYPerSec = 300.0;
-        private static readonly double JudgeLineYFromAreaTop = PlayAreaY - 100.0;
 
         public int XLine { get; private set; }
 
@@ -26,7 +23,21 @@ namespace TestMyMusicGameNew
             }
         }
 
-        private static readonly double NotInsidePlayAreaWhenMusicStartJustTiming = PlayAreaY * 2;
+        public TimeSpan BadTooSlowTiming
+        {
+            get
+            {
+                return JustTiming.Add(new TimeSpan(0, 0, 0, 0, 350));    // 400[ms]遅ければBad判定、少し余裕をもたせて350[ms]
+            }
+        }
+
+        private int PlayAreaX { get; set; }
+
+        private int PlayAreaY { get; set; }
+
+        private double JudgeLineYFromAreaTop { get { return PlayAreaY - 100.0; } }
+
+        private double NotInsidePlayAreaWhenMusicStartJustTiming { get { return PlayAreaY * 2; } }
 
         public Note Note { get; private set; }
 
@@ -34,9 +45,14 @@ namespace TestMyMusicGameNew
 
         public double NowY { get { return Note.NowY; } }
 
-        public EmurateNote(int noteNumber)
+        private GamePlayingArea _GamePlayingArea { get; set; }
+
+        public EmurateNote(int playAreaWidth, int playAreaHeight, int noteNumber)
         {
             Init(noteNumber);
+            _GamePlayingArea = new GamePlayingArea(playAreaWidth, playAreaHeight);
+            PlayAreaX = playAreaWidth;
+            PlayAreaY = playAreaHeight;
         }
 
         private void Init(int noteNumber)
@@ -52,13 +68,12 @@ namespace TestMyMusicGameNew
                 JustTiming = new TimeSpan(0, 0, 0, 2, 500);  // 2.5[s]
             }
             NoteData nd = new NoteData(XLine, JustTiming);
-            GamePlayingArea area = new GamePlayingArea(PlayAreaX, PlayAreaY);
-            Note = new Note(nd, area, NoteSpeedYPerSec);
+            Note = new Note(nd, NoteSpeedYPerSec);
         }
 
         public void SetNowPoint(TimeSpan time)
         {
-            Note.CalcNowPoint(time);
+            Note.CalcNowPoint(_GamePlayingArea, time);
         }
 
         public System.Windows.Point EmurateCalcPoint(TimeSpan elapsedTimeFromGameStart)
@@ -78,15 +93,7 @@ namespace TestMyMusicGameNew
 
         public bool IsInsidePlayArea()
         {
-            return Note.IsInsidePlayArea();
-        }
-
-        public static Note GetNoteNotInsidePlayAreaWhenMusicStartJustTiming(int noteNumber)
-        {
-            EmurateNote en = new EmurateNote(noteNumber);
-            NoteData nd = new NoteData(en.XLine, en.JustTiming);
-            GamePlayingArea area = new GamePlayingArea(PlayAreaX, PlayAreaY);
-            return new Note(nd, area, NotInsidePlayAreaWhenMusicStartJustTiming);
+            return _GamePlayingArea.IsInsidePlayArea(Note);
         }
     }
 }

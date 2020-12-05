@@ -10,15 +10,13 @@ namespace MyMusicGameNew
     {
         private double NoteSpeedYPerSec { get; set; }
 
-        private GamePlayingArea _GamePlayingArea { get; set; }
-
         private NoteData _NoteData { get; set; }
 
         private NoteImage Image { get; set; }
 
         private NoteJudge _NoteJudge { get; set; }
 
-        public System.Windows.Point NowPoint { get; set; }
+        private System.Windows.Point NowPoint { get; set; }
 
         public double NowX
         {
@@ -60,18 +58,17 @@ namespace MyMusicGameNew
             }
         }
 
-        public Note(NoteData noteData, GamePlayingArea area, double noteSpeedYPerSec = 300.0)
+        public Note(NoteData noteData, double noteSpeedYPerSec = 300.0)
         {
-            _GamePlayingArea = area;
             _NoteData = noteData;
             _NoteJudge = new NoteJudge(_NoteData);
             NowPoint = new System.Windows.Point();
             NoteSpeedYPerSec = noteSpeedYPerSec;
         }
 
-        public void CalcNowPoint(TimeSpan now)
+        public void CalcNowPoint(GamePlayingArea area, TimeSpan now)
         {
-            NowPoint = _GamePlayingArea.CalcNowPoint(_NoteData, now, NoteSpeedYPerSec);
+            NowPoint = area.CalcNowPoint(_NoteData, now, NoteSpeedYPerSec);
             
             if (Image != null)
             {
@@ -87,22 +84,6 @@ namespace MyMusicGameNew
         public void Judge(TimeSpan time)
         {
             _NoteJudge.Judge(time);
-        }
-
-        public bool IsInsidePlayArea()
-        {
-            return _GamePlayingArea.IsInsidePlayArea(NowPoint);
-        }
-
-        public bool AlreadyJudged(double x)
-        {
-            int line = _GamePlayingArea.ConvertXLine(x);
-            if (XLine == line)
-            {
-                return false;
-            }
-
-            return AlreadyJudged();
         }
 
         public bool AlreadyJudged()

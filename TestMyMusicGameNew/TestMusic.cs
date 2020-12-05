@@ -31,7 +31,7 @@ namespace TestMyMusicGameNew
         public void TestMusicFactory()
         {
             string name = "test1";
-            Music music = new MusicFactory().Create(name, 800, 600, isTest: true);
+            Music music = new MusicFactory().Create(name, true);
 
             Assert.AreEqual(expected: name, actual: music.Name);
             Assert.AreEqual(expected: Test1MusicTimeSecond, actual: music.TimeSecond);

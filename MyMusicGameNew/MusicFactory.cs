@@ -9,10 +9,10 @@ namespace MyMusicGameNew
 {
     public class MusicFactory
     {
-        public Music Create(string musicName, int playAreaWidth, int playAreaHeight, bool isTest=false)
+        public Music Create(string musicName, bool isTest=false)
         {
             MusicInfo info = GetMusicInfo(musicName);
-            List<Note> notes = GetNotes(info.Note, playAreaWidth, playAreaHeight);
+            List<Note> notes = GetNotes(info.Note);
             PlayingMusic play = GetPlayingMusic(info.MusicData, isTest);
             return new Music(musicName, info.TimeSecond, notes, play);
         }
@@ -24,14 +24,13 @@ namespace MyMusicGameNew
             return JsonConvert.DeserializeObject<MusicInfo>(jsonStr);
         }
 
-        private List<Note> GetNotes(string notePath, int playAreaWidth, int playAreaHeight)
+        private List<Note> GetNotes(string notePath)
         {
             List<NoteData> noteData = GetNoteData(notePath);
             List<Note> noteList = new List<Note>();
-            GamePlayingArea area = new GamePlayingArea(playAreaWidth, playAreaHeight);
             foreach (NoteData nd in noteData)
             {
-                Note n = new Note(nd, area);
+                Note n = new Note(nd);
                 noteList.Add(n);
             }
 

@@ -55,8 +55,8 @@ namespace MyMusicGameNew
 
         private void GameStartCore(string musicName)
         {
-            Music music = new MusicFactory().Create(musicName, (int)PlayArea.ActualWidth, (int)PlayArea.ActualHeight, isTest: IsTest);
-            GamePlay = new GamePlaying(this, music);
+            GamePlayingArea area = new GamePlayingArea((int)PlayArea.ActualWidth, (int)PlayArea.ActualHeight);
+            GamePlay = new GamePlaying(this, area, musicName, IsTest);
             GamePlay.Start();
         }
 
