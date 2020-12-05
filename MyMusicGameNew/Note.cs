@@ -8,14 +8,6 @@ namespace MyMusicGameNew
 {
     public class Note
     {
-        public enum JudgeType
-        {
-            Perfect,
-            Good,
-            Bad,
-            NotYet
-        }
-
         private double NoteSpeedYPerSec { get; set; }
 
         public int JudgeLineYFromAreaTop { get; private set; }
@@ -28,7 +20,7 @@ namespace MyMusicGameNew
 
         public NoteImage Image { get; private set; }
 
-        public JudgeType JudgeResult { get; private set; } = JudgeType.NotYet;
+        private NoteJudge _NoteJudge { get; set; }
 
         public double NowX { get; set; }
 
@@ -42,9 +34,18 @@ namespace MyMusicGameNew
             }
         }
 
+        public NoteJudge.JudgeType JudgeResult
+        {
+            get
+            {
+                return _NoteJudge.JudgeResult;
+            }
+        }
+
         public Note(NoteData noteData, int playAreaWidth, int playAreaHeight, double noteSpeedYPerSec = 300.0)
         {
             _NoteData = noteData;
+            _NoteJudge = new NoteJudge(_NoteData);
             PlayAreaWidth = playAreaWidth;
             PlayAreaHeight = playAreaHeight;
             NoteSpeedYPerSec = noteSpeedYPerSec;
@@ -53,19 +54,13 @@ namespace MyMusicGameNew
 
         public void CalcNowPoint(TimeSpan now)
         {
-            double diffMillsec = DiffMillisecond(_NoteData.JudgeOfJustTiming, now);
+            double diffMillsec = Common.DiffMillisecond(_NoteData.JudgeOfJustTiming, now);
             NowX = CalcNowX();
             NowY = CalcNowY(diffMillsec);
             if (Image != null)
             {
                 Image.SetNowCoordinate(NowX, NowY);
             }
-        }
-
-        private double DiffMillisecond(TimeSpan basis, TimeSpan subtract)
-        {
-            // return (basis - subtract).toMillisec
-            return basis.Subtract(subtract).TotalMilliseconds;
         }
 
         private double CalcNowX()
@@ -93,29 +88,12 @@ namespace MyMusicGameNew
 
         public void Judge(TimeSpan time)
         {
-            double diffMillsec = Math.Abs(DiffMillisecond(_NoteData.JudgeOfJustTiming, time));
-
-            // TODO: 判定タイミングの外部管理化
-            if (diffMillsec < 100)  // 1[ms]
-            {
-                JudgeResult = JudgeType.Perfect;
-            }
-            else if (diffMillsec < 200)  // 2[ms]
-            {
-                JudgeResult = JudgeType.Good;
-            }
-            else if (diffMillsec < 400)  // 4[ms]
-            {
-                JudgeResult = JudgeType.Bad;
-            }
-            else
-            {
-                JudgeResult = JudgeType.NotYet;
-            }
+            _NoteJudge.Judge(time);
         }
 
         public int ConvertXLine(double x)
         {
+            // TODO: 汚い...
             double halfWidth = PlayAreaWidth / 2;
             if (x <= halfWidth)
             {

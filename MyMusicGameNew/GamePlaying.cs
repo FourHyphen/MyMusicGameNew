@@ -209,7 +209,7 @@ namespace MyMusicGameNew
             foreach (Note n in Music.Notes)
             {
                 int line = n.ConvertXLine(x);
-                if (n.XLine == line && n.JudgeResult == Note.JudgeType.NotYet)
+                if (n.XLine == line && n.JudgeResult == NoteJudge.JudgeType.NotYet)
                 {
                     return n;
                 }
@@ -218,19 +218,19 @@ namespace MyMusicGameNew
             return null;
         }
 
-        private void UpdateJudgeResult(Note.JudgeType result)
+        private void UpdateJudgeResult(NoteJudge.JudgeType result)
         {
-            if (result == Note.JudgeType.Perfect)
+            if (result == NoteJudge.JudgeType.Perfect)
             {
                 PerfectNum++;
                 Main.ResultPerfect.Content = PerfectNum.ToString();
             }
-            else if (result == Note.JudgeType.Good)
+            else if (result == NoteJudge.JudgeType.Good)
             {
                 GoodNum++;
                 Main.ResultGood.Content = GoodNum.ToString();
             }
-            else if (result == Note.JudgeType.Bad)
+            else if (result == NoteJudge.JudgeType.Bad)
             {
                 BadNum++;
                 Main.ResultBad.Content = BadNum.ToString();
