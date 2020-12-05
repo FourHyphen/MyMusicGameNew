@@ -143,7 +143,7 @@ namespace MyMusicGameNew
                 note.CalcNowPoint(now);
                 if (DoNoteNeedDisplayingForPlayArea(note))
                 {
-                    DisplayNotePlayArea(note.Image);
+                    DisplayNotePlayArea(note);
                 }
 
                 SetTestString(note, i);
@@ -156,12 +156,12 @@ namespace MyMusicGameNew
             return (note.IsInsidePlayArea());
         }
 
-        private void DisplayNotePlayArea(NoteImage noteImage)
+        private void DisplayNotePlayArea(Note note)
         {
-            System.Windows.Controls.Image image = noteImage.DisplayImage;
+            System.Windows.Controls.Image image = note.DisplayImage;
             if (!Main.PlayArea.Children.Contains(image))
             {
-                noteImage.SetVisible();
+                note.SetVisible();
                 Main.PlayArea.Children.Add(image);
             }
         }

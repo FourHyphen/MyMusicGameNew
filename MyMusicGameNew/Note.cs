@@ -14,7 +14,7 @@ namespace MyMusicGameNew
 
         private NoteData _NoteData { get; set; }
 
-        public NoteImage Image { get; private set; }
+        private NoteImage Image { get; set; }
 
         private NoteJudge _NoteJudge { get; set; }
 
@@ -49,6 +49,14 @@ namespace MyMusicGameNew
             get
             {
                 return _NoteJudge.JudgeResult;
+            }
+        }
+
+        public System.Windows.Controls.Image DisplayImage
+        {
+            get
+            {
+                return Image.DisplayImage;
             }
         }
 
@@ -91,6 +99,11 @@ namespace MyMusicGameNew
             int line = _GamePlayingArea.ConvertXLine(x);
             bool notJudged = (XLine == line && JudgeResult == NoteJudge.JudgeType.NotYet);
             return !notJudged;
+        }
+
+        public void SetVisible()
+        {
+            Image.SetVisible();
         }
     }
 }
