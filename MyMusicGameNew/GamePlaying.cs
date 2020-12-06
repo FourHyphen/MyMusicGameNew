@@ -127,12 +127,30 @@ namespace MyMusicGameNew
                 Main.DisplayNotesNearestJudgeLine.Dispatcher.Invoke(new Action(() =>
                 {
                     TimeSpan now = GameTimer.Elapsed;
+                    JudgeBadWhenNotePassedJudgeLineForAWhile(notes, now);
                     DisplayNotesCore(notes, now);
                 }));
 
                 if (ct.IsCancellationRequested)
                 {
                     return;
+                }
+            }
+        }
+
+        private void JudgeBadWhenNotePassedJudgeLineForAWhile(List<Note> notes, TimeSpan now)
+        {
+            foreach (Note note in notes)
+            {
+                if (note.AlreadyJudged())
+                {
+                    continue;
+                }
+
+                note.JudgeBadWhenNotePassedJudgeLineForAWhile(now);
+                if (note.AlreadyJudged())
+                {
+                    DisplayNoteJudgeResult(note);
                 }
             }
         }
@@ -208,8 +226,7 @@ namespace MyMusicGameNew
             note.Judge(now);
             if (note.AlreadyJudged())
             {
-                RemoveNotePlayArea(note);
-                UpdateJudgeResult(note.JudgeResult);
+                DisplayNoteJudgeResult(note);
             }
         }
 
@@ -230,6 +247,12 @@ namespace MyMusicGameNew
             }
 
             return null;
+        }
+
+        private void DisplayNoteJudgeResult(Note note)
+        {
+            RemoveNotePlayArea(note);
+            UpdateJudgeResult(note.JudgeResult);
         }
 
         private void RemoveNotePlayArea(Note note)

@@ -77,6 +77,14 @@ namespace MyMusicGameNew
             JudgeResult = NoteJudge.Judge(_NoteData, time);
         }
 
+        public void JudgeBadWhenNotePassedJudgeLineForAWhile(TimeSpan time)
+        {
+            if (NoteJudge.DidNotePassJudgeLineForAWhile(_NoteData, time))
+            {
+                JudgeResult = NoteJudge.JudgeType.Bad;
+            }
+        }
+
         public bool AlreadyJudged()
         {
             return (JudgeResult != NoteJudge.JudgeType.NotYet);

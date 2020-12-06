@@ -40,5 +40,13 @@ namespace MyMusicGameNew
                 return JudgeType.NotYet;
             }
         }
+
+        public static bool DidNotePassJudgeLineForAWhile(NoteData noteData, TimeSpan time)
+        {
+            double diffMillsec = Common.DiffMillisecond(time, noteData.JudgeOfJustTiming);
+
+            // TODO: 判定タイミングの外部管理化
+            return (diffMillsec > 500);  // 5[ms]
+        }
     }
 }

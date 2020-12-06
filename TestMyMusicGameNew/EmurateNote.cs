@@ -31,6 +31,14 @@ namespace TestMyMusicGameNew
             }
         }
 
+        public TimeSpan PassedBadTiming
+        {
+            get
+            {
+                return JustTiming.Add(new TimeSpan(0, 0, 0, 0, 550));    // 500[ms]遅ければ見逃しのBad判定、少し余裕を持たせて550[ms]
+            }
+        }
+
         private int PlayAreaX { get; set; }
 
         private int PlayAreaY { get; set; }

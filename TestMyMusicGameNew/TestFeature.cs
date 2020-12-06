@@ -200,6 +200,24 @@ namespace TestMyMusicGameNew
             Assert.AreEqual(expected: 0, actual: Driver.ResultBad.Number());
         }
 
+        [TestMethod]
+        public void TestJudgeBadWhenNotePassedJudgeLineForAWhile()
+        {
+            // 判定ラインを通り過ぎて一定時間が経っても結果を判定されていないノートはBad判定する
+            EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
+
+            Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
+            Driver.GameStartButton.Click();
+
+            Sleep(emurateNote1.BadTooSlowTiming.TotalSeconds);
+            Assert.AreEqual(expected: 0, actual: Driver.ResultPerfect.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.ResultBad.Number());
+
+            Sleep(emurateNote1.PassedBadTiming.TotalSeconds - emurateNote1.BadTooSlowTiming.TotalSeconds);
+            Assert.AreEqual(expected: 0, actual: Driver.ResultPerfect.Number());
+            Assert.AreEqual(expected: 1, actual: Driver.ResultBad.Number());
+        }
+
         private void Sleep(double second)
         {
             Task task = Task.Run(() =>
