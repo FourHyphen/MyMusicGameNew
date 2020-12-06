@@ -16,35 +16,28 @@ namespace MyMusicGameNew
             NotYet
         }
 
-        private NoteData _NoteData { get; set; }
+        private NoteJudge() { }
 
-        public JudgeType JudgeResult { get; private set; } = JudgeType.NotYet;
-
-        public NoteJudge(NoteData noteData)
+        public static JudgeType Judge(NoteData noteData, TimeSpan time)
         {
-            _NoteData = noteData;
-        }
-
-        public void Judge(TimeSpan time)
-        {
-            double diffMillsec = Math.Abs(Common.DiffMillisecond(_NoteData.JudgeOfJustTiming, time));
+            double diffMillsec = Math.Abs(Common.DiffMillisecond(noteData.JudgeOfJustTiming, time));
 
             // TODO: 判定タイミングの外部管理化
             if (diffMillsec < 100)  // 1[ms]
             {
-                JudgeResult = JudgeType.Perfect;
+                return JudgeType.Perfect;
             }
             else if (diffMillsec < 200)  // 2[ms]
             {
-                JudgeResult = JudgeType.Good;
+                return JudgeType.Good;
             }
             else if (diffMillsec < 400)  // 4[ms]
             {
-                JudgeResult = JudgeType.Bad;
+                return JudgeType.Bad;
             }
             else
             {
-                JudgeResult = JudgeType.NotYet;
+                return JudgeType.NotYet;
             }
         }
     }

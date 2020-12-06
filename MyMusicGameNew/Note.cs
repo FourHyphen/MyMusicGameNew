@@ -14,8 +14,6 @@ namespace MyMusicGameNew
 
         private NoteImage Image { get; set; }
 
-        private NoteJudge _NoteJudge { get; set; }
-
         private System.Windows.Point NowPoint { get; set; }
 
         public double NowX
@@ -42,13 +40,7 @@ namespace MyMusicGameNew
             }
         }
 
-        public NoteJudge.JudgeType JudgeResult
-        {
-            get
-            {
-                return _NoteJudge.JudgeResult;
-            }
-        }
+        public NoteJudge.JudgeType JudgeResult { get; private set; } = NoteJudge.JudgeType.NotYet;
 
         public System.Windows.Controls.Image DisplayImage
         {
@@ -61,7 +53,6 @@ namespace MyMusicGameNew
         public Note(NoteData noteData, double noteSpeedYPerSec = 300.0)
         {
             _NoteData = noteData;
-            _NoteJudge = new NoteJudge(_NoteData);
             NowPoint = new System.Windows.Point();
             NoteSpeedYPerSec = noteSpeedYPerSec;
         }
@@ -83,7 +74,7 @@ namespace MyMusicGameNew
 
         public void Judge(TimeSpan time)
         {
-            _NoteJudge.Judge(time);
+            JudgeResult = NoteJudge.Judge(_NoteData, time);
         }
 
         public bool AlreadyJudged()
