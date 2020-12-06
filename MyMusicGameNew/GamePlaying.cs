@@ -18,7 +18,7 @@ namespace MyMusicGameNew
 
         private System.Timers.Timer GameFinishTimer { get; set; }
 
-        private Task DisplayingNotesTask { get; set; }
+        private Task TaskKeepMovingDuringGame { get; set; }
 
         private int PerfectNum { get; set; } = 0;
 
@@ -50,10 +50,9 @@ namespace MyMusicGameNew
         public void Start()
         {
             var cts = new CancellationTokenSource();
-            DisplayNotesCore(Music.Notes, new TimeSpan());
             DisplayInfo();
             SetGameFinishedTimer(Music.TimeSecond, cts);
-            StartDisplayingNotes(Music.Notes, cts.Token);
+            StartTaskKeepMovingDuringGame(Music.Notes, cts.Token);
             PlayMusic();
             StartGameTimer();
         }
@@ -111,24 +110,23 @@ namespace MyMusicGameNew
             cts.Cancel();
         }
 
-        private void StartDisplayingNotes(List<Note> notes, CancellationToken ct)
+        private void StartTaskKeepMovingDuringGame(List<Note> notes, CancellationToken ct)
         {
             Main.DisplayNotesNearestJudgeLine.Visibility = Visibility.Visible;
-            DisplayingNotesTask = Task.Run(() =>
+            TaskKeepMovingDuringGame = Task.Run(() =>
             {
-                DisplayingNotes(notes, ct);
+                DisplayNotesAndCheckMissedNotes(notes, ct);
             });
         }
 
-        private void DisplayingNotes(List<Note> notes, CancellationToken ct)
+        private void DisplayNotesAndCheckMissedNotes(List<Note> notes, CancellationToken ct)
         {
             while (true)
             {
                 Main.DisplayNotesNearestJudgeLine.Dispatcher.Invoke(new Action(() =>
                 {
                     TimeSpan now = GameTimer.Elapsed;
-                    JudgeBadWhenNotePassedJudgeLineForAWhile(notes, now);
-                    DisplayNotesCore(notes, now);
+                    DisplayNotesAndCheckMissedNotesCore(notes, now);
                 }));
 
                 if (ct.IsCancellationRequested)
@@ -138,53 +136,38 @@ namespace MyMusicGameNew
             }
         }
 
-        private void JudgeBadWhenNotePassedJudgeLineForAWhile(List<Note> notes, TimeSpan now)
+        private void DisplayNotesAndCheckMissedNotesCore(List<Note> notes, TimeSpan now)
         {
-            foreach (Note note in notes)
+            for (int i = 0; i < notes.Count; i++)
             {
+                Note note = notes[i];
                 if (note.AlreadyJudged())
                 {
                     continue;
                 }
 
-                note.JudgeBadWhenNotePassedJudgeLineForAWhile(now);
-                if (note.AlreadyJudged())
-                {
-                    DisplayNoteJudgeResult(note);
-                }
-            }
-        }
-
-        private void DisplayNotesCore(List<Note> notes, TimeSpan now)
-        {
-            for (int i = 0; i < notes.Count; i++)
-            {
-                Note note = notes[i];
-
-                note.CalcNowPoint(_GamePlayingArea, now);
-                if (DoNoteNeedDisplayingForPlayArea(note))
-                {
-                    DisplayNotePlayArea(note);
-                }
-
+                JudgeBadWhenNotePassedJudgeLineForAWhile(note, now);
+                DisplayNote(note, now);
                 SetTestString(note, i);
             }
         }
 
-        private bool DoNoteNeedDisplayingForPlayArea(Note note)
+        private void JudgeBadWhenNotePassedJudgeLineForAWhile(Note note, TimeSpan now)
         {
-            // TODO：表示しなくてよいNoteをスキップする
+            note.JudgeBadWhenNotePassedJudgeLineForAWhile(now);
             if (note.AlreadyJudged())
             {
-                return false;
+                DisplayNoteJudgeResult(note);
             }
+        }
 
-            if (!_GamePlayingArea.IsInsidePlayArea(note))
+        private void DisplayNote(Note note, TimeSpan now)
+        {
+            note.CalcNowPoint(_GamePlayingArea, now);
+            if (_GamePlayingArea.IsInsidePlayArea(note))
             {
-                return false;
+                DisplayNotePlayArea(note);
             }
-
-            return true;
         }
 
         private void DisplayNotePlayArea(Note note)
