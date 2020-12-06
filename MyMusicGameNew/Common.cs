@@ -72,9 +72,11 @@ namespace MyMusicGameNew
             }
         }
 
+        /// <summary>
+        /// return (basis - subtract).toMillisec
+        /// </summary>
         public static double DiffMillisecond(TimeSpan basis, TimeSpan subtract)
         {
-            // return (basis - subtract).toMillisec
             return basis.Subtract(subtract).TotalMilliseconds;
         }
     }
