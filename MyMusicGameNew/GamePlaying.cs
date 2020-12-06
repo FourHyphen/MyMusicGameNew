@@ -12,6 +12,8 @@ namespace MyMusicGameNew
     {
         private GamePlayingArea _GamePlayingArea { get; set; }
 
+        private GamePlayingDisplay _GamePlayingDisplay { get; set; }
+
         private Music Music { get; }
 
         private System.Diagnostics.Stopwatch GameTimer { get; set; }
@@ -20,15 +22,10 @@ namespace MyMusicGameNew
 
         private Task TaskKeepMovingDuringGame { get; set; }
 
-        private int PerfectNum { get; set; } = 0;
-
-        private int GoodNum { get; set; } = 0;
-
-        private int BadNum { get; set; } = 0;
-
         public GamePlaying(MainWindow main, GamePlayingArea area, string musicName, bool IsTest) : base(main)
         {
             _GamePlayingArea = area;
+            _GamePlayingDisplay = new GamePlayingDisplay(main);
             Music = new MusicFactory().Create(musicName, isTest: IsTest);
             InitMusicNoteImage();
         }
@@ -148,7 +145,7 @@ namespace MyMusicGameNew
 
                 JudgeBadWhenNotePassedJudgeLineForAWhile(note, now);
                 DisplayNote(note, now);
-                SetTestString(note, i);
+                _GamePlayingDisplay.SetTestString(note, i);
             }
         }
 
@@ -157,7 +154,7 @@ namespace MyMusicGameNew
             note.JudgeBadWhenNotePassedJudgeLineForAWhile(now);
             if (note.AlreadyJudged())
             {
-                DisplayNoteJudgeResult(note);
+                _GamePlayingDisplay.DisplayNoteJudgeResult(note);
             }
         }
 
@@ -166,28 +163,7 @@ namespace MyMusicGameNew
             note.CalcNowPoint(_GamePlayingArea, now);
             if (_GamePlayingArea.IsInsidePlayArea(note))
             {
-                DisplayNotePlayArea(note);
-            }
-        }
-
-        private void DisplayNotePlayArea(Note note)
-        {
-            System.Windows.Controls.Image image = note.DisplayImage;
-            if (!Main.PlayArea.Children.Contains(image))
-            {
-                note.SetVisible();
-                Main.PlayArea.Children.Add(image);
-            }
-        }
-
-        private void SetTestString(Note note, int index)
-        {
-            // テスト用: 現在座標の表示
-            if (index == 0)
-            {
-                string x = ((int)note.NowX).ToString().PadLeft(7);
-                string y = ((int)note.NowY).ToString().PadLeft(7);
-                Main.DisplayNotesNearestJudgeLine.Content = "(" + x + ", " + y + ")";
+                _GamePlayingDisplay.DisplayNotePlayArea(note);
             }
         }
 
@@ -209,7 +185,7 @@ namespace MyMusicGameNew
             note.Judge(now);
             if (note.AlreadyJudged())
             {
-                DisplayNoteJudgeResult(note);
+                _GamePlayingDisplay.DisplayNoteJudgeResult(note);
             }
         }
 
@@ -230,40 +206,6 @@ namespace MyMusicGameNew
             }
 
             return null;
-        }
-
-        private void DisplayNoteJudgeResult(Note note)
-        {
-            RemoveNotePlayArea(note);
-            UpdateJudgeResult(note.JudgeResult);
-        }
-
-        private void RemoveNotePlayArea(Note note)
-        {
-            System.Windows.Controls.Image image = note.DisplayImage;
-            if (Main.PlayArea.Children.Contains(image))
-            {
-                Main.PlayArea.Children.Remove(image);
-            }
-        }
-
-        private void UpdateJudgeResult(NoteJudge.JudgeType result)
-        {
-            if (result == NoteJudge.JudgeType.Perfect)
-            {
-                PerfectNum++;
-                Main.ResultPerfect.Content = PerfectNum.ToString();
-            }
-            else if (result == NoteJudge.JudgeType.Good)
-            {
-                GoodNum++;
-                Main.ResultGood.Content = GoodNum.ToString();
-            }
-            else if (result == NoteJudge.JudgeType.Bad)
-            {
-                BadNum++;
-                Main.ResultBad.Content = BadNum.ToString();
-            }
         }
     }
 }

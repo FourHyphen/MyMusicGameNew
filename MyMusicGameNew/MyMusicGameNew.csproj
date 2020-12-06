@@ -73,6 +73,7 @@
     <Compile Include="GameMusicSelect.cs" />
     <Compile Include="GamePlaying.cs" />
     <Compile Include="GamePlayingArea.cs" />
+    <Compile Include="GamePlayingDisplay.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
