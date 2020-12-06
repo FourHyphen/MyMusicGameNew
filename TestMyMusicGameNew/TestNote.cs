@@ -47,5 +47,20 @@ namespace TestMyMusicGameNew
             emurateNote1.SetNowPoint(ZeroTime);
             Assert.IsTrue(emurateNote1.IsInsidePlayArea());
         }
+
+        [TestMethod]
+        public void TestJudgeBadWhenNotePassedJudgeLineForAWhile()
+        {
+            TimeSpan justTiming = new TimeSpan(0, 0, 0, 1, 0);
+            NoteData noteData = new NoteData(1, justTiming);
+            Note note = new Note(noteData);
+
+            note.JudgeBadWhenNotePassedJudgeLineForAWhile(justTiming);
+            Assert.AreEqual(expected: NoteJudge.JudgeType.NotYet, actual: note.JudgeResult);
+
+            TimeSpan passedBadTiming = new TimeSpan(0, 0, 0, 1, 501);    // ちょうどが500[ms] + 余裕で1[ms]
+            note.JudgeBadWhenNotePassedJudgeLineForAWhile(passedBadTiming);
+            Assert.AreEqual(expected: NoteJudge.JudgeType.Bad, actual: note.JudgeResult);
+        }
     }
 }
