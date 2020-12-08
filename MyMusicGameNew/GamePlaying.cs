@@ -16,6 +16,8 @@ namespace MyMusicGameNew
 
         private Music Music { get; }
 
+        private System.Windows.Point JudgeResultDisplayCenterPosition { get; set; }
+
         private System.Diagnostics.Stopwatch GameTimer { get; set; }
 
         private System.Timers.Timer GameFinishTimer { get; set; }
@@ -25,7 +27,7 @@ namespace MyMusicGameNew
         public GamePlaying(MainWindow main, GamePlayingArea area, string musicName, bool IsTest) : base(main)
         {
             _GamePlayingArea = area;
-            _GamePlayingDisplay = new GamePlayingDisplay(main);
+            _GamePlayingDisplay = new GamePlayingDisplay(main, area.JudgeResultDisplayCenterPosition);
             Music = new MusicFactory().Create(musicName, isTest: IsTest);
             InitMusicNoteImage();
         }
@@ -56,6 +58,7 @@ namespace MyMusicGameNew
 
         private void InitMusicNoteImage()
         {
+            // TODO: MusicFactoryにこの処理を移植した方が良い(内部処理を公開してしまってる)
             for (int i = 0; i < Music.Notes.Count; i++)
             {
                 Music.Notes[i].InitImage(i);

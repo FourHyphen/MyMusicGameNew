@@ -10,15 +10,19 @@ namespace MyMusicGameNew
     {
         public int JudgeLineYFromAreaTop { get; private set; }
 
+        public System.Windows.Point JudgeResultDisplayCenterPosition { get; private set; }
+
         private int PlayAreaWidth { get; set; }
 
         private int PlayAreaHeight { get; set; }
 
         public GamePlayingArea(int playAreaWidth, int playAreaHeight)
         {
+            // TODO: 設定値の外部管理化
             PlayAreaWidth = playAreaWidth;
             PlayAreaHeight = playAreaHeight;
             JudgeLineYFromAreaTop = playAreaHeight - 100;
+            JudgeResultDisplayCenterPosition = new System.Windows.Point(playAreaWidth / 2, playAreaHeight - 200);
         }
 
         public bool IsInsidePlayArea(Note note)

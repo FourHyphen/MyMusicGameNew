@@ -10,15 +10,18 @@ namespace MyMusicGameNew
     {
         private MainWindow Main { get; set; }
 
+        private JudgeResultImage _JudgeResultImage { get; set; }
+
         private int PerfectNum { get; set; } = 0;
 
         private int GoodNum { get; set; } = 0;
 
         private int BadNum { get; set; } = 0;
 
-        public GamePlayingDisplay(MainWindow main)
+        public GamePlayingDisplay(MainWindow main, System.Windows.Point judgeResultDisplayCenter)
         {
             Main = main;
+            _JudgeResultImage = new JudgeResultImage(Main, judgeResultDisplayCenter);
         }
 
         public void DisplayNotePlayArea(Note note)
@@ -53,15 +56,7 @@ namespace MyMusicGameNew
 
         public void DisplayNoteJudgeResultImage(NoteJudge.JudgeType result)
         {
-            if (result == NoteJudge.JudgeType.Perfect)
-            {
-            }
-            else if (result == NoteJudge.JudgeType.Good)
-            {
-            }
-            else if (result == NoteJudge.JudgeType.Bad)
-            {
-            }
+            _JudgeResultImage.Show(result);
         }
 
         public void RemoveNotePlayArea(Note note)
