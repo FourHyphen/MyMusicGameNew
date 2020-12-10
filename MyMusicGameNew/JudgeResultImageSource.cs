@@ -17,6 +17,8 @@ namespace MyMusicGameNew
 
         private string ResultName { get; set; }
 
+        private System.Timers.Timer DisplayTimer { get; set; }
+
         public JudgeResultImageSource(string resultName, string displayImagePath, System.Windows.Point center)
         {
             ResultName = resultName;
@@ -27,6 +29,16 @@ namespace MyMusicGameNew
         {
             Source = Common.GetImage(displayImagePath);
             CreateDisplayImage(Source, center);
+        }
+
+        ~JudgeResultImageSource()
+        {
+            if (DisplayTimer != null)
+            {
+                DisplayTimer.Stop();
+                DisplayTimer.Dispose();
+                DisplayTimer = null;
+            }
         }
 
         private void CreateDisplayImage(BitmapSource source, System.Windows.Point center)
@@ -57,6 +69,71 @@ namespace MyMusicGameNew
             transform.Children.Add(new TranslateTransform(x, y));
 
             return transform;
+        }
+
+        public void RemoveShowingJudgeResultImage(MainWindow main)
+        {
+            if (main.PlayArea.Children.Contains(DisplayImage))
+            {
+                main.PlayArea.Children.Remove(DisplayImage);
+            }
+        }
+
+        public void Show(MainWindow main)
+        {
+            // TODO: 表示時間の外部管理
+            ShowPeriod(main, 500);
+        }
+
+        private void ShowPeriod(MainWindow main, int displayTimeMilliseconds)
+        {
+            // すでに表示してるなら表示処理を中断
+            if (AlreadyDisplaying())
+            {
+                InterruptShowing(main);
+            }
+
+            // 表示
+            main.PlayArea.Children.Add(DisplayImage);
+
+            // 一定時間後に非表示にする
+            SetDisplayTimer(main, displayTimeMilliseconds);
+        }
+
+        private bool AlreadyDisplaying()
+        {
+            return (DisplayTimer != null);
+        }
+
+        private void InterruptShowing(MainWindow main)
+        {
+            DisplayTimer.Stop();
+            DisplayTimer.Dispose();
+            Remove(main);
+            DisplayTimer = null;
+        }
+
+        private void Remove(MainWindow main)
+        {
+            if (main.PlayArea.Children.Contains(DisplayImage))
+            {
+                main.PlayArea.Children.Remove(DisplayImage);
+            }
+        }
+
+        private void SetDisplayTimer(MainWindow main, int displayTimeMilliseconds)
+        {
+            DisplayTimer = new System.Timers.Timer();
+            DisplayTimer.AutoReset = false;  // 1回だけタイマー処理を実行
+            DisplayTimer.Interval = displayTimeMilliseconds;
+            DisplayTimer.Elapsed += (s, e) =>
+            {
+                main.Dispatcher.Invoke(new Action(() =>
+                {
+                    Remove(main);
+                }));
+            };
+            DisplayTimer.Start();
         }
     }
 }

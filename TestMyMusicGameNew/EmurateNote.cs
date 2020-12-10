@@ -19,7 +19,7 @@ namespace TestMyMusicGameNew
         {
             get
             {
-                return JustTiming.Subtract(new TimeSpan(0, 0, 0, 0, 350));    // 400[ms]早ければBad判定、少し余裕をもたせて350[ms]
+                return JustTiming.Subtract(new TimeSpan(0, 0, 0, 0, 480));    // 400[ms]早ければBad判定、350[ms]だと負荷次第でGood判定したことがあった
             }
         }
 

@@ -44,8 +44,9 @@ namespace MyMusicGameNew
 
         public void Show(NoteJudge.JudgeType result)
         {
+            RemoveShowingJudgeResultImage();
             JudgeResultImageSource image = GetWillShowImage(result);
-            ShowCore(image);
+            image.Show(Main);
         }
 
         private JudgeResultImageSource GetWillShowImage(NoteJudge.JudgeType result)
@@ -64,13 +65,11 @@ namespace MyMusicGameNew
             }
         }
 
-        private void ShowCore(JudgeResultImageSource judgeResultImage)
+        private void RemoveShowingJudgeResultImage()
         {
-            System.Windows.Controls.Image image = judgeResultImage.DisplayImage;
-            if (!Main.PlayArea.Children.Contains(image))
-            {
-                Main.PlayArea.Children.Add(image);
-            }
+            PerfectImage.RemoveShowingJudgeResultImage(Main);
+            GoodImage.RemoveShowingJudgeResultImage(Main);
+            BadImage.RemoveShowingJudgeResultImage(Main);
         }
     }
 }
