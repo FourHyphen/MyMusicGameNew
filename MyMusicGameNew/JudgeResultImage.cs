@@ -37,9 +37,9 @@ namespace MyMusicGameNew
 
         private void Init(System.Windows.Point judgeResultImageCenter)
         {
-            PerfectImage = new JudgeResultImageSource(PerfectResultName, PerfectImagePath, judgeResultImageCenter);
-            GoodImage = new JudgeResultImageSource(GoodResultName, GoodImagePath, judgeResultImageCenter);
-            BadImage = new JudgeResultImageSource(BadResultName, BadImagePath, judgeResultImageCenter);
+            PerfectImage = new JudgeResultImageSource(Main, PerfectResultName, PerfectImagePath, judgeResultImageCenter);
+            GoodImage = new JudgeResultImageSource(Main, GoodResultName, GoodImagePath, judgeResultImageCenter);
+            BadImage = new JudgeResultImageSource(Main, BadResultName, BadImagePath, judgeResultImageCenter);
         }
 
         public void Show(NoteJudge.JudgeType result)

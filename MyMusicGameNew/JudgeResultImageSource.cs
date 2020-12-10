@@ -19,16 +19,18 @@ namespace MyMusicGameNew
 
         private System.Timers.Timer DisplayTimer { get; set; }
 
-        public JudgeResultImageSource(string resultName, string displayImagePath, System.Windows.Point center)
+        public JudgeResultImageSource(MainWindow main, string resultName, string displayImagePath, System.Windows.Point center)
         {
             ResultName = resultName;
-            Init(displayImagePath, center);
+            Init(main, displayImagePath, center);
         }
 
-        private void Init(string displayImagePath, System.Windows.Point center)
+        private void Init(MainWindow main, string displayImagePath, System.Windows.Point center)
         {
             Source = Common.GetImage(displayImagePath);
             CreateDisplayImage(Source, center);
+            // TODO: 表示時間の外部管理化
+            InitDisplayTimer(main, 500);
         }
 
         ~JudgeResultImageSource()
@@ -71,6 +73,20 @@ namespace MyMusicGameNew
             return transform;
         }
 
+        private void InitDisplayTimer(MainWindow main, int displayTimeMilliseconds)
+        {
+            DisplayTimer = new System.Timers.Timer();
+            DisplayTimer.AutoReset = false;  // 1回だけタイマー処理を実行
+            DisplayTimer.Interval = displayTimeMilliseconds;
+            DisplayTimer.Elapsed += (s, e) =>
+            {
+                main.Dispatcher.Invoke(new Action(() =>
+                {
+                    RemoveShowingJudgeResultImage(main);
+                }));
+            };
+        }
+
         public void RemoveShowingJudgeResultImage(MainWindow main)
         {
             if (main.PlayArea.Children.Contains(DisplayImage))
@@ -82,57 +98,37 @@ namespace MyMusicGameNew
         public void Show(MainWindow main)
         {
             // TODO: 表示時間の外部管理
-            ShowPeriod(main, 500);
+            ShowPeriod(main);
         }
 
-        private void ShowPeriod(MainWindow main, int displayTimeMilliseconds)
+        private void ShowPeriod(MainWindow main)
         {
             // すでに表示してるなら表示処理を中断
-            if (AlreadyDisplaying())
+            if (AlreadyDisplaying(main))
             {
                 InterruptShowing(main);
             }
 
-            // 表示
-            main.PlayArea.Children.Add(DisplayImage);
-
-            // 一定時間後に非表示にする
-            SetDisplayTimer(main, displayTimeMilliseconds);
+            // 表示＆一定時間後に非表示にする
+            ShowAndSetHideTimer(main);
         }
 
-        private bool AlreadyDisplaying()
+        private bool AlreadyDisplaying(MainWindow main)
         {
-            return (DisplayTimer != null);
+            return (main.PlayArea.Children.Contains(DisplayImage));
         }
 
         private void InterruptShowing(MainWindow main)
         {
+            // TimerはStopするだけで経過時刻がリセットされる
+            // 再StartにあたってStop時点での経過時刻は引き継がれず、新規に時刻カウントし始める
             DisplayTimer.Stop();
-            DisplayTimer.Dispose();
-            Remove(main);
-            DisplayTimer = null;
+            RemoveShowingJudgeResultImage(main);
         }
 
-        private void Remove(MainWindow main)
+        private void ShowAndSetHideTimer(MainWindow main)
         {
-            if (main.PlayArea.Children.Contains(DisplayImage))
-            {
-                main.PlayArea.Children.Remove(DisplayImage);
-            }
-        }
-
-        private void SetDisplayTimer(MainWindow main, int displayTimeMilliseconds)
-        {
-            DisplayTimer = new System.Timers.Timer();
-            DisplayTimer.AutoReset = false;  // 1回だけタイマー処理を実行
-            DisplayTimer.Interval = displayTimeMilliseconds;
-            DisplayTimer.Elapsed += (s, e) =>
-            {
-                main.Dispatcher.Invoke(new Action(() =>
-                {
-                    Remove(main);
-                }));
-            };
+            main.PlayArea.Children.Add(DisplayImage);
             DisplayTimer.Start();
         }
     }
