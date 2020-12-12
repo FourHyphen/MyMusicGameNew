@@ -71,6 +71,11 @@ namespace TestMyMusicGameNew
             {
                 MainWindow.Judge(p);
             }
+
+            public void EmuratePressKeyboardGamePlaying(MyMusicGameNew.Keys.EnableKeys key)
+            {
+                MainWindow.Judge(key);
+            }
         }
     }
 }

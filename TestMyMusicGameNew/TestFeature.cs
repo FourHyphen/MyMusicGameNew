@@ -218,6 +218,22 @@ namespace TestMyMusicGameNew
             Assert.AreEqual(expected: 1, actual: Driver.ResultBad.Number());
         }
 
+        [TestMethod]
+        public void TestJudgeNoteNearbyJudgeLineWhenPressKeyboard()
+        {
+            // キーボード入力による判定
+            EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
+            System.Windows.Point clickPointNote1 = emurateNote1.EmurateCalcJustJudgeLinePoint();
+
+            Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
+            Driver.GameStartButton.Click();
+
+            Sleep(emurateNote1.JustTiming.TotalSeconds);
+            Driver.EmuratePressKeyboardGamePlaying(MyMusicGameNew.Keys.EnableKeys.JudgeLine1);
+            Assert.AreEqual(expected: 1, actual: Driver.ResultPerfect.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.ResultBad.Number());
+        }
+
         private void Sleep(double second)
         {
             Task task = Task.Run(() =>

@@ -176,9 +176,21 @@ namespace MyMusicGameNew
             GameTimer.Start();
         }
 
+        public void Judge(Keys.EnableKeys key)
+        {
+            int inputLine = _GamePlayingArea.ConvertXLine(key);
+            JudgeCore(inputLine);
+        }
+
         public void Judge(System.Windows.Point mouseClicked)
         {
-            Note note = GetLatestUnjudgedNoteForLine(mouseClicked);
+            int inputLine = _GamePlayingArea.ConvertXLine(mouseClicked.X);
+            JudgeCore(inputLine);
+        }
+
+        private void JudgeCore(int inputLine)
+        {
+            Note note = GetLatestUnjudgedNoteForLine(inputLine);
             if (note is null)
             {
                 return;
@@ -192,7 +204,7 @@ namespace MyMusicGameNew
             }
         }
 
-        private Note GetLatestUnjudgedNoteForLine(System.Windows.Point input)
+        private Note GetLatestUnjudgedNoteForLine(int inputLine)
         {
             foreach (Note n in Music.Notes)
             {
@@ -201,7 +213,6 @@ namespace MyMusicGameNew
                     continue;
                 }
 
-                int inputLine = _GamePlayingArea.ConvertXLine(input.X);
                 if (inputLine == n.XLine)
                 {
                     return n;

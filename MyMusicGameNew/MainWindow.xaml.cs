@@ -78,5 +78,19 @@ namespace MyMusicGameNew
         {
             GamePlay.Judge(p);
         }
+
+        private void MainWindowKeyDown(object sender, KeyEventArgs e)
+        {
+            if (DoGamePlaying())
+            {
+                Keys.EnableKeys key = Keys.ToEnableKeys(e.Key, e.KeyboardDevice);
+                Judge(key);
+            }
+        }
+
+        private void Judge(Keys.EnableKeys key)
+        {
+            GamePlay.Judge(key);
+        }
     }
 }

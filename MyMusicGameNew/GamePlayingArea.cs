@@ -68,5 +68,21 @@ namespace MyMusicGameNew
                 return 0;
             }
         }
+
+        public int ConvertXLine(Keys.EnableKeys key)
+        {
+            if (key == Keys.EnableKeys.JudgeLine1)
+            {
+                return 1;
+            }
+            else if (key == Keys.EnableKeys.JudgeLine2)
+            {
+                return 2;
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }
 }
