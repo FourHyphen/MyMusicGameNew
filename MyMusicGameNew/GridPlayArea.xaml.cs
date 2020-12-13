@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace MyMusicGameNew
 {
-    /// <summary>
-    /// GridPlayArea.xaml の相互作用ロジック
-    /// </summary>
     public partial class GridPlayArea : UserControl
     {
         private MainWindow Main { get; set; }

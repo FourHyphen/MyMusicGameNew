@@ -8,9 +8,11 @@ using System.Windows;
 
 namespace MyMusicGameNew
 {
-    public class GamePlaying : GameState
+    public class GamePlaying
     {
-        private MainWindow Main;
+        private MainWindow Main { get; set; }
+
+        private GridPlayArea _GridPlayArea { get; set; }
 
         private GamePlayingArea _GamePlayingArea { get; set; }
 
@@ -26,9 +28,10 @@ namespace MyMusicGameNew
 
         private Task TaskKeepMovingDuringGame { get; set; }
 
-        public GamePlaying(MainWindow main, GridPlayArea playArea, GamePlayingArea area, string musicName, bool IsTest) : base(playArea)
+        public GamePlaying(MainWindow main, GridPlayArea playArea, GamePlayingArea area, string musicName, bool IsTest)
         {
             Main = main;
+            _GridPlayArea = playArea;
             _GamePlayingArea = area;
             _GamePlayingDisplay = new GamePlayingDisplay(playArea, area.JudgeResultDisplayCenterPosition);
             Music = new MusicFactory().Create(musicName, isTest: IsTest);

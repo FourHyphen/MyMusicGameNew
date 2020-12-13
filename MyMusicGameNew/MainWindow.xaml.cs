@@ -20,8 +20,6 @@ namespace MyMusicGameNew
     {
         private bool IsTest { get; set; }
 
-        //private GameMusicSelect MusicSelect { get; set; } = null;
-
         public MainWindow()
         {
             InitializeComponent();

@@ -78,11 +78,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Common.cs" />
-    <Compile Include="GameMusicSelect.cs" />
     <Compile Include="GamePlaying.cs" />
     <Compile Include="GamePlayingArea.cs" />
     <Compile Include="GamePlayingDisplay.cs" />
-    <Compile Include="GameState.cs" />
     <Compile Include="GridMusicSelect.xaml.cs">
       <DependentUpon>GridMusicSelect.xaml</DependentUpon>
     </Compile>
