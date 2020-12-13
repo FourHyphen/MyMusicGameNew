@@ -8,22 +8,11 @@ namespace MyMusicGameNew
 {
     public class GameState
     {
-        protected MainWindow Main { get; }
+        protected GridPlayArea _GridPlayArea { get; }
 
-        public GameState(MainWindow main)
+        public GameState(GridPlayArea playArea)
         {
-            Main = main;
+            _GridPlayArea = playArea;
         }
-
-        protected void SetGameStatus(string status)
-        {
-            Main.GameStatus.Content = status;
-        }
-
-        protected void SetPlayingMusicStatus(string status)
-        {
-            Main.PlayingMusicStatus.Content = status;
-        }
-
     }
 }

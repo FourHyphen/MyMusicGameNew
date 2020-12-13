@@ -61,6 +61,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="GridMusicSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GridPlayArea.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -75,6 +83,12 @@
     <Compile Include="GamePlayingArea.cs" />
     <Compile Include="GamePlayingDisplay.cs" />
     <Compile Include="GameState.cs" />
+    <Compile Include="GridMusicSelect.xaml.cs">
+      <DependentUpon>GridMusicSelect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GridPlayArea.xaml.cs">
+      <DependentUpon>GridPlayArea.xaml</DependentUpon>
+    </Compile>
     <Compile Include="JudgeResultImage.cs" />
     <Compile Include="JudgeResultImageSource.cs" />
     <Compile Include="Keys.cs" />

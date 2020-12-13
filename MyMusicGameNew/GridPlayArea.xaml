@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="MyMusicGameNew.GridPlayArea"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MyMusicGameNew"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="1000">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="800"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Play Area-->
+        <Grid Grid.Row="0" Grid.Column="0"
+              x:Name="PlayArea"
+              MouseDown="PlayAreaMouseDown"
+              Background="Black">
+            <Line x:Name="JudgeLine"
+                    Stroke="White"
+                    StrokeThickness="1"
+                    X1="100"
+                    X2="700"
+                    Y1="500"
+                    Y2="500"/>
+        </Grid>
+
+        <!--Information-->
+        <Grid Grid.Row="0" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="8*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
+
+            <!--Judge Result-->
+            <Grid Grid.Column="0" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <Label Content="Perfect: "/>
+                    <Label Content="Good: "/>
+                    <Label Content="Bad: "/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1">
+                    <Label x:Name="ResultPerfect" Content="0"/>
+                    <Label x:Name="ResultGood" Content="0"/>
+                    <Label x:Name="ResultBad" Content="0"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <Label x:Name="DisplayNotesNearestJudgeLine"
+               Visibility="Hidden"/>
+    </Grid>
+</UserControl>

@@ -20,16 +20,27 @@ namespace MyMusicGameNew
     {
         private bool IsTest { get; set; }
 
-        private GameMusicSelect MusicSelect { get; set; } = null;
-
-        private GamePlaying GamePlay { get; set; } = null;
+        //private GameMusicSelect MusicSelect { get; set; } = null;
 
         public MainWindow()
         {
             InitializeComponent();
             SetEnvironmentCurrentDirectory(Environment.CurrentDirectory + "../../../");  // F5開始を想定
-            MusicSelect = new GameMusicSelect(this);
-            MusicSelect.Init();
+
+            Init();
+        }
+
+        private void Init()
+        {
+            MusicSelect.Init(this);
+            PlayArea.Init(this, IsTest);
+            ShowMusicSelect();
+        }
+
+        private void ShowMusicSelect()
+        {
+            MusicSelect.Visibility = Visibility.Visible;
+            PlayArea.Visibility = Visibility.Hidden;
         }
 
         private void SetEnvironmentCurrentDirectory(string environmentDirPath)
@@ -39,58 +50,49 @@ namespace MyMusicGameNew
             IsTest = (Environment.CurrentDirectory.Contains("TestMyMusicGameNew"));
         }
 
-        private void GameStartButtonClick(object sender, RoutedEventArgs e)
+        public void SetGameStatus(string status)
         {
-            GameStart();
+            GameStatus.Content = status;
         }
 
-        private void GameStart()
+        public void SetPlayingMusicStatus(string status)
         {
-            if (MusicSelect.MusicSelected())
-            {
-                string musicName = MusicSelect.GetSelectedMusicName();
-                GameStartCore(musicName);
-            }
+            PlayingMusicStatus.Content = status;
         }
 
-        private void GameStartCore(string musicName)
+        public void SetNotesNum(string notesNum)
         {
-            GamePlayingArea area = new GamePlayingArea((int)PlayArea.ActualWidth, (int)PlayArea.ActualHeight);
-            GamePlay = new GamePlaying(this, area, musicName, IsTest);
-            GamePlay.Start();
-        }
-
-        private void PlayAreaMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (DoGamePlaying())
-            {
-                Point p = e.GetPosition(this);
-                Judge(p);
-            }
-        }
-
-        private bool DoGamePlaying()
-        {
-            return (GamePlay != null);
-        }
-
-        private void Judge(System.Windows.Point p)
-        {
-            GamePlay.Judge(p);
+           NotesNum.Content = notesNum;
         }
 
         private void MainWindowKeyDown(object sender, KeyEventArgs e)
         {
             if (DoGamePlaying())
             {
-                Keys.EnableKeys key = Keys.ToEnableKeys(e.Key, e.KeyboardDevice);
-                Judge(key);
+                PlayArea.Judge(e);
             }
         }
 
-        private void Judge(Keys.EnableKeys key)
+        private bool DoGamePlaying()
         {
-            GamePlay.Judge(key);
+            return PlayArea.DoGamePlaying();
+        }
+
+        public void GameStart(string musicName)
+        {
+            ShowPlayArea();
+            PlayArea.GameStart(this, musicName);
+        }
+
+        private void ShowPlayArea()
+        {
+            MusicSelect.Visibility = Visibility.Hidden;
+            PlayArea.Visibility = Visibility.Visible;
+        }
+
+        public void GameFinish()
+        {
+            ShowMusicSelect();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace MyMusicGameNew
 {
     public class JudgeResultImage
     {
-        private MainWindow Main { get; set; }
+        private GridPlayArea _GridPlayArea { get; set; }
 
         private JudgeResultImageSource PerfectImage { get; set; }
 
@@ -29,24 +29,24 @@ namespace MyMusicGameNew
 
         private static readonly string BadResultName = "Bad";
 
-        public JudgeResultImage(MainWindow main, System.Windows.Point judgeResultImageCenter)
+        public JudgeResultImage(GridPlayArea playArea, System.Windows.Point judgeResultImageCenter)
         {
-            Main = main;
+            _GridPlayArea = playArea;
             Init(judgeResultImageCenter);
         }
 
         private void Init(System.Windows.Point judgeResultImageCenter)
         {
-            PerfectImage = new JudgeResultImageSource(Main, PerfectResultName, PerfectImagePath, judgeResultImageCenter);
-            GoodImage = new JudgeResultImageSource(Main, GoodResultName, GoodImagePath, judgeResultImageCenter);
-            BadImage = new JudgeResultImageSource(Main, BadResultName, BadImagePath, judgeResultImageCenter);
+            PerfectImage = new JudgeResultImageSource(_GridPlayArea, PerfectResultName, PerfectImagePath, judgeResultImageCenter);
+            GoodImage = new JudgeResultImageSource(_GridPlayArea, GoodResultName, GoodImagePath, judgeResultImageCenter);
+            BadImage = new JudgeResultImageSource(_GridPlayArea, BadResultName, BadImagePath, judgeResultImageCenter);
         }
 
         public void Show(NoteJudge.JudgeType result)
         {
             RemoveShowingJudgeResultImage();
             JudgeResultImageSource image = GetWillShowImage(result);
-            image.Show(Main);
+            image.Show(_GridPlayArea);
         }
 
         private JudgeResultImageSource GetWillShowImage(NoteJudge.JudgeType result)
@@ -67,9 +67,9 @@ namespace MyMusicGameNew
 
         private void RemoveShowingJudgeResultImage()
         {
-            PerfectImage.RemoveShowingJudgeResultImage(Main);
-            GoodImage.RemoveShowingJudgeResultImage(Main);
-            BadImage.RemoveShowingJudgeResultImage(Main);
+            PerfectImage.RemoveShowingJudgeResultImage(_GridPlayArea);
+            GoodImage.RemoveShowingJudgeResultImage(_GridPlayArea);
+            BadImage.RemoveShowingJudgeResultImage(_GridPlayArea);
         }
     }
 }

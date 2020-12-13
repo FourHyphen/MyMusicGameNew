@@ -130,12 +130,10 @@ namespace TestMyMusicGameNew
         [TestMethod]
         public void TestJudgeNoteNearbyJudgeLineWhenLeftClicked()
         {
-            // 左クリック入力時のPerfect判定およびBad判定のテスト
-            // (Good判定はテスト環境次第で安定しなさそうなのでテストしない)
+            // 左クリック入力時のPerfect判定のテスト
+            // Bad判定やGood判定は画面エミュレートのテストだと環境次第で結果が変わってしまうため、単体テストでカバーすることにした
             EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
             System.Windows.Point clickPointNote1 = emurateNote1.EmurateCalcJustJudgeLinePoint();
-            EmurateNote emurateNote2 = new EmurateNote(PlayAreaX, PlayAreaY, 2);
-            System.Windows.Point clickPointNote2 = emurateNote2.EmurateCalcJustJudgeLinePoint();
 
             Assert.AreEqual(expected: 0, actual: Driver.ResultPerfect.Number());
             Assert.AreEqual(expected: 0, actual: Driver.ResultBad.Number());
@@ -148,17 +146,6 @@ namespace TestMyMusicGameNew
 
             // 結果が判定されたノートは、結果判定直後に画面から消す(非表示にする)
             Assert.AreEqual(expected: 1, actual: Driver.GetDisplayNotesNum(1));
-
-            // Badのタイミングまでwait
-            Sleep(emurateNote2.BadTooFastTiming.TotalSeconds - emurateNote1.JustTiming.TotalSeconds);
-            Assert.AreEqual(expected: 1, actual: Driver.GetDisplayNotesNum(1));
-
-            // Badで拾う
-            Driver.EmurateLeftClickGamePlaying(clickPointNote2);
-
-            Assert.AreEqual(expected: 1, actual: Driver.ResultPerfect.Number());
-            Assert.AreEqual(expected: 1, actual: Driver.ResultBad.Number());
-            Assert.AreEqual(expected: 0, actual: Driver.GetDisplayNotesNum(1));
         }
 
         [TestMethod]

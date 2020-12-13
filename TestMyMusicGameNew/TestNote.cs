@@ -62,5 +62,41 @@ namespace TestMyMusicGameNew
             note.JudgeBadWhenNotePassedJudgeLineForAWhile(passedBadTiming);
             Assert.AreEqual(expected: NoteJudge.JudgeType.Bad, actual: note.JudgeResult);
         }
+
+        [TestMethod]
+        public void TestJudgeGoodIfFastOrSlow()
+        {
+            // Good判定のテスト
+            TimeSpan justTiming = new TimeSpan(0, 0, 0, 1, 0);
+            NoteData noteData = new NoteData(1, justTiming);
+            TimeSpan fast = new TimeSpan(0, 0, 0, 0, 850);    // 100[ms] ～ 200[ms] ずれたらGood
+            TimeSpan slow = new TimeSpan(0, 0, 0, 1, 150);
+
+            Note note1 = new Note(noteData);
+            note1.Judge(fast);
+            Assert.AreEqual(expected: NoteJudge.JudgeType.Good, actual: note1.JudgeResult);
+
+            Note note2 = new Note(noteData);
+            note2.Judge(slow);
+            Assert.AreEqual(expected: NoteJudge.JudgeType.Good, actual: note2.JudgeResult);
+        }
+
+        [TestMethod]
+        public void TestJudgeBadIfTooFastOrTooSlow()
+        {
+            // Bad判定のテスト
+            TimeSpan justTiming = new TimeSpan(0, 0, 0, 1, 0);
+            NoteData noteData = new NoteData(1, justTiming);
+            TimeSpan tooFast = new TimeSpan(0, 0, 0, 0, 650);    // 200[ms] ～ 400[ms] ずれたらBad
+            TimeSpan tooSlow = new TimeSpan(0, 0, 0, 1, 350);
+
+            Note note1 = new Note(noteData);
+            note1.Judge(tooFast);
+            Assert.AreEqual(expected: NoteJudge.JudgeType.Bad, actual: note1.JudgeResult);
+
+            Note note2 = new Note(noteData);
+            note2.Judge(tooSlow);
+            Assert.AreEqual(expected: NoteJudge.JudgeType.Bad, actual: note2.JudgeResult);
+        }
     }
 }

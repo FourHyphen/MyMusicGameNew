@@ -69,12 +69,12 @@ namespace TestMyMusicGameNew
 
             public void EmurateLeftClickGamePlaying(System.Windows.Point p)
             {
-                MainWindow.Judge(p);
+                MainWindow.PlayArea.Judge(p);
             }
 
             public void EmuratePressKeyboardGamePlaying(MyMusicGameNew.Keys.EnableKeys key)
             {
-                MainWindow.Judge(key);
+                MainWindow.PlayArea.Judge(key);
             }
         }
     }

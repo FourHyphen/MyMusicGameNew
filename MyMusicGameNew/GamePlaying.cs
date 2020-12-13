@@ -10,6 +10,8 @@ namespace MyMusicGameNew
 {
     public class GamePlaying : GameState
     {
+        private MainWindow Main;
+
         private GamePlayingArea _GamePlayingArea { get; set; }
 
         private GamePlayingDisplay _GamePlayingDisplay { get; set; }
@@ -24,10 +26,11 @@ namespace MyMusicGameNew
 
         private Task TaskKeepMovingDuringGame { get; set; }
 
-        public GamePlaying(MainWindow main, GamePlayingArea area, string musicName, bool IsTest) : base(main)
+        public GamePlaying(MainWindow main, GridPlayArea playArea, GamePlayingArea area, string musicName, bool IsTest) : base(playArea)
         {
+            Main = main;
             _GamePlayingArea = area;
-            _GamePlayingDisplay = new GamePlayingDisplay(main, area.JudgeResultDisplayCenterPosition);
+            _GamePlayingDisplay = new GamePlayingDisplay(playArea, area.JudgeResultDisplayCenterPosition);
             Music = new MusicFactory().Create(musicName, isTest: IsTest);
             InitMusicNoteImage();
         }
@@ -67,14 +70,9 @@ namespace MyMusicGameNew
 
         private void DisplayInfo()
         {
-            SetGameStatus("Playing");
-            SetPlayingMusicStatus("Playing");
-            SetNotesNum();
-        }
-
-        private void SetNotesNum()
-        {
-            Main.NotesNum.Content = Music.Notes.Count.ToString();
+            Main.SetGameStatus("Playing");
+            Main.SetPlayingMusicStatus("Playing");
+            Main.SetNotesNum(Music.Notes.Count.ToString());
         }
 
         private void PlayMusic()
@@ -88,7 +86,7 @@ namespace MyMusicGameNew
             GameFinishTimer.Interval = (musicTimeSecond + 1) * 1000;  // 1[s]余裕を持たせる
             GameFinishTimer.Elapsed += (s, e) =>
             {
-                Main.Dispatcher.Invoke(new Action(() =>
+                _GridPlayArea.Dispatcher.Invoke(new Action(() =>
                 {
                     ProcessGameFinished(cts);
                 }));
@@ -101,8 +99,9 @@ namespace MyMusicGameNew
             GameFinishTimer.Stop();
             GameFinishTimer.Dispose();
             StopDisplayingNotes(cts);
-            SetGameStatus("Finished");
-            SetPlayingMusicStatus("Finished");
+            Main.SetGameStatus("Finished");
+            Main.SetPlayingMusicStatus("Finished");
+            _GridPlayArea.GameFinish();
         }
 
         private void StopDisplayingNotes(CancellationTokenSource cts)
@@ -112,7 +111,7 @@ namespace MyMusicGameNew
 
         private void StartTaskKeepMovingDuringGame(List<Note> notes, CancellationToken ct)
         {
-            Main.DisplayNotesNearestJudgeLine.Visibility = Visibility.Visible;
+            _GridPlayArea.JudgeLine.Visibility = Visibility.Visible;
             TaskKeepMovingDuringGame = Task.Run(() =>
             {
                 DisplayNotesAndCheckMissedNotes(notes, ct);
@@ -123,7 +122,7 @@ namespace MyMusicGameNew
         {
             while (true)
             {
-                Main.DisplayNotesNearestJudgeLine.Dispatcher.Invoke(new Action(() =>
+                _GridPlayArea.JudgeLine.Dispatcher.Invoke(new Action(() =>
                 {
                     TimeSpan now = GameTimer.Elapsed;
                     DisplayNotesAndCheckMissedNotesCore(notes, now);

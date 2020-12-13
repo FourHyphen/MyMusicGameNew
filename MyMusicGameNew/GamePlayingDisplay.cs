@@ -8,7 +8,7 @@ namespace MyMusicGameNew
 {
     public class GamePlayingDisplay
     {
-        private MainWindow Main { get; set; }
+        private GridPlayArea _GridPlayArea { get; set; }
 
         private JudgeResultImage _JudgeResultImage { get; set; }
 
@@ -18,19 +18,19 @@ namespace MyMusicGameNew
 
         private int BadNum { get; set; } = 0;
 
-        public GamePlayingDisplay(MainWindow main, System.Windows.Point judgeResultDisplayCenter)
+        public GamePlayingDisplay(GridPlayArea playArea, System.Windows.Point judgeResultDisplayCenter)
         {
-            Main = main;
-            _JudgeResultImage = new JudgeResultImage(Main, judgeResultDisplayCenter);
+            _GridPlayArea = playArea;
+            _JudgeResultImage = new JudgeResultImage(_GridPlayArea, judgeResultDisplayCenter);
         }
 
         public void DisplayNotePlayArea(Note note)
         {
             System.Windows.Controls.Image image = note.DisplayImage;
-            if (!Main.PlayArea.Children.Contains(image))
+            if (!_GridPlayArea.PlayArea.Children.Contains(image))
             {
                 note.SetVisible();
-                Main.PlayArea.Children.Add(image);
+                _GridPlayArea.PlayArea.Children.Add(image);
             }
         }
 
@@ -41,7 +41,7 @@ namespace MyMusicGameNew
             {
                 string x = ((int)note.NowX).ToString().PadLeft(7);
                 string y = ((int)note.NowY).ToString().PadLeft(7);
-                Main.DisplayNotesNearestJudgeLine.Content = "(" + x + ", " + y + ")";
+                _GridPlayArea.DisplayNotesNearestJudgeLine.Content = "(" + x + ", " + y + ")";
             }
         }
 
@@ -62,9 +62,9 @@ namespace MyMusicGameNew
         public void RemoveNotePlayArea(Note note)
         {
             System.Windows.Controls.Image image = note.DisplayImage;
-            if (Main.PlayArea.Children.Contains(image))
+            if (_GridPlayArea.PlayArea.Children.Contains(image))
             {
-                Main.PlayArea.Children.Remove(image);
+                _GridPlayArea.PlayArea.Children.Remove(image);
             }
         }
 
@@ -73,17 +73,17 @@ namespace MyMusicGameNew
             if (result == NoteJudge.JudgeType.Perfect)
             {
                 PerfectNum++;
-                Main.ResultPerfect.Content = PerfectNum.ToString();
+                _GridPlayArea.ResultPerfect.Content = PerfectNum.ToString();
             }
             else if (result == NoteJudge.JudgeType.Good)
             {
                 GoodNum++;
-                Main.ResultGood.Content = GoodNum.ToString();
+                _GridPlayArea.ResultGood.Content = GoodNum.ToString();
             }
             else if (result == NoteJudge.JudgeType.Bad)
             {
                 BadNum++;
-                Main.ResultBad.Content = BadNum.ToString();
+                _GridPlayArea.ResultBad.Content = BadNum.ToString();
             }
         }
     }

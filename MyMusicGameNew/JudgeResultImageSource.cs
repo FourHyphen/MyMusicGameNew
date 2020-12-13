@@ -19,18 +19,18 @@ namespace MyMusicGameNew
 
         private System.Timers.Timer DisplayTimer { get; set; }
 
-        public JudgeResultImageSource(MainWindow main, string resultName, string displayImagePath, System.Windows.Point center)
+        public JudgeResultImageSource(GridPlayArea playArea, string resultName, string displayImagePath, System.Windows.Point center)
         {
             ResultName = resultName;
-            Init(main, displayImagePath, center);
+            Init(playArea, displayImagePath, center);
         }
 
-        private void Init(MainWindow main, string displayImagePath, System.Windows.Point center)
+        private void Init(GridPlayArea playArea, string displayImagePath, System.Windows.Point center)
         {
             Source = Common.GetImage(displayImagePath);
             CreateDisplayImage(Source, center);
             // TODO: 表示時間の外部管理化
-            InitDisplayTimer(main, 500);
+            InitDisplayTimer(playArea, 500);
         }
 
         ~JudgeResultImageSource()
@@ -73,62 +73,62 @@ namespace MyMusicGameNew
             return transform;
         }
 
-        private void InitDisplayTimer(MainWindow main, int displayTimeMilliseconds)
+        private void InitDisplayTimer(GridPlayArea playArea, int displayTimeMilliseconds)
         {
             DisplayTimer = new System.Timers.Timer();
             DisplayTimer.AutoReset = false;  // 1回だけタイマー処理を実行
             DisplayTimer.Interval = displayTimeMilliseconds;
             DisplayTimer.Elapsed += (s, e) =>
             {
-                main.Dispatcher.Invoke(new Action(() =>
+                playArea.Dispatcher.Invoke(new Action(() =>
                 {
-                    RemoveShowingJudgeResultImage(main);
+                    RemoveShowingJudgeResultImage(playArea);
                 }));
             };
         }
 
-        public void RemoveShowingJudgeResultImage(MainWindow main)
+        public void RemoveShowingJudgeResultImage(GridPlayArea playArea)
         {
-            if (main.PlayArea.Children.Contains(DisplayImage))
+            if (playArea.PlayArea.Children.Contains(DisplayImage))
             {
-                main.PlayArea.Children.Remove(DisplayImage);
+                playArea.PlayArea.Children.Remove(DisplayImage);
             }
         }
 
-        public void Show(MainWindow main)
+        public void Show(GridPlayArea playArea)
         {
             // TODO: 表示時間の外部管理
-            ShowPeriod(main);
+            ShowPeriod(playArea);
         }
 
-        private void ShowPeriod(MainWindow main)
+        private void ShowPeriod(GridPlayArea playArea)
         {
             // すでに表示してるなら表示処理を中断
-            if (AlreadyDisplaying(main))
+            if (AlreadyDisplaying(playArea))
             {
-                InterruptShowing(main);
+                InterruptShowing(playArea);
             }
 
             // 表示＆一定時間後に非表示にする
-            ShowAndSetHideTimer(main);
+            ShowAndSetHideTimer(playArea);
         }
 
-        private bool AlreadyDisplaying(MainWindow main)
+        private bool AlreadyDisplaying(GridPlayArea playArea)
         {
-            return (main.PlayArea.Children.Contains(DisplayImage));
+            return (playArea.PlayArea.Children.Contains(DisplayImage));
         }
 
-        private void InterruptShowing(MainWindow main)
+        private void InterruptShowing(GridPlayArea playArea)
         {
             // TimerはStopするだけで経過時刻がリセットされる
             // 再StartにあたってStop時点での経過時刻は引き継がれず、新規に時刻カウントし始める
             DisplayTimer.Stop();
-            RemoveShowingJudgeResultImage(main);
+            RemoveShowingJudgeResultImage(playArea);
         }
 
-        private void ShowAndSetHideTimer(MainWindow main)
+        private void ShowAndSetHideTimer(GridPlayArea playArea)
         {
-            main.PlayArea.Children.Add(DisplayImage);
+            playArea.PlayArea.Children.Add(DisplayImage);
             DisplayTimer.Start();
         }
     }
