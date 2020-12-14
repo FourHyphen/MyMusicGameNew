@@ -17,11 +17,13 @@ namespace MyMusicGameNew
 
         private JudgeResultImageSource BadImage { get; set; }
 
-        private static readonly string PerfectImagePath = "./GameData/JudgeResult/Result_Perfect.gif";
+        private static readonly string ImageDirPath = "./GameData/JudgeResult/";
 
-        private static readonly string GoodImagePath = "./GameData/JudgeResult/Result_Good.gif";
+        private static readonly string PerfectImagePath = ImageDirPath + "Result_Perfect.gif";
 
-        private static readonly string BadImagePath = "./GameData/JudgeResult/Result_Bad.gif";
+        private static readonly string GoodImagePath = ImageDirPath + "Result_Good.gif";
+
+        private static readonly string BadImagePath = ImageDirPath + "Result_Bad.gif";
 
         private static readonly string PerfectResultName = "Perfect";
 

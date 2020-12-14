@@ -58,11 +58,6 @@ namespace MyMusicGameNew
             PlayingMusicStatus.Content = status;
         }
 
-        public void SetNotesNum(string notesNum)
-        {
-           NotesNum.Content = notesNum;
-        }
-
         private void MainWindowKeyDown(object sender, KeyEventArgs e)
         {
             if (DoGamePlaying())

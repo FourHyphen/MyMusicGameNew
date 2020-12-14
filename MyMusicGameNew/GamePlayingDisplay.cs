@@ -47,8 +47,6 @@ namespace MyMusicGameNew
 
         public void DisplayNoteJudgeResult(Note note)
         {
-            // TODO: 結果判定時、その結果をプレイヤーが確認しやすい位置に一定時間表示する
-            //  -> メッセージ：実装中：自動テスト不可、機能追加のみ
             DisplayNoteJudgeResultImage(note.JudgeResult);
             RemoveNotePlayArea(note);
             UpdateJudgeResult(note.JudgeResult);

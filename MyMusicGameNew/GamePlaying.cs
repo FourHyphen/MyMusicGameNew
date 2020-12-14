@@ -20,8 +20,6 @@ namespace MyMusicGameNew
 
         private Music Music { get; }
 
-        private System.Windows.Point JudgeResultDisplayCenterPosition { get; set; }
-
         private System.Diagnostics.Stopwatch GameTimer { get; set; }
 
         private System.Timers.Timer GameFinishTimer { get; set; }
@@ -75,7 +73,12 @@ namespace MyMusicGameNew
         {
             Main.SetGameStatus("Playing");
             Main.SetPlayingMusicStatus("Playing");
-            Main.SetNotesNum(Music.Notes.Count.ToString());
+            SetNotesNum(Music.Notes.Count.ToString());
+        }
+
+        private void SetNotesNum(string notesNum)
+        {
+            _GridPlayArea.NotesNum.Content = notesNum;
         }
 
         private void PlayMusic()

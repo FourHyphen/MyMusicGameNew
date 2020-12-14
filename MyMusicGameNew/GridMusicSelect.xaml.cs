@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace MyMusicGameNew
 {
-    /// <summary>
-    /// GridMusicSelect.xaml の相互作用ロジック
-    /// </summary>
     public partial class GridMusicSelect : UserControl
     {
         private List<string> MusicList { get; set; }

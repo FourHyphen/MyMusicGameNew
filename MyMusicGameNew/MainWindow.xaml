@@ -17,13 +17,6 @@
         <Label x:Name="GameStatus"
                HorizontalAlignment="Center"
                Visibility="Hidden"/>
-        <Label Content="Notes: "
-               Visibility="Hidden"/>
-        <Label Content="Next: "
-               Visibility="Hidden"/>
-        <Label x:Name="NotesNum"
-               Content="---"
-               Visibility="Hidden"/>
         <Label x:Name="PlayingMusicStatus"
                Visibility="Hidden"/>
     </Grid>

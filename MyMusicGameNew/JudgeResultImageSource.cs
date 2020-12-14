@@ -97,7 +97,6 @@ namespace MyMusicGameNew
 
         public void Show(GridPlayArea playArea)
         {
-            // TODO: 表示時間の外部管理
             ShowPeriod(playArea);
         }
 
