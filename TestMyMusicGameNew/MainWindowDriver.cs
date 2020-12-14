@@ -36,7 +36,7 @@ namespace TestMyMusicGameNew
                 PlayingMusicStatus = new LabelAdapter(Tree, "PlayingMusicStatus");
                 NotesNum = new LabelAdapter(Tree, "NotesNum");
                 DisplayNotes = new DisplayNotesAdapter("Note");
-                DisplayNotesNearestJudgeLine = new LabelAdapter(Tree, "DisplayNotesNearestJudgeLine");
+                DisplayNotesNearestJudgeLine = new LabelAdapter(Tree, "DebugDisplayNotesNearestJudgeLine");
                 JudgeLine = new LineAdapter(Tree, "JudgeLine");
                 ResultPerfect = new LabelAdapter(Tree, "ResultPerfect");
                 ResultGood = new LabelAdapter(Tree, "ResultGood");

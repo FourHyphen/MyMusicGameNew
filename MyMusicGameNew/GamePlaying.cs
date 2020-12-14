@@ -33,7 +33,6 @@ namespace MyMusicGameNew
             _GamePlayingArea = area;
             _GamePlayingDisplay = new GamePlayingDisplay(playArea, area.JudgeResultDisplayCenterPosition);
             Music = new MusicFactory().Create(musicName, isTest: IsTest);
-            InitMusicNoteImage();
         }
 
         ~GamePlaying()
@@ -60,15 +59,6 @@ namespace MyMusicGameNew
             StartGameTimer();
         }
 
-        private void InitMusicNoteImage()
-        {
-            // TODO: MusicFactoryにこの処理を移植した方が良い(内部処理を公開してしまってる)
-            for (int i = 0; i < Music.Notes.Count; i++)
-            {
-                Music.Notes[i].InitImage(i);
-            }
-        }
-
         private void DisplayInfo()
         {
             Main.SetGameStatus("Playing");
@@ -85,6 +75,8 @@ namespace MyMusicGameNew
         {
             Music.PlayAsync();
         }
+
+        #region ゲーム終了時のイベント(タイマー管理)
 
         private void SetGameFinishedTimer(int musicTimeSecond, CancellationTokenSource cts)
         {
@@ -114,6 +106,10 @@ namespace MyMusicGameNew
         {
             cts.Cancel();
         }
+
+        #endregion
+
+        #region ゲーム中の処理(タイマー管理)
 
         private void StartTaskKeepMovingDuringGame(List<Note> notes, CancellationToken ct)
         {
@@ -175,11 +171,15 @@ namespace MyMusicGameNew
             }
         }
 
+        #endregion
+
         private void StartGameTimer()
         {
             GameTimer = new System.Diagnostics.Stopwatch();
             GameTimer.Start();
         }
+
+        #region ユーザー入力によるNoteのJudge
 
         public void Judge(Keys.EnableKeys key)
         {
@@ -226,5 +226,7 @@ namespace MyMusicGameNew
 
             return null;
         }
+
+        #endregion
     }
 }

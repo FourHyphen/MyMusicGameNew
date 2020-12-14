@@ -30,7 +30,7 @@ namespace MyMusicGameNew
             Source = Common.GetImage(displayImagePath);
             CreateDisplayImage(Source, center);
             // TODO: 表示時間の外部管理化
-            InitDisplayTimer(playArea, 500);
+            InitRemoveShowingJudgeResultTimer(playArea, 500);
         }
 
         ~JudgeResultImageSource()
@@ -73,7 +73,7 @@ namespace MyMusicGameNew
             return transform;
         }
 
-        private void InitDisplayTimer(GridPlayArea playArea, int displayTimeMilliseconds)
+        private void InitRemoveShowingJudgeResultTimer(GridPlayArea playArea, int displayTimeMilliseconds)
         {
             DisplayTimer = new System.Timers.Timer();
             DisplayTimer.AutoReset = false;  // 1回だけタイマー処理を実行
@@ -120,7 +120,7 @@ namespace MyMusicGameNew
         private void InterruptShowing(GridPlayArea playArea)
         {
             // TimerはStopするだけで経過時刻がリセットされる
-            // 再StartにあたってStop時点での経過時刻は引き継がれず、新規に時刻カウントし始める
+            // (再StartにあたってStop時点での経過時刻は引き継がれない)
             DisplayTimer.Stop();
             RemoveShowingJudgeResultImage(playArea);
         }

@@ -35,6 +35,7 @@
                 <RowDefinition Height="3*"/>
             </Grid.RowDefinitions>
 
+            <!--Number of Note-->
             <Grid Grid.Column="0" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
@@ -72,7 +73,7 @@
             </Grid>
         </Grid>
 
-        <Label x:Name="DisplayNotesNearestJudgeLine"
+        <Label x:Name="DebugDisplayNotesNearestJudgeLine"
                Visibility="Hidden"/>
     </Grid>
 </UserControl>

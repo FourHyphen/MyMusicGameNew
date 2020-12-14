@@ -41,7 +41,7 @@ namespace MyMusicGameNew
             {
                 string x = ((int)note.NowX).ToString().PadLeft(7);
                 string y = ((int)note.NowY).ToString().PadLeft(7);
-                _GridPlayArea.DisplayNotesNearestJudgeLine.Content = "(" + x + ", " + y + ")";
+                _GridPlayArea.DebugDisplayNotesNearestJudgeLine.Content = "(" + x + ", " + y + ")";
             }
         }
 

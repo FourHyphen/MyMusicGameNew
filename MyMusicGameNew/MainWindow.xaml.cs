@@ -23,22 +23,16 @@ namespace MyMusicGameNew
         public MainWindow()
         {
             InitializeComponent();
-            SetEnvironmentCurrentDirectory(Environment.CurrentDirectory + "../../../");  // F5開始を想定
-
             Init();
         }
 
+
         private void Init()
         {
+            SetEnvironmentCurrentDirectory(Environment.CurrentDirectory + "../../../");  // F5開始を想定
             MusicSelect.Init(this);
             PlayArea.Init(this, IsTest);
             ShowMusicSelect();
-        }
-
-        private void ShowMusicSelect()
-        {
-            MusicSelect.Visibility = Visibility.Visible;
-            PlayArea.Visibility = Visibility.Hidden;
         }
 
         private void SetEnvironmentCurrentDirectory(string environmentDirPath)
@@ -47,6 +41,14 @@ namespace MyMusicGameNew
             Environment.CurrentDirectory = environmentDirPath;
             IsTest = (Environment.CurrentDirectory.Contains("TestMyMusicGameNew"));
         }
+
+        private void ShowMusicSelect()
+        {
+            MusicSelect.Visibility = Visibility.Visible;
+            PlayArea.Visibility = Visibility.Hidden;
+        }
+
+        #region テスト用処理
 
         public void SetGameStatus(string status)
         {
@@ -58,6 +60,10 @@ namespace MyMusicGameNew
             PlayingMusicStatus.Content = status;
         }
 
+        #endregion
+
+        #region キー入力処理
+
         private void MainWindowKeyDown(object sender, KeyEventArgs e)
         {
             if (DoGamePlaying())
@@ -65,6 +71,10 @@ namespace MyMusicGameNew
                 PlayArea.Judge(e);
             }
         }
+
+        #endregion
+
+        #region 他画面との連携
 
         private bool DoGamePlaying()
         {
@@ -87,5 +97,7 @@ namespace MyMusicGameNew
         {
             ShowMusicSelect();
         }
+
+        #endregion
     }
 }

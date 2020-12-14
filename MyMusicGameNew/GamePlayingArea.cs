@@ -8,7 +8,7 @@ namespace MyMusicGameNew
 {
     public class GamePlayingArea
     {
-        public int JudgeLineYFromAreaTop { get; private set; }
+        private int JudgeLineYFromAreaTop { get; set; }
 
         public System.Windows.Point JudgeResultDisplayCenterPosition { get; private set; }
 

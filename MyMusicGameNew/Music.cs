@@ -22,6 +22,15 @@ namespace MyMusicGameNew
             TimeSecond = timeSecond;
             Notes = notes;
             PlayingMusic = play;
+            InitMusicNoteImage();
+        }
+
+        private void InitMusicNoteImage()
+        {
+            for (int i = 0; i < Notes.Count; i++)
+            {
+                Notes[i].InitImage(i);
+            }
         }
 
         public void PlayAsync()

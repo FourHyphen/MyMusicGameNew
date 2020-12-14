@@ -51,6 +51,13 @@ namespace MyMusicGameNew
             image.Show(_GridPlayArea);
         }
 
+        private void RemoveShowingJudgeResultImage()
+        {
+            PerfectImage.RemoveShowingJudgeResultImage(_GridPlayArea);
+            GoodImage.RemoveShowingJudgeResultImage(_GridPlayArea);
+            BadImage.RemoveShowingJudgeResultImage(_GridPlayArea);
+        }
+
         private JudgeResultImageSource GetWillShowImage(NoteJudge.JudgeType result)
         {
             if (result == NoteJudge.JudgeType.Perfect)
@@ -65,13 +72,6 @@ namespace MyMusicGameNew
             {
                 return BadImage;
             }
-        }
-
-        private void RemoveShowingJudgeResultImage()
-        {
-            PerfectImage.RemoveShowingJudgeResultImage(_GridPlayArea);
-            GoodImage.RemoveShowingJudgeResultImage(_GridPlayArea);
-            BadImage.RemoveShowingJudgeResultImage(_GridPlayArea);
         }
     }
 }
