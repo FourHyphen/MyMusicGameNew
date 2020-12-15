@@ -139,9 +139,8 @@ namespace MyMusicGameNew
 
         private void DisplayNotesAndCheckMissedNotesCore(List<Note> notes, TimeSpan now)
         {
-            for (int i = 0; i < notes.Count; i++)
+            foreach (Note note in notes)
             {
-                Note note = notes[i];
                 if (note.AlreadyJudged())
                 {
                     continue;
@@ -149,7 +148,6 @@ namespace MyMusicGameNew
 
                 JudgeBadWhenNotePassedJudgeLineForAWhile(note, now);
                 DisplayNote(note, now);
-                _GamePlayingDisplay.SetTestString(note, i);
             }
         }
 

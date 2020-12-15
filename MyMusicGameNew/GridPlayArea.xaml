@@ -72,8 +72,5 @@
                 </StackPanel>
             </Grid>
         </Grid>
-
-        <Label x:Name="DebugDisplayNotesNearestJudgeLine"
-               Visibility="Hidden"/>
     </Grid>
 </UserControl>

@@ -34,17 +34,6 @@ namespace MyMusicGameNew
             }
         }
 
-        public void SetTestString(Note note, int index)
-        {
-            // テスト用: 現在座標の表示
-            if (index == 0)
-            {
-                string x = ((int)note.NowX).ToString().PadLeft(7);
-                string y = ((int)note.NowY).ToString().PadLeft(7);
-                _GridPlayArea.DebugDisplayNotesNearestJudgeLine.Content = "(" + x + ", " + y + ")";
-            }
-        }
-
         public void DisplayNoteJudgeResult(Note note)
         {
             DisplayNoteJudgeResultImage(note.JudgeResult);

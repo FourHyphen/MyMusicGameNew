@@ -61,35 +61,10 @@ namespace TestMyMusicGameNew
         }
 
         [TestMethod]
-        public void TestDisplaySelectMusic()
-        {
-            Assert.IsTrue(Driver.GameStatus.Contains("Select"));
-            Assert.IsTrue(Driver.GameStatus.Contains("Music"));
-        }
-
-        [TestMethod]
-        public void TestStartOfGameWhenSelectedMusicAndCallStartOfGame()
-        {
-            Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
-            Driver.GameStartButton.Click();
-            Assert.IsTrue(Driver.GameStatus.Contains("Playing"));
-        }
-
-        [TestMethod]
         public void TestNotStartOfGameWhenNotSelectMusicAndCallStartOfGame()
         {
             Driver.GameStartButton.Click();
             Assert.IsFalse(Driver.GameStatus.Contains("Playing"));
-        }
-
-        [TestMethod]
-        public void TestPlayMusicWhenStartOfGame()
-        {
-            Assert.IsTrue(Driver.PlayingMusicStatus.Content().Contains("Not"));
-            Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
-            Driver.GameStartButton.Click();
-            Assert.IsFalse(Driver.PlayingMusicStatus.Contains("Not"));
-            Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Playing"));
         }
 
         [TestMethod]
@@ -101,30 +76,17 @@ namespace TestMyMusicGameNew
         }
 
         [TestMethod]
-        public void TestGameFinishWhenEndMusic()
+        public void TestPlayingMusicWhenGameStartAndFinish()
         {
+            Assert.IsTrue(Driver.PlayingMusicStatus.Content().Contains("Not"));
+
             Driver.MusicList.ChangeSelectedIndex(Test2MusicIndex);
             Driver.GameStartButton.Click();
+            Assert.IsFalse(Driver.PlayingMusicStatus.Contains("Not"));
             Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Playing"));
+
             Sleep(Test2MusicTimeSecond + 1);  // 1[s]余裕を持たせる
             Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Finish"));
-        }
-
-        [TestMethod]
-        public void TestNoteDisplayAndNearbyJudgeLineAfterGameStart()
-        {
-            Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
-            Assert.AreEqual(expected: NoDisplayNote, actual: Driver.GetDisplayNotesNum(0));
-
-            Driver.GameStartButton.Click();
-            Assert.IsTrue(Driver.ExistJudgeLine());
-            Assert.AreEqual(expected: DisplayNote1AndMore, actual: Driver.GetDisplayNotesNum(0));
-
-            System.Windows.Point start = Driver.GetDisplayNotesNearestJudgeLine();
-            Sleep(0.5);  // sleepしすぎるとノートが画面外に出てしまうので少しの時間にする
-            System.Windows.Point moving = Driver.GetDisplayNotesNearestJudgeLine();
-            Assert.IsTrue(start.X == moving.X);
-            Assert.IsTrue(start.Y < moving.Y);  // 画面下方向を正とする
         }
 
         [TestMethod]
@@ -210,7 +172,6 @@ namespace TestMyMusicGameNew
         {
             // キーボード入力による判定
             EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
-            System.Windows.Point clickPointNote1 = emurateNote1.EmurateCalcJustJudgeLinePoint();
 
             Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
             Driver.GameStartButton.Click();

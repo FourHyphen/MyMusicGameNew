@@ -20,10 +20,7 @@ namespace TestMyMusicGameNew
             public LabelAdapter PlayingMusicStatus { get; }
             public LabelAdapter NotesNum { get; }
             private DisplayNotesAdapter DisplayNotes { get; }
-            private LabelAdapter DisplayNotesNearestJudgeLine { get; }
-            private LineAdapter JudgeLine { get; }
             public LabelAdapter ResultPerfect { get; }
-            public LabelAdapter ResultGood { get; }
             public LabelAdapter ResultBad { get; }
 
             public MainWindowDriver(dynamic mainWindow)
@@ -36,10 +33,7 @@ namespace TestMyMusicGameNew
                 PlayingMusicStatus = new LabelAdapter(Tree, "PlayingMusicStatus");
                 NotesNum = new LabelAdapter(Tree, "NotesNum");
                 DisplayNotes = new DisplayNotesAdapter("Note");
-                DisplayNotesNearestJudgeLine = new LabelAdapter(Tree, "DebugDisplayNotesNearestJudgeLine");
-                JudgeLine = new LineAdapter(Tree, "JudgeLine");
                 ResultPerfect = new LabelAdapter(Tree, "ResultPerfect");
-                ResultGood = new LabelAdapter(Tree, "ResultGood");
                 ResultBad = new LabelAdapter(Tree, "ResultBad");
             }
 
@@ -47,24 +41,6 @@ namespace TestMyMusicGameNew
             {
                 Tree = new WindowControl(MainWindow).LogicalTree();  // 現在の画面状況を取得
                 return DisplayNotes.GetDisplayNum(Tree, startIndex);
-            }
-
-            public System.Windows.Point GetDisplayNotesNearestJudgeLine()
-            {
-                string str = DisplayNotesNearestJudgeLine.Content();
-                int xStart = "(".Length;
-                int xLength = 7;
-                int x = int.Parse(str.Substring(xStart, xLength));
-
-                int yStart = xStart + xLength + ", ".Length;
-                int yLength = 7;
-                int y = int.Parse(str.Substring(yStart, yLength));
-                return new System.Windows.Point(x, y);
-            }
-
-            public bool ExistJudgeLine()
-            {
-                return (JudgeLine != null);
             }
 
             public void EmurateLeftClickGamePlaying(System.Windows.Point p)
