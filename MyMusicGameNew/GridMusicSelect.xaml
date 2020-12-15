@@ -14,16 +14,17 @@
 
         <!--MusicList-->
         <Grid Grid.Column="0">
-            <ListBox x:Name="MusicListBox"/>
+            <ListBox x:Name="MusicListBox"
+                     SelectionChanged="MusicListBoxSelectionChanged"/>
         </Grid>
 
         <!--GameStart Button-->
         <Grid Grid.Column="1">
             <Button x:Name="GameStartButton"
-                Content="GameStart"
-                Width="300"
-                Height="100"
-                Click="GameStartButtonClick"/>
+                    Content="Select Music"
+                    Width="300"
+                    Height="100"
+                    Click="GameStartButtonClick"/>
         </Grid>
     </Grid>
 </UserControl>

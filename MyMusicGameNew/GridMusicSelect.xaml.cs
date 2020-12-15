@@ -54,6 +54,11 @@ namespace MyMusicGameNew
             }
         }
 
+        private void MusicListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            GameStartButton.Content = "Game Start";
+        }
+
         private void GameStartButtonClick(object sender, RoutedEventArgs e)
         {
             if (ReadyGameStart())
