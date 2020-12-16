@@ -52,12 +52,12 @@ namespace MyMusicGameNew
 
         public void SetGameStatus(string status)
         {
-            GameStatus.Content = status;
+            DebugGameStatus.Content = status;
         }
 
         public void SetPlayingMusicStatus(string status)
         {
-            PlayingMusicStatus.Content = status;
+            DebugPlayingMusicStatus.Content = status;
         }
 
         #endregion

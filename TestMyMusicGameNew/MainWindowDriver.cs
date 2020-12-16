@@ -28,9 +28,9 @@ namespace TestMyMusicGameNew
                 MainWindow = mainWindow;
                 Tree = new WindowControl(mainWindow).LogicalTree();
                 MusicList = new MusicListAdapter(Tree, "MusicListBox");
-                GameStatus = new LabelAdapter(Tree, "GameStatus");
+                GameStatus = new LabelAdapter(Tree, "DebugGameStatus");
                 GameStartButton = new ButtonAdapter(Tree, "GameStartButton");
-                PlayingMusicStatus = new LabelAdapter(Tree, "PlayingMusicStatus");
+                PlayingMusicStatus = new LabelAdapter(Tree, "DebugPlayingMusicStatus");
                 NotesNum = new LabelAdapter(Tree, "NotesNum");
                 DisplayNotes = new DisplayNotesAdapter("Note");
                 ResultPerfect = new LabelAdapter(Tree, "ResultPerfect");

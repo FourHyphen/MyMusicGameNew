@@ -14,10 +14,10 @@
                             Visibility="Hidden"/>
 
         <!--Debug Info-->
-        <Label x:Name="GameStatus"
+        <Label x:Name="DebugGameStatus"
                HorizontalAlignment="Center"
                Visibility="Hidden"/>
-        <Label x:Name="PlayingMusicStatus"
+        <Label x:Name="DebugPlayingMusicStatus"
                Visibility="Hidden"/>
     </Grid>
 </Window>
