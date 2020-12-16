@@ -33,6 +33,8 @@ namespace MyMusicGameNew
             _GamePlayingArea = area;
             _GamePlayingDisplay = new GamePlayingDisplay(playArea, area.JudgeResultDisplayCenterPosition);
             Music = new MusicFactory().Create(musicName, isTest: IsTest);
+
+            GameInit();
         }
 
         ~GamePlaying()
@@ -49,36 +51,15 @@ namespace MyMusicGameNew
             }
         }
 
-        public void Start()
+        private void GameInit()
         {
             var cts = new CancellationTokenSource();
-            DisplayInfo();
-            SetGameFinishedTimer(Music.TimeSecond, cts);
+            InitGameFinishedTimer(Music.TimeSecond, cts);
             StartTaskKeepMovingDuringGame(Music.Notes, cts.Token);
-            PlayMusic();
-            StartGameTimer();
+            InitGameTimer();
         }
 
-        private void DisplayInfo()
-        {
-            Main.SetGameStatus("Playing");
-            Main.SetPlayingMusicStatus("Playing");
-            SetNotesNum(Music.Notes.Count.ToString());
-        }
-
-        private void SetNotesNum(string notesNum)
-        {
-            _GridPlayArea.NotesNum.Content = notesNum;
-        }
-
-        private void PlayMusic()
-        {
-            Music.PlayAsync();
-        }
-
-        #region ゲーム終了時のイベント(タイマー管理)
-
-        private void SetGameFinishedTimer(int musicTimeSecond, CancellationTokenSource cts)
+        private void InitGameFinishedTimer(int musicTimeSecond, CancellationTokenSource cts)
         {
             GameFinishTimer = new System.Timers.Timer();
             GameFinishTimer.Interval = (musicTimeSecond + 1) * 1000;  // 1[s]余裕を持たせる
@@ -89,7 +70,6 @@ namespace MyMusicGameNew
                     ProcessGameFinished(cts);
                 }));
             };
-            GameFinishTimer.Start();
         }
 
         private void ProcessGameFinished(CancellationTokenSource cts)
@@ -106,10 +86,6 @@ namespace MyMusicGameNew
         {
             cts.Cancel();
         }
-
-        #endregion
-
-        #region ゲーム中の処理(タイマー管理)
 
         private void StartTaskKeepMovingDuringGame(List<Note> notes, CancellationToken ct)
         {
@@ -169,12 +145,34 @@ namespace MyMusicGameNew
             }
         }
 
-        #endregion
-
-        private void StartGameTimer()
+        private void InitGameTimer()
         {
             GameTimer = new System.Diagnostics.Stopwatch();
+        }
+
+        public void Start()
+        {
+            DisplayInfo();
+            GameFinishTimer.Start();
+            PlayMusic();
             GameTimer.Start();
+        }
+
+        private void DisplayInfo()
+        {
+            Main.SetGameStatus("Playing");
+            Main.SetPlayingMusicStatus("Playing");
+            SetNotesNum(Music.Notes.Count.ToString());
+        }
+
+        private void SetNotesNum(string notesNum)
+        {
+            _GridPlayArea.NotesNum.Content = notesNum;
+        }
+
+        private void PlayMusic()
+        {
+            Music.PlayAsync();
         }
 
         #region ユーザー入力によるNoteのJudge
