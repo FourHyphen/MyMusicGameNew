@@ -33,8 +33,6 @@ namespace MyMusicGameNew
             _GamePlayingArea = area;
             _GamePlayingDisplay = new GamePlayingDisplay(playArea, area.JudgeResultDisplayCenterPosition);
             Music = new MusicFactory().Create(musicName, isTest: IsTest);
-
-            GameInit();
         }
 
         ~GamePlaying()
@@ -51,14 +49,26 @@ namespace MyMusicGameNew
             }
         }
 
+        public void Starting()
+        {
+            // TODO: 待機時間の外部管理化
+            GameInit();
+            DisplayInfo();
+            _GamePlayingDisplay.DisplayStartingWait(3);
+        }
+
+        #region ゲーム開始直前の処理の詳細
+
         private void GameInit()
         {
+            GameTimer = new System.Diagnostics.Stopwatch();
+
             var cts = new CancellationTokenSource();
             InitGameFinishedTimer(Music.TimeSecond, cts);
             StartTaskKeepMovingDuringGame(Music.Notes, cts.Token);
-            InitGameTimer();
         }
 
+        // ゲーム終了時の処理
         private void InitGameFinishedTimer(int musicTimeSecond, CancellationTokenSource cts)
         {
             GameFinishTimer = new System.Timers.Timer();
@@ -87,9 +97,9 @@ namespace MyMusicGameNew
             cts.Cancel();
         }
 
+        // ゲーム中に常駐させる処理
         private void StartTaskKeepMovingDuringGame(List<Note> notes, CancellationToken ct)
         {
-            _GridPlayArea.JudgeLine.Visibility = Visibility.Visible;
             TaskKeepMovingDuringGame = Task.Run(() =>
             {
                 DisplayNotesAndCheckMissedNotes(notes, ct);
@@ -145,24 +155,15 @@ namespace MyMusicGameNew
             }
         }
 
-        private void InitGameTimer()
-        {
-            GameTimer = new System.Diagnostics.Stopwatch();
-        }
-
-        public void Start()
-        {
-            DisplayInfo();
-            GameFinishTimer.Start();
-            PlayMusic();
-            GameTimer.Start();
-        }
-
         private void DisplayInfo()
         {
-            Main.SetGameStatus("Playing");
-            Main.SetPlayingMusicStatus("Playing");
-            SetNotesNum(Music.Notes.Count.ToString());
+            // TODO: 言語仕様対応の特殊なコードを隠蔽したい
+            Main.Dispatcher.Invoke(() =>
+            {
+                Main.SetGameStatus("Playing");
+                Main.SetPlayingMusicStatus("Playing");
+                SetNotesNum(Music.Notes.Count.ToString());
+            });
         }
 
         private void SetNotesNum(string notesNum)
@@ -170,12 +171,23 @@ namespace MyMusicGameNew
             _GridPlayArea.NotesNum.Content = notesNum;
         }
 
+        #endregion
+
+        public void Start()
+        {
+            GameFinishTimer.Start();
+            PlayMusic();
+            GameTimer.Start();
+        }
+
+        #region ゲーム開始時処理の詳細
+
         private void PlayMusic()
         {
             Music.PlayAsync();
         }
 
-        #region ユーザー入力によるNoteのJudge
+        #endregion
 
         public void Judge(Keys.EnableKeys key)
         {
@@ -188,6 +200,8 @@ namespace MyMusicGameNew
             int inputLine = _GamePlayingArea.ConvertXLine(mouseClicked.X);
             JudgeCore(inputLine);
         }
+
+        #region ユーザー入力によるNoteのJudge、詳細
 
         private void JudgeCore(int inputLine)
         {
