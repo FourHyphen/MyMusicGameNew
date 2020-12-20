@@ -65,17 +65,14 @@ namespace TestMyMusicGameNew
         [TestMethod]
         public void TestNotStartOfGameWhenNotSelectMusicAndCallStartOfGame()
         {
-            Driver.GameStartButton.Click();
-            Sleep(UntilGameStart.TotalSeconds);
+            GameStart();
             Assert.IsFalse(Driver.GameStatus.Contains("Playing"));
         }
 
         [TestMethod]
         public void TestGetNotesWhenStartOfGame()
         {
-            Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
-            Driver.GameStartButton.Click();
-            Sleep(UntilGameStart.TotalSeconds);
+            GameStart(Test1MusicIndex);
             Assert.AreEqual(expected: ExpectedTest1NotesNum, actual: int.Parse(Driver.NotesNum.Content()));
         }
 
@@ -84,9 +81,8 @@ namespace TestMyMusicGameNew
         {
             Assert.IsTrue(Driver.PlayingMusicStatus.Content().Contains("Not"));
 
-            Driver.MusicList.ChangeSelectedIndex(Test2MusicIndex);
-            Driver.GameStartButton.Click();
-            Sleep(UntilGameStart.TotalSeconds);
+            GameStart(Test2MusicIndex);
+
             Assert.IsFalse(Driver.PlayingMusicStatus.Contains("Not"));
             Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Playing"));
 
@@ -104,9 +100,7 @@ namespace TestMyMusicGameNew
 
             Assert.AreEqual(expected: 0, actual: Driver.ResultPerfect.Number());
             Assert.AreEqual(expected: 0, actual: Driver.ResultBad.Number());
-            Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
-            Driver.GameStartButton.Click();
-            Sleep(UntilGameStart.TotalSeconds);
+            GameStart(Test1MusicIndex);
 
             Sleep(emurateNote1.JustTiming.TotalSeconds);
             Driver.EmurateLeftClickGamePlaying(clickPointNote1);
@@ -122,9 +116,7 @@ namespace TestMyMusicGameNew
             EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
             System.Windows.Point clickPointNote1 = emurateNote1.EmurateCalcJustJudgeLinePoint();
 
-            Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
-            Driver.GameStartButton.Click();
-            Sleep(UntilGameStart.TotalSeconds);
+            GameStart(Test1MusicIndex);
 
             // 曲開始直後だとゲームが始まってないかもしれないため少しだけwait
             Sleep(0.1);
@@ -139,9 +131,7 @@ namespace TestMyMusicGameNew
             EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
             System.Windows.Point clickPointNote1 = emurateNote1.EmurateCalcJustJudgeLinePoint();
 
-            Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
-            Driver.GameStartButton.Click();
-            Sleep(UntilGameStart.TotalSeconds);
+            GameStart(Test1MusicIndex);
 
             Sleep(emurateNote1.JustTiming.TotalSeconds);
             Driver.EmurateLeftClickGamePlaying(clickPointNote1);
@@ -163,9 +153,7 @@ namespace TestMyMusicGameNew
             // 判定ラインを通り過ぎて一定時間が経っても結果を判定されていないノートはBad判定する
             EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
 
-            Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
-            Driver.GameStartButton.Click();
-            Sleep(UntilGameStart.TotalSeconds);
+            GameStart(Test1MusicIndex);
 
             Sleep(emurateNote1.BadTooSlowTiming.TotalSeconds);
             Assert.AreEqual(expected: 0, actual: Driver.ResultPerfect.Number());
@@ -182,14 +170,24 @@ namespace TestMyMusicGameNew
             // キーボード入力による判定
             EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
 
-            Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
-            Driver.GameStartButton.Click();
-            Sleep(UntilGameStart.TotalSeconds);
+            GameStart(Test1MusicIndex);
 
             Sleep(emurateNote1.JustTiming.TotalSeconds);
             Driver.EmuratePressKeyboardGamePlaying(MyMusicGameNew.Keys.EnableKeys.JudgeLine1);
             Assert.AreEqual(expected: 1, actual: Driver.ResultPerfect.Number());
             Assert.AreEqual(expected: 0, actual: Driver.ResultBad.Number());
+        }
+
+        private void GameStart(int musicIndex)
+        {
+            Driver.MusicList.ChangeSelectedIndex(musicIndex);
+            GameStart();
+        }
+
+        private void GameStart()
+        {
+            Driver.GameStartButton.Click();
+            Sleep(UntilGameStart.TotalSeconds);
         }
 
         private void Sleep(double second)
