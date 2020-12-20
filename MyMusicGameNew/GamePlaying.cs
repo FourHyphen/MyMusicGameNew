@@ -157,7 +157,6 @@ namespace MyMusicGameNew
 
         private void DisplayInfo()
         {
-            // TODO: 言語仕様対応の特殊なコードを隠蔽したい
             Main.Dispatcher.Invoke(() =>
             {
                 Main.SetGameStatus("Playing");

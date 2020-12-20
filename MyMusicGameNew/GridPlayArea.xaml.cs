@@ -34,21 +34,20 @@ namespace MyMusicGameNew
             IsTest = isTest;
         }
 
-        public async void GameStart(MainWindow main, string musicName)
+        public void GameStart(MainWindow main, string musicName)
         {
             GamePlayingArea area = new GamePlayingArea((int)PlayArea.ActualWidth, (int)PlayArea.ActualHeight);
             GamePlay = new GamePlaying(main, this, area, musicName, IsTest);
-            // TODO: 言語仕様の特殊なコードを隠蔽したい
-            await Task.Run(() =>
-            {
-                GameStartCore();
-            });
+            GameStartCore();
         }
 
-        private void GameStartCore()
+        private async void GameStartCore()
         {
-            GamePlay.Starting();
-            GamePlay.Start();
+            await Task.Run(() =>
+            {
+                GamePlay.Starting();
+                GamePlay.Start();
+            });
         }
 
         private void PlayAreaMouseDown(object sender, MouseButtonEventArgs e)
