@@ -16,6 +16,8 @@ namespace MyMusicGameNew
 
         private PlayingMusic PlayingMusic { get; set; }
 
+        public int NotesNum { get { return Notes.Count; } }
+
         public Music(string name, int timeSecond, List<Note> notes, PlayingMusic play)
         {
             Name = name;
@@ -36,6 +38,24 @@ namespace MyMusicGameNew
         public void PlayAsync()
         {
             PlayingMusic.PlayAsync();
+        }
+
+        public Note GetLatestUnjudgedNoteForLine(int inputLine)
+        {
+            foreach (Note n in Notes)
+            {
+                if (n.AlreadyJudged())
+                {
+                    continue;
+                }
+
+                if (inputLine == n.XLine)
+                {
+                    return n;
+                }
+            }
+
+            return null;
         }
     }
 }

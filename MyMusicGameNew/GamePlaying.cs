@@ -65,7 +65,7 @@ namespace MyMusicGameNew
 
             var cts = new CancellationTokenSource();
             InitGameFinishedTimer(Music.TimeSecond, cts);
-            StartTaskKeepMovingDuringGame(Music.Notes, cts.Token);
+            StartTaskKeepMovingDuringGame(cts.Token);
         }
 
         // ゲーム終了時の処理
@@ -98,22 +98,22 @@ namespace MyMusicGameNew
         }
 
         // ゲーム中に常駐させる処理
-        private void StartTaskKeepMovingDuringGame(List<Note> notes, CancellationToken ct)
+        private void StartTaskKeepMovingDuringGame(CancellationToken ct)
         {
             TaskKeepMovingDuringGame = Task.Run(() =>
             {
-                DisplayNotesAndCheckMissedNotes(notes, ct);
+                DisplayNotesAndCheckMissedNotes(ct);
             });
         }
 
-        private void DisplayNotesAndCheckMissedNotes(List<Note> notes, CancellationToken ct)
+        private void DisplayNotesAndCheckMissedNotes(CancellationToken ct)
         {
             while (true)
             {
                 _GridPlayArea.JudgeLine.Dispatcher.Invoke(new Action(() =>
                 {
                     TimeSpan now = GameTimer.Elapsed;
-                    DisplayNotesAndCheckMissedNotesCore(notes, now);
+                    DisplayNotesAndCheckMissedNotesCore(now);
                 }));
 
                 if (ct.IsCancellationRequested)
@@ -123,9 +123,9 @@ namespace MyMusicGameNew
             }
         }
 
-        private void DisplayNotesAndCheckMissedNotesCore(List<Note> notes, TimeSpan now)
+        private void DisplayNotesAndCheckMissedNotesCore(TimeSpan now)
         {
-            foreach (Note note in notes)
+            foreach (Note note in Music.Notes)
             {
                 if (note.AlreadyJudged())
                 {
@@ -133,7 +133,8 @@ namespace MyMusicGameNew
                 }
 
                 JudgeBadWhenNotePassedJudgeLineForAWhile(note, now);
-                DisplayNote(note, now);
+                note.CalcNowPoint(_GamePlayingArea, now);
+                DisplayNote(note);
             }
         }
 
@@ -146,9 +147,8 @@ namespace MyMusicGameNew
             }
         }
 
-        private void DisplayNote(Note note, TimeSpan now)
+        private void DisplayNote(Note note)
         {
-            note.CalcNowPoint(_GamePlayingArea, now);
             if (_GamePlayingArea.IsInsidePlayArea(note))
             {
                 _GamePlayingDisplay.DisplayNotePlayArea(note);
@@ -161,7 +161,7 @@ namespace MyMusicGameNew
             {
                 Main.SetGameStatus("Playing");
                 Main.SetPlayingMusicStatus("Playing");
-                SetNotesNum(Music.Notes.Count.ToString());
+                SetNotesNum(Music.NotesNum.ToString());
             });
         }
 
@@ -204,7 +204,7 @@ namespace MyMusicGameNew
 
         private void JudgeCore(int inputLine)
         {
-            Note note = GetLatestUnjudgedNoteForLine(inputLine);
+            Note note = Music.GetLatestUnjudgedNoteForLine(inputLine);
             if (note is null)
             {
                 return;
@@ -216,24 +216,6 @@ namespace MyMusicGameNew
             {
                 _GamePlayingDisplay.DisplayNoteJudgeResult(note);
             }
-        }
-
-        private Note GetLatestUnjudgedNoteForLine(int inputLine)
-        {
-            foreach (Note n in Music.Notes)
-            {
-                if (n.AlreadyJudged())
-                {
-                    continue;
-                }
-
-                if (inputLine == n.XLine)
-                {
-                    return n;
-                }
-            }
-
-            return null;
         }
 
         #endregion
