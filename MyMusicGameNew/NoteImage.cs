@@ -11,7 +11,7 @@ namespace MyMusicGameNew
 {
     public class NoteImage
     {
-        public Image DisplayImage { get; private set; }
+        private Image DisplayImage { get; set; }
 
         private BitmapSource NotesBitmap { get; set; }
 
@@ -54,9 +54,26 @@ namespace MyMusicGameNew
             return transform;
         }
 
-        public void SetVisible()
+        public void DisplayPlayArea(System.Windows.Controls.UIElementCollection collection)
+        {
+            if (!collection.Contains(DisplayImage))
+            {
+                SetVisible();
+                collection.Add(DisplayImage);
+            }
+        }
+
+        private void SetVisible()
         {
             DisplayImage.Visibility = System.Windows.Visibility.Visible;
+        }
+
+        public void HidePlayArea(System.Windows.Controls.UIElementCollection collection)
+        {
+            if (collection.Contains(DisplayImage))
+            {
+                collection.Remove(DisplayImage);
+            }
         }
     }
 }

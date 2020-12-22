@@ -42,14 +42,6 @@ namespace MyMusicGameNew
 
         public NoteJudge.JudgeType JudgeResult { get; private set; } = NoteJudge.JudgeType.NotYet;
 
-        public System.Windows.Controls.Image DisplayImage
-        {
-            get
-            {
-                return Image.DisplayImage;
-            }
-        }
-
         public Note(NoteData noteData, double noteSpeedYPerSec = 300.0)
         {
             _NoteData = noteData;
@@ -90,9 +82,14 @@ namespace MyMusicGameNew
             return (JudgeResult != NoteJudge.JudgeType.NotYet);
         }
 
-        public void SetVisible()
+        public void DisplayPlayArea(System.Windows.Controls.UIElementCollection collection)
         {
-            Image.SetVisible();
+            Image.DisplayPlayArea(collection);
+        }
+
+        public void HidePlayArea(System.Windows.Controls.UIElementCollection collection)
+        {
+            Image.HidePlayArea(collection);
         }
     }
 }

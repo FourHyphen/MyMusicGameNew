@@ -91,12 +91,7 @@ namespace MyMusicGameNew
 
         public void DisplayNotePlayArea(Note note)
         {
-            System.Windows.Controls.Image image = note.DisplayImage;
-            if (!_GridPlayArea.PlayArea.Children.Contains(image))
-            {
-                note.SetVisible();
-                _GridPlayArea.PlayArea.Children.Add(image);
-            }
+            note.DisplayPlayArea(_GridPlayArea.PlayArea.Children);
         }
 
         public void DisplayNoteJudgeResult(Note note)
@@ -113,11 +108,7 @@ namespace MyMusicGameNew
 
         private void RemoveNotePlayArea(Note note)
         {
-            System.Windows.Controls.Image image = note.DisplayImage;
-            if (_GridPlayArea.PlayArea.Children.Contains(image))
-            {
-                _GridPlayArea.PlayArea.Children.Remove(image);
-            }
+            note.HidePlayArea(_GridPlayArea.PlayArea.Children);
         }
 
         private void UpdateJudgeResult(NoteJudge.JudgeType result)
