@@ -29,16 +29,31 @@ namespace MyMusicGameNew
 
         public void DisplayStartingWait(int countdownStartSecond)
         {
-            // TODO: 言語仕様の特殊なコードを隠蔽したい
-            _GridPlayArea.Dispatcher.Invoke(() =>
-            {
-                DisplayCountdownCore(countdownStartSecond);
-            });
-            StartDisplayCountdownTimer(countdownStartSecond - 1);
+            DisplayCountdown(countdownStartSecond);
+            StartDisplayCountdown(countdownStartSecond - 1);
             WaitToFinishCountdown();
         }
 
-        private void StartDisplayCountdownTimer(int countdownStartSecond)
+        private void DisplayCountdown(int second)
+        {
+            _GridPlayArea.Dispatcher.Invoke(() =>
+            {
+                if (second == 1)
+                {
+                    _GridPlayArea.GameStatus.Content = "Ready";
+                }
+                else if (second == 0)
+                {
+                    _GridPlayArea.GameStatus.Content = "Playing...";
+                }
+                else
+                {
+                    _GridPlayArea.GameStatus.Content = second.ToString();
+                }
+            });
+        }
+
+        private void StartDisplayCountdown(int countdownStartSecond)
         {
             int countdownSecond = countdownStartSecond;
             CountdownTimer = new System.Timers.Timer();
@@ -46,56 +61,32 @@ namespace MyMusicGameNew
             CountdownTimer.Interval = 1000;  // 1[s]
             CountdownTimer.Elapsed += (s, e) =>
             {
-                _GridPlayArea.Dispatcher.Invoke(new Action(() =>
+                DisplayCountdown(countdownSecond);
+                if (countdownSecond <= 0)
                 {
-                    DisplayCountdownCore(countdownSecond);
-                    if (countdownSecond <= 0)
-                    {
-                        CountdownTimer.Stop();
-                        CountdownTimer.Enabled = false;
-                    }
-                    countdownSecond--;
-                }));
+                    CountdownTimer.Stop();
+                    CountdownTimer.Enabled = false;
+                }
+                countdownSecond--;
             };
 
             CountdownTimer.Start();
-        }
-
-        private void DisplayCountdownCore(int second)
-        {
-            if (second == 1)
-            {
-                _GridPlayArea.GameStatus.Content = "Ready";
-            }
-            else if (second == 0)
-            {
-                _GridPlayArea.GameStatus.Content = "Playing...";
-            }
-            else
-            {
-                _GridPlayArea.GameStatus.Content = second.ToString();
-            }
         }
 
         private void WaitToFinishCountdown()
         {
             Task task = Task.Run(() =>
             {
-                WaitToFinishCountdownCore();
+                while (true)
+                {
+                    if (!CountdownTimer.Enabled)
+                    {
+                        return;
+                    }
+                }
             });
 
             Task.WaitAll(task);
-        }
-
-        private void WaitToFinishCountdownCore()
-        {
-            while (true)
-            {
-                if (!CountdownTimer.Enabled)
-                {
-                    return;
-                }
-            }
         }
 
         public void DisplayNotePlayArea(Note note)
@@ -115,12 +106,12 @@ namespace MyMusicGameNew
             UpdateJudgeResult(note.JudgeResult);
         }
 
-        public void DisplayNoteJudgeResultImage(NoteJudge.JudgeType result)
+        private void DisplayNoteJudgeResultImage(NoteJudge.JudgeType result)
         {
             _JudgeResultImage.Show(result);
         }
 
-        public void RemoveNotePlayArea(Note note)
+        private void RemoveNotePlayArea(Note note)
         {
             System.Windows.Controls.Image image = note.DisplayImage;
             if (_GridPlayArea.PlayArea.Children.Contains(image))
@@ -129,7 +120,7 @@ namespace MyMusicGameNew
             }
         }
 
-        public void UpdateJudgeResult(NoteJudge.JudgeType result)
+        private void UpdateJudgeResult(NoteJudge.JudgeType result)
         {
             if (result == NoteJudge.JudgeType.Perfect)
             {
