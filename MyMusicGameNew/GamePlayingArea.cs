@@ -10,8 +10,6 @@ namespace MyMusicGameNew
     {
         private int JudgeLineYFromAreaTop { get; set; }
 
-        public System.Windows.Point JudgeResultDisplayCenterPosition { get; private set; }
-
         private int PlayAreaWidth { get; set; }
 
         private int PlayAreaHeight { get; set; }
@@ -22,7 +20,6 @@ namespace MyMusicGameNew
             PlayAreaWidth = playAreaWidth;
             PlayAreaHeight = playAreaHeight;
             JudgeLineYFromAreaTop = playAreaHeight - 100;
-            JudgeResultDisplayCenterPosition = new System.Windows.Point(playAreaWidth / 2, playAreaHeight - 200);
         }
 
         public bool IsInsidePlayArea(Note note)

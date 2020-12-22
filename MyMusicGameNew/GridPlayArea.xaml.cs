@@ -36,8 +36,7 @@ namespace MyMusicGameNew
 
         public void GameStart(MainWindow main, string musicName)
         {
-            GamePlayingArea area = new GamePlayingArea((int)PlayArea.ActualWidth, (int)PlayArea.ActualHeight);
-            GamePlay = new GamePlaying(main, this, area, musicName, IsTest);
+            GamePlay = new GamePlaying(main, this, musicName, IsTest);
             GameStartCore();
         }
 

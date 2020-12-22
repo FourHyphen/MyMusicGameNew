@@ -26,12 +26,12 @@ namespace MyMusicGameNew
 
         private Task TaskKeepMovingDuringGame { get; set; }
 
-        public GamePlaying(MainWindow main, GridPlayArea playArea, GamePlayingArea area, string musicName, bool IsTest)
+        public GamePlaying(MainWindow main, GridPlayArea playArea, string musicName, bool IsTest)
         {
             Main = main;
             _GridPlayArea = playArea;
-            _GamePlayingArea = area;
-            _GamePlayingDisplay = new GamePlayingDisplay(playArea, area.JudgeResultDisplayCenterPosition);
+            _GamePlayingArea = new GamePlayingArea((int)playArea.PlayArea.ActualWidth, (int)playArea.PlayArea.ActualHeight);
+            _GamePlayingDisplay = new GamePlayingDisplay(playArea);
             Music = new MusicFactory().Create(musicName, isTest: IsTest);
         }
 

@@ -21,10 +21,16 @@ namespace MyMusicGameNew
 
         private int BadNum { get; set; } = 0;
 
-        public GamePlayingDisplay(GridPlayArea playArea, System.Windows.Point judgeResultDisplayCenter)
+        public GamePlayingDisplay(GridPlayArea playArea)
         {
             _GridPlayArea = playArea;
-            _JudgeResultImage = new JudgeResultImage(_GridPlayArea, judgeResultDisplayCenter);
+            _JudgeResultImage = new JudgeResultImage(_GridPlayArea, GetJudgeResultDisplayCenter());
+        }
+
+        private System.Windows.Point GetJudgeResultDisplayCenter()
+        {
+            // TODO: 設定値の外部管理化
+            return new System.Windows.Point(_GridPlayArea.PlayArea.ActualWidth / 2, _GridPlayArea.PlayArea.ActualHeight - 200);
         }
 
         public void DisplayStartingWait(int countdownStartSecond)
