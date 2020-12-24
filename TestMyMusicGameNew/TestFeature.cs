@@ -32,9 +32,8 @@ namespace TestMyMusicGameNew
         private readonly int ExpectedTest1NotesNum = 2;
         private readonly int Test1MusicIndex = 0;
         private readonly int Test2MusicIndex = 1;
+        private readonly int Test1MusicTimeSecond = 4;
         private readonly int Test2MusicTimeSecond = 2;
-        private readonly int NoDisplayNote = 0;
-        private readonly int DisplayNote1AndMore = 1;
 
         private readonly TimeSpan UntilGameStart = new TimeSpan(0, 0, 3);
 
@@ -98,13 +97,13 @@ namespace TestMyMusicGameNew
             EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
             System.Windows.Point clickPointNote1 = emurateNote1.EmurateCalcJustJudgeLinePoint();
 
-            Assert.AreEqual(expected: 0, actual: Driver.ResultPerfect.Number());
-            Assert.AreEqual(expected: 0, actual: Driver.ResultBad.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.PlayingResultPerfect.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.PlayingResultBad.Number());
             GameStart(Test1MusicIndex);
 
             Sleep(emurateNote1.JustTiming.TotalSeconds);
             Driver.EmurateLeftClickGamePlaying(clickPointNote1);
-            Assert.AreEqual(expected: 1, actual: Driver.ResultPerfect.Number());
+            Assert.AreEqual(expected: 1, actual: Driver.PlayingResultPerfect.Number());
 
             // 結果が判定されたノートは、結果判定直後に画面から消す(非表示にする)
             Assert.AreEqual(expected: 1, actual: Driver.GetDisplayNotesNum(1));
@@ -121,8 +120,8 @@ namespace TestMyMusicGameNew
             // 曲開始直後だとゲームが始まってないかもしれないため少しだけwait
             Sleep(0.1);
             Driver.EmurateLeftClickGamePlaying(clickPointNote1);
-            Assert.AreEqual(expected: 0, actual: Driver.ResultPerfect.Number());
-            Assert.AreEqual(expected: 0, actual: Driver.ResultBad.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.PlayingResultPerfect.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.PlayingResultBad.Number());
         }
 
         [TestMethod]
@@ -137,14 +136,14 @@ namespace TestMyMusicGameNew
             Driver.EmurateLeftClickGamePlaying(clickPointNote1);
             Driver.EmurateLeftClickGamePlaying(clickPointNote1);
             Driver.EmurateLeftClickGamePlaying(clickPointNote1);
-            Assert.AreEqual(expected: 1, actual: Driver.ResultPerfect.Number());
-            Assert.AreEqual(expected: 0, actual: Driver.ResultBad.Number());
+            Assert.AreEqual(expected: 1, actual: Driver.PlayingResultPerfect.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.PlayingResultBad.Number());
 
             Sleep(emurateNote1.BadTooSlowTiming.TotalSeconds - emurateNote1.JustTiming.TotalSeconds);
             Driver.EmurateLeftClickGamePlaying(clickPointNote1);
             Driver.EmurateLeftClickGamePlaying(clickPointNote1);
-            Assert.AreEqual(expected: 1, actual: Driver.ResultPerfect.Number());
-            Assert.AreEqual(expected: 0, actual: Driver.ResultBad.Number());
+            Assert.AreEqual(expected: 1, actual: Driver.PlayingResultPerfect.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.PlayingResultBad.Number());
         }
 
         [TestMethod]
@@ -156,12 +155,12 @@ namespace TestMyMusicGameNew
             GameStart(Test1MusicIndex);
 
             Sleep(emurateNote1.BadTooSlowTiming.TotalSeconds);
-            Assert.AreEqual(expected: 0, actual: Driver.ResultPerfect.Number());
-            Assert.AreEqual(expected: 0, actual: Driver.ResultBad.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.PlayingResultPerfect.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.PlayingResultBad.Number());
 
             Sleep(emurateNote1.PassedBadTiming.TotalSeconds - emurateNote1.BadTooSlowTiming.TotalSeconds);
-            Assert.AreEqual(expected: 0, actual: Driver.ResultPerfect.Number());
-            Assert.AreEqual(expected: 1, actual: Driver.ResultBad.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.PlayingResultPerfect.Number());
+            Assert.AreEqual(expected: 1, actual: Driver.PlayingResultBad.Number());
         }
 
         [TestMethod]
@@ -174,8 +173,25 @@ namespace TestMyMusicGameNew
 
             Sleep(emurateNote1.JustTiming.TotalSeconds);
             Driver.EmuratePressKeyboardGamePlaying(MyMusicGameNew.Keys.EnableKeys.JudgeLine1);
-            Assert.AreEqual(expected: 1, actual: Driver.ResultPerfect.Number());
-            Assert.AreEqual(expected: 0, actual: Driver.ResultBad.Number());
+            Assert.AreEqual(expected: 1, actual: Driver.PlayingResultPerfect.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.PlayingResultBad.Number());
+        }
+
+        [TestMethod]
+        public void TestGameResultDisplayWhenGameFinished()
+        {
+            EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
+            System.Windows.Point clickPointNote1 = emurateNote1.EmurateCalcJustJudgeLinePoint();
+
+            GameStart(Test1MusicIndex);
+
+            // 1つPerfectで拾い、1つ見逃しBadとして、ゲーム結果画面の表示をテストする
+            Sleep(emurateNote1.JustTiming.TotalSeconds);
+            Driver.EmurateLeftClickGamePlaying(clickPointNote1);
+
+            Sleep(Test1MusicTimeSecond - emurateNote1.JustTiming.TotalSeconds + 1);    // 1[s]余裕を持たせる
+            Assert.AreEqual(expected: 1, actual: Driver.FinishResultPerfect.Number());
+            Assert.AreEqual(expected: 1, actual: Driver.FinishResultBad.Number());
         }
 
         private void GameStart(int musicIndex)

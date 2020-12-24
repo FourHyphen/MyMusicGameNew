@@ -45,8 +45,6 @@ namespace TestMyMusicGameNew
 
         private double JudgeLineYFromAreaTop { get { return PlayAreaY - 100.0; } }
 
-        private double NotInsidePlayAreaWhenMusicStartJustTiming { get { return PlayAreaY * 2; } }
-
         public Note Note { get; private set; }
 
         public double NowX { get { return Note.NowX; } }
