@@ -89,6 +89,7 @@ namespace MyMusicGameNew
             StopDisplayingNotes(cts);
             Main.SetGameStatus("Finished");
             Main.SetPlayingMusicStatus("Finished");
+            _GamePlayingDisplay.GameFinish();
             _GridPlayArea.GameFinish();
         }
 

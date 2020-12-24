@@ -135,5 +135,14 @@ namespace MyMusicGameNew
                 _GridPlayArea.ResultBad.Content = BadNum.ToString();
             }
         }
+
+        public void GameFinish()
+        {
+            _GridPlayArea.GameStatus.Content = "Finished";
+            _GridPlayArea.ResultFinishNotesNum.Content = _GridPlayArea.NotesNum.Content;
+            _GridPlayArea.ResultFinishPerfect.Content = _GridPlayArea.ResultPerfect.Content;
+            _GridPlayArea.ResultFinishGood.Content = _GridPlayArea.ResultGood.Content;
+            _GridPlayArea.ResultFinishBad.Content = _GridPlayArea.ResultBad.Content;
+        }
     }
 }
