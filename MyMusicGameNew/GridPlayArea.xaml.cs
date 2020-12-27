@@ -89,6 +89,11 @@ namespace MyMusicGameNew
 
         private void PlayResultOKClicked(object sender, RoutedEventArgs e)
         {
+            DisplayMusicSelect();
+        }
+
+        private void DisplayMusicSelect()
+        {
             Main.GameFinish();
             PlayResult.Visibility = Visibility.Hidden;
         }

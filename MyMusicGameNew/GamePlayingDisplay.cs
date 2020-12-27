@@ -25,6 +25,14 @@ namespace MyMusicGameNew
         {
             _GridPlayArea = playArea;
             _JudgeResultImage = new JudgeResultImage(_GridPlayArea, GetJudgeResultDisplayCenter());
+            InitDisplayingPlayAreaResult();
+        }
+
+        private void InitDisplayingPlayAreaResult()
+        {
+            _GridPlayArea.ResultPerfect.Content = "0";
+            _GridPlayArea.ResultGood.Content = "0";
+            _GridPlayArea.ResultBad.Content = "0";
         }
 
         private System.Windows.Point GetJudgeResultDisplayCenter()

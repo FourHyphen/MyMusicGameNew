@@ -194,6 +194,24 @@ namespace TestMyMusicGameNew
             Assert.AreEqual(expected: 1, actual: Driver.FinishResultBad.Number());
         }
 
+        [TestMethod]
+        public void TestResetPlayingResultWhenNextGameStart()
+        {
+            EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
+            System.Windows.Point clickPointNote1 = emurateNote1.EmurateCalcJustJudgeLinePoint();
+
+            GameStart(Test1MusicIndex);
+            Sleep(emurateNote1.JustTiming.TotalSeconds);
+            Driver.EmurateLeftClickGamePlaying(clickPointNote1);
+
+            Sleep(Test1MusicTimeSecond - emurateNote1.JustTiming.TotalSeconds + 1);    // 1[s]余裕を持たせる
+            Driver.EmurateGamePlayingResultOKButtonClick();
+
+            GameStart(Test1MusicIndex);
+            Assert.AreEqual(expected: 0, actual: Driver.PlayingResultPerfect.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.PlayingResultBad.Number());
+        }
+
         private void GameStart(int musicIndex)
         {
             Driver.MusicList.ChangeSelectedIndex(musicIndex);

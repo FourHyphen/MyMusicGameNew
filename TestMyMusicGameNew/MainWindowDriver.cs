@@ -56,6 +56,11 @@ namespace TestMyMusicGameNew
             {
                 MainWindow.PlayArea.Judge(key);
             }
+
+            public void EmurateGamePlayingResultOKButtonClick()
+            {
+                MainWindow.PlayArea.DisplayMusicSelect();
+            }
         }
     }
 }
