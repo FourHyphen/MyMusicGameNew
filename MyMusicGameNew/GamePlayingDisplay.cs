@@ -15,10 +15,13 @@ namespace MyMusicGameNew
 
         private System.Timers.Timer CountdownTimer { get; set; }
 
+        // 処理高速化のために判定結果を別に保持するための変数
         private int PerfectNum { get; set; } = 0;
 
+        // 処理高速化のために判定結果を別に保持するための変数
         private int GoodNum { get; set; } = 0;
 
+        // 処理高速化のために判定結果を別に保持するための変数
         private int BadNum { get; set; } = 0;
 
         public GamePlayingDisplay(GridPlayArea playArea)
