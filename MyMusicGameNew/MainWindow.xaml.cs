@@ -30,7 +30,7 @@ namespace MyMusicGameNew
         private void Init()
         {
             SetEnvironmentCurrentDirectory(Environment.CurrentDirectory + "../../../");  // F5開始を想定
-            MusicSelect.Init(this);
+            MusicSelect.Init(this, IsTest);
             PlayArea.Init(this, IsTest);
             ShowMusicSelect();
         }
@@ -81,10 +81,10 @@ namespace MyMusicGameNew
             return PlayArea.DoGamePlaying();
         }
 
-        public void GameStart(string musicName)
+        public void GameStart(Music music)
         {
             ShowPlayArea();
-            PlayArea.GameStart(this, musicName);
+            PlayArea.GameStart(this, music);
         }
 
         private void ShowPlayArea()

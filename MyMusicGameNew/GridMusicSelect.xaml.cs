@@ -17,7 +17,9 @@ namespace MyMusicGameNew
 {
     public partial class GridMusicSelect : UserControl
     {
-        private List<string> MusicList { get; set; }
+        private bool IsTest { get; set; }
+
+        private MusicList Musics { get; set; }
 
         private MainWindow Main { get; set; }
 
@@ -26,8 +28,9 @@ namespace MyMusicGameNew
             InitializeComponent();
         }
 
-        public void Init(MainWindow main)
+        public void Init(MainWindow main, bool isTest)
         {
+            IsTest = isTest;
             Main = main;
             InitMusicList();
             InitDisplay();
@@ -35,8 +38,7 @@ namespace MyMusicGameNew
 
         private void InitMusicList()
         {
-            string musicsFilePath = Common.GetFilePathOfDependentEnvironment("/GameData/MusicList.json");
-            MusicList = Common.GetStringListInJson(musicsFilePath);
+            Musics = new MusicList(IsTest);
         }
 
         private void InitDisplay()
@@ -48,23 +50,35 @@ namespace MyMusicGameNew
 
         private void SetMusicListBox()
         {
-            foreach (string name in MusicList)
-            {
-                MusicListBox.Items.Add(name);
-            }
+            Musics.SetMusicNames(MusicListBox);
         }
 
         private void MusicListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            MusicListBoxSelectionChangedCore();
+        }
+
+        private void MusicListBoxSelectionChangedCore()
+        {
             GameStartButton.Content = "Game Start";
+            SetBestScore();
+        }
+
+        private void SetBestScore()
+        {
+            int now = MusicListBox.SelectedIndex;
+            BestScore.Content = Musics.GetBestScore(now);
+            BestResultPerfect.Content = Musics.GetBestResultPerfect(now);
+            BestResultGood.Content = Musics.GetBestResultGood(now);
+            BestResultBad.Content = Musics.GetBestResultBad(now);
         }
 
         private void GameStartButtonClick(object sender, RoutedEventArgs e)
         {
             if (ReadyGameStart())
             {
-                string musicName = GetSelectedMusicName();
-                Main.GameStart(musicName);
+                Music music = GetSelectedMusic();
+                Main.GameStart(music);
             }
         }
 
@@ -78,9 +92,9 @@ namespace MyMusicGameNew
             return (MusicListBox.SelectedIndex >= 0);
         }
 
-        private string GetSelectedMusicName()
+        private Music GetSelectedMusic()
         {
-            return (string)MusicListBox.Items[MusicListBox.SelectedIndex];
+            return Musics.GetMusic(MusicListBox.SelectedIndex);
         }
     }
 }

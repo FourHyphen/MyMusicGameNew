@@ -97,8 +97,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Music.cs" />
+    <Compile Include="MusicBestResult.cs" />
     <Compile Include="MusicFactory.cs" />
     <Compile Include="MusicInfo.cs" />
+    <Compile Include="MusicList.cs" />
     <Compile Include="Note.cs" />
     <Compile Include="NoteData.cs" />
     <Compile Include="NoteImage.cs" />

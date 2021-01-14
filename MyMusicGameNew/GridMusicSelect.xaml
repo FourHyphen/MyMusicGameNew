@@ -12,10 +12,60 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!--MusicList-->
         <Grid Grid.Column="0">
-            <ListBox x:Name="MusicListBox"
-                     SelectionChanged="MusicListBoxSelectionChanged"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="6*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="6*"/>
+                </Grid.RowDefinitions>
+
+                <!--MusicList-->
+                <Grid Grid.Row="0">
+                    <ListBox x:Name="MusicListBox"
+                             SelectionChanged="MusicListBoxSelectionChanged"/>
+                </Grid>
+
+                <!--Best Result(Only Label)-->
+                <Grid Grid.Row="1"
+                      Background="White">
+                    <Label Content="Best Result"/>
+                </Grid>
+
+                <!--Best Result-->
+                <Grid Grid.Row="2"
+                      Background="White">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0">
+                            <StackPanel HorizontalAlignment="Right">
+                                <Label Content="Total Score"/>
+                                <Label Content="---"/>
+                                <Label Content="Perfect"/>
+                                <Label Content="Good"/>
+                                <Label Content="Bad"/>
+                            </StackPanel>
+                        </Grid>
+                        <Grid Grid.Column="1" HorizontalAlignment="Left">
+                            <StackPanel>
+                                <Label x:Name="BestScore"
+                                       Content="---"/>
+                                <Label Content="---"/>
+                                <Label x:Name="BestResultPerfect"
+                                       Content="---"/>
+                                <Label x:Name="BestResultGood"
+                                       Content="---"/>
+                                <Label x:Name="BestResultBad"
+                                       Content="---"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
         </Grid>
 
         <!--GameStart Button-->

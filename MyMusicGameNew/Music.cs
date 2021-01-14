@@ -16,7 +16,17 @@ namespace MyMusicGameNew
 
         private PlayingMusic PlayingMusic { get; set; }
 
+        private MusicBestResult BestResult { get; set; }
+
         public int NotesNum { get { return Notes.Count; } }
+
+        public int BestScore { get { return BestResult.BestScore; } }
+
+        public int BestResultPerfect { get { return BestResult.BestResultPerfect; } }
+
+        public int BestResultGood { get { return BestResult.BestResultGood; } }
+
+        public int BestResultBad { get { return BestResult.BestResultBad; } }
 
         public Music(string name, int timeSecond, List<Note> notes, PlayingMusic play)
         {
@@ -25,6 +35,7 @@ namespace MyMusicGameNew
             Notes = notes;
             PlayingMusic = play;
             InitMusicNoteImage();
+            InitBestResult();
         }
 
         private void InitMusicNoteImage()
@@ -33,6 +44,11 @@ namespace MyMusicGameNew
             {
                 Notes[i].InitImage(i);
             }
+        }
+
+        private void InitBestResult()
+        {
+            BestResult = MusicBestResult.Create(Name);
         }
 
         public void PlayAsync()

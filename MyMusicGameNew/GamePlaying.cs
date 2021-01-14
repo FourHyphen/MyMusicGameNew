@@ -26,13 +26,13 @@ namespace MyMusicGameNew
 
         private Task TaskKeepMovingDuringGame { get; set; }
 
-        public GamePlaying(MainWindow main, GridPlayArea playArea, string musicName, bool IsTest)
+        public GamePlaying(MainWindow main, GridPlayArea playArea, Music music, bool IsTest)
         {
             Main = main;
             _GridPlayArea = playArea;
             _GamePlayingArea = new GamePlayingArea((int)playArea.PlayArea.ActualWidth, (int)playArea.PlayArea.ActualHeight);
             _GamePlayingDisplay = new GamePlayingDisplay(playArea);
-            Music = new MusicFactory().Create(musicName, isTest: IsTest);
+            Music = music;
         }
 
         ~GamePlaying()
@@ -91,11 +91,17 @@ namespace MyMusicGameNew
             Main.SetPlayingMusicStatus("Finished");
             _GamePlayingDisplay.GameFinish();
             _GridPlayArea.GameFinish();
+            ResultSave();
         }
 
         private void StopDisplayingNotes(CancellationTokenSource cts)
         {
             cts.Cancel();
+        }
+
+        private void ResultSave()
+        {
+            
         }
 
         // ゲーム中に常駐させる処理
