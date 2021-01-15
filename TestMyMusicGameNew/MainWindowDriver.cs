@@ -24,6 +24,10 @@ namespace TestMyMusicGameNew
             public LabelAdapter PlayingResultBad { get; }
             public LabelAdapter FinishResultPerfect { get; }
             public LabelAdapter FinishResultBad { get; }
+            public LabelAdapter BestScore { get; }
+            public LabelAdapter BestResultPerfect { get; }
+            public LabelAdapter BestResultGood { get; }
+            public LabelAdapter BestResultBad { get; }
 
             public MainWindowDriver(dynamic mainWindow)
             {
@@ -39,6 +43,10 @@ namespace TestMyMusicGameNew
                 PlayingResultBad = new LabelAdapter(Tree, "ResultBad");
                 FinishResultPerfect = new LabelAdapter(Tree, "ResultFinishPerfect");
                 FinishResultBad = new LabelAdapter(Tree, "ResultFinishBad");
+                BestScore = new LabelAdapter(Tree, "BestScore");
+                BestResultPerfect = new LabelAdapter(Tree, "BestResultPerfect");
+                BestResultGood = new LabelAdapter(Tree, "BestResultGood");
+                BestResultBad = new LabelAdapter(Tree, "BestResultBad");
             }
 
             public int GetDisplayNotesNum(int startIndex)

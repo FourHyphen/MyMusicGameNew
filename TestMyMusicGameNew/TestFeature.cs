@@ -212,6 +212,33 @@ namespace TestMyMusicGameNew
             Assert.AreEqual(expected: 0, actual: Driver.PlayingResultBad.Number());
         }
 
+        [TestMethod]
+        public void TestSavePlayResultWhenGameFinish()
+        {
+            // 1曲プレイ -> 曲選択画面でその結果がベストとして表示されればOK
+            EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
+            System.Windows.Point clickPointNote1 = emurateNote1.EmurateCalcJustJudgeLinePoint();
+
+            Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
+            Assert.AreEqual(expected: 0, actual: Driver.BestScore.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.BestResultPerfect.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.BestResultGood.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.BestResultBad.Number());
+
+            GameStart();
+            Sleep(emurateNote1.JustTiming.TotalSeconds);
+            Driver.EmurateLeftClickGamePlaying(clickPointNote1);
+
+            Sleep(Test1MusicTimeSecond - emurateNote1.JustTiming.TotalSeconds + 1);    // 1[s]余裕を持たせる
+            Driver.EmurateGamePlayingResultOKButtonClick();
+
+            Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
+            Assert.AreEqual(expected: 2, actual: Driver.BestScore.Number());
+            Assert.AreEqual(expected: 1, actual: Driver.BestResultPerfect.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.BestResultGood.Number());
+            Assert.AreEqual(expected: 1, actual: Driver.BestResultBad.Number());
+        }
+
         private void GameStart(int musicIndex)
         {
             Driver.MusicList.ChangeSelectedIndex(musicIndex);

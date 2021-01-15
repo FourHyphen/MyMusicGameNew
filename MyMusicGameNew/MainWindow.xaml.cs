@@ -30,7 +30,6 @@ namespace MyMusicGameNew
         private void Init()
         {
             SetEnvironmentCurrentDirectory(Environment.CurrentDirectory + "../../../");  // F5開始を想定
-            MusicSelect.Init(this, IsTest);
             PlayArea.Init(this, IsTest);
             ShowMusicSelect();
         }
@@ -44,6 +43,7 @@ namespace MyMusicGameNew
 
         private void ShowMusicSelect()
         {
+            MusicSelect.Init(this, IsTest);
             MusicSelect.Visibility = Visibility.Visible;
             PlayArea.Visibility = Visibility.Hidden;
         }

@@ -73,5 +73,57 @@ namespace MyMusicGameNew
 
             return null;
         }
+
+        public void SaveBestScore()
+        {
+            if (DidUpdateBestScore())
+            {
+                MusicBestResult mbr = new MusicBestResult(Name,
+                                                          GetPlayScore(),
+                                                          GetJudgeNum(NoteJudge.JudgeType.Perfect),
+                                                          GetJudgeNum(NoteJudge.JudgeType.Good),
+                                                          GetJudgeNum(NoteJudge.JudgeType.Bad)
+                                                          );
+                mbr.Save();
+            }
+        }
+
+        private bool DidUpdateBestScore()
+        {
+            int score = GetPlayScore();
+            return (score >= BestResult.BestScore);
+        }
+
+        private int GetPlayScore()
+        {
+            int score = 0;
+            foreach (Note note in Notes)
+            {
+                if (note.JudgeResult == NoteJudge.JudgeType.Perfect)
+                {
+                    score += 2;
+                }
+                else if (note.JudgeResult == NoteJudge.JudgeType.Good)
+                {
+                    score += 1;
+                }
+            }
+
+            return score;
+        }
+
+        private int GetJudgeNum(NoteJudge.JudgeType judge)
+        {
+            int num = 0;
+            foreach (Note note in Notes)
+            {
+                if (note.JudgeResult == judge)
+                {
+                    num++;
+                }
+            }
+
+            return num;
+        }
     }
 }

@@ -11,16 +11,18 @@ namespace MyMusicGameNew
     {
         private List<Music> Musics { get; set; } = new List<Music>();
 
+        public List<string> Names { get; private set; } = new List<string>();
+
         public MusicList(bool isTest)
         {
-            List<string> musicNames = GetMusicNames();
-            CreateMusics(musicNames, isTest);
+            SetMusicNames();
+            CreateMusics(Names, isTest);
         }
 
-        private List<string> GetMusicNames()
+        private void SetMusicNames()
         {
             string musicsFilePath = Common.GetFilePathOfDependentEnvironment("/GameData/MusicList.json");
-            return Common.GetStringListInJson(musicsFilePath);
+            Names = Common.GetStringListInJson(musicsFilePath);
         }
 
         private void CreateMusics(List<string> musicNames, bool isTest)
@@ -56,14 +58,6 @@ namespace MyMusicGameNew
         public int GetBestResultBad(int index)
         {
             return GetMusic(index).BestResultBad;
-        }
-
-        public void SetMusicNames(ListBox musicListBox)
-        {
-            foreach (Music music in Musics)
-            {
-                musicListBox.Items.Add(music.Name);
-            }
         }
     }
 }

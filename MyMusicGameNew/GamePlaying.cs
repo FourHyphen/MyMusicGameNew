@@ -101,7 +101,7 @@ namespace MyMusicGameNew
 
         private void ResultSave()
         {
-            
+            Music.SaveBestScore();
         }
 
         // ゲーム中に常駐させる処理

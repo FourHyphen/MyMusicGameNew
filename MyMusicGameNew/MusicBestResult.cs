@@ -25,9 +25,18 @@ namespace MyMusicGameNew
 
         private MusicBestResult() { }
 
+        public MusicBestResult(string musicName, int score, int perfectNum, int goodNum, int badNum)
+        {
+            BestScore = score;
+            BestResultPerfect = perfectNum;
+            BestResultGood = goodNum;
+            BestResultBad = badNum;
+            MusicName = musicName;
+        }
+
         public static MusicBestResult Create(string musicName)
         {
-            string musicResultFilePath = Common.GetFilePathOfDependentEnvironment("/GameData/MusicResult/" + musicName + ".json");
+            string musicResultFilePath = GetMusicResultFilePath(musicName);
             if (System.IO.File.Exists(musicResultFilePath))
             {
                 return CreateByHistory(musicName, musicResultFilePath);
@@ -38,13 +47,17 @@ namespace MyMusicGameNew
             }
         }
 
+        private static string GetMusicResultFilePath(string musicName)
+        {
+            return Common.GetFilePathOfDependentEnvironment("/GameData/MusicResult/" + musicName + ".json");
+        }
+
         private static MusicBestResult CreateByHistory(string musicName, string musicResultFilePath)
         {
-            string jsonPath = Common.GetFilePathOfDependentEnvironment(musicResultFilePath);
-            string jsonStr = Common.ReadFile(jsonPath);
+            string jsonStr = Common.ReadFile(musicResultFilePath);
             MusicBestResult mbr = JsonConvert.DeserializeObject<MusicBestResult>(jsonStr);
-
             mbr.MusicName = musicName;
+
             return mbr;
         }
 
@@ -57,6 +70,12 @@ namespace MyMusicGameNew
             mbr.BestResultBad = 0;
             mbr.MusicName = musicName;
             return mbr;
+        }
+
+        public void Save()
+        {
+            string musicResultFilePath = GetMusicResultFilePath(MusicName);
+            Common.CreateJsonFile(this, musicResultFilePath);
         }
     }
 }

@@ -43,19 +43,36 @@ namespace MyMusicGameNew
 
         private void InitDisplay()
         {
+            ResetMusicListBox();
             SetMusicListBox();
             Main.SetGameStatus("Select Music");
             Main.SetPlayingMusicStatus("Not");
         }
 
+        private void ResetMusicListBox()
+        {
+            int num = MusicListBox.Items.Count;
+            for (int i = num - 1; i >= 0; i--)
+            {
+                MusicListBox.Items.RemoveAt(i);
+            }
+        }
+
         private void SetMusicListBox()
         {
-            Musics.SetMusicNames(MusicListBox);
+            foreach (string musicName in Musics.Names)
+            {
+                MusicListBox.Items.Add(musicName);
+            }
         }
 
         private void MusicListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MusicListBoxSelectionChangedCore();
+            // MusicListBoxをいったん初期化する際にも呼び出されるので、ユーザーが曲を選択した際のみ処理するようブロック
+            if (MusicListBox.SelectedIndex >= 0)
+            {
+                MusicListBoxSelectionChangedCore();
+            }
         }
 
         private void MusicListBoxSelectionChangedCore()

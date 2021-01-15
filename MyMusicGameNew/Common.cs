@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace MyMusicGameNew
 {
@@ -78,6 +79,32 @@ namespace MyMusicGameNew
         public static double DiffMillisecond(TimeSpan basis, TimeSpan subtract)
         {
             return basis.Subtract(subtract).TotalMilliseconds;
+        }
+
+        /// <summary>
+        /// Jsonファイルを新規作成する
+        /// すでに存在する場合は上書きする
+        /// </summary>
+        /// <param name="instance">出力するクラスのインスタンス(Jsonシリアライズ前)</param>
+        /// <param name="filePath"></param>
+        public static void CreateJsonFile(object instance, string filePath)
+        {
+            string jsonData = JsonConvert.SerializeObject(instance);
+            WriteNewFile(jsonData, filePath);
+        }
+
+        /// <summary>
+        /// ファイルに書き込む
+        /// すでにファイルが存在する場合は上書きする
+        /// </summary>
+        /// <param name="contents"></param>
+        /// <param name="filePath"></param>
+        private static void WriteNewFile(string contents, string filePath)
+        {
+            using (StreamWriter sw = new StreamWriter(filePath, false, System.Text.Encoding.UTF8))
+            {
+                sw.Write(contents);
+            }
         }
     }
 }
