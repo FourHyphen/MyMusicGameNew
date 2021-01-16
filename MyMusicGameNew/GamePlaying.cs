@@ -31,7 +31,7 @@ namespace MyMusicGameNew
             Main = main;
             _GridPlayArea = playArea;
             _GamePlayingArea = new GamePlayingArea((int)playArea.PlayArea.ActualWidth, (int)playArea.PlayArea.ActualHeight);
-            _GamePlayingDisplay = new GamePlayingDisplay(playArea);
+            _GamePlayingDisplay = new GamePlayingDisplay(playArea, music.NotesNum);
             Music = music;
         }
 
@@ -53,7 +53,7 @@ namespace MyMusicGameNew
         {
             // TODO: 待機時間の外部管理化
             GameInit();
-            DisplayInfo();
+            DebugDisplayInfo("Playing");
             _GamePlayingDisplay.DisplayStartingWait(3);
         }
 
@@ -87,10 +87,11 @@ namespace MyMusicGameNew
             GameFinishTimer.Stop();
             GameFinishTimer.Dispose();
             StopDisplayingNotes(cts);
-            Main.SetGameStatus("Finished");
-            Main.SetPlayingMusicStatus("Finished");
+
+            DebugDisplayInfo("Finished");
             _GamePlayingDisplay.GameFinish();
             _GridPlayArea.GameFinish();
+
             ResultSave();
         }
 
@@ -162,19 +163,13 @@ namespace MyMusicGameNew
             }
         }
 
-        private void DisplayInfo()
+        private void DebugDisplayInfo(string status)
         {
             Main.Dispatcher.Invoke(() =>
             {
-                Main.SetGameStatus("Playing");
-                Main.SetPlayingMusicStatus("Playing");
-                SetNotesNum(Music.NotesNum.ToString());
+                Main.SetGameStatus(status);
+                Main.SetPlayingMusicStatus(status);
             });
-        }
-
-        private void SetNotesNum(string notesNum)
-        {
-            _GridPlayArea.NotesNum.Content = notesNum;
         }
 
         #endregion

@@ -24,15 +24,16 @@ namespace MyMusicGameNew
         // 処理高速化のために判定結果を別に保持するための変数
         private int BadNum { get; set; } = 0;
 
-        public GamePlayingDisplay(GridPlayArea playArea)
+        public GamePlayingDisplay(GridPlayArea playArea, int notesNum)
         {
             _GridPlayArea = playArea;
             _JudgeResultImage = new JudgeResultImage(_GridPlayArea, GetJudgeResultDisplayCenter());
-            InitDisplayingPlayAreaResult();
+            InitDisplayingPlayAreaResult(notesNum);
         }
 
-        private void InitDisplayingPlayAreaResult()
+        private void InitDisplayingPlayAreaResult(int notesNum)
         {
+            _GridPlayArea.NotesNum.Content = notesNum.ToString();
             _GridPlayArea.ResultPerfect.Content = "0";
             _GridPlayArea.ResultGood.Content = "0";
             _GridPlayArea.ResultBad.Content = "0";
