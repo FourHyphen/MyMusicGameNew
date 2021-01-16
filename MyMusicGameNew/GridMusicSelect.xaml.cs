@@ -113,5 +113,10 @@ namespace MyMusicGameNew
         {
             return Musics.GetMusic(MusicListBox.SelectedIndex);
         }
+
+        public void ResetBestScore(int musicIndex)
+        {
+            Musics.GetMusic(musicIndex).ResetBestScore();
+        }
     }
 }

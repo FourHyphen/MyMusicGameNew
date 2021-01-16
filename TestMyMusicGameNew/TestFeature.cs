@@ -216,6 +216,8 @@ namespace TestMyMusicGameNew
         public void TestSavePlayResultWhenGameFinish()
         {
             // 1曲プレイ -> 曲選択画面でその結果がベストとして表示されればOK
+            Driver.ResetBestScore(Test1MusicIndex);
+
             EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
             System.Windows.Point clickPointNote1 = emurateNote1.EmurateCalcJustJudgeLinePoint();
 

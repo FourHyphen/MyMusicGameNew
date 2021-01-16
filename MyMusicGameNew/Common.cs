@@ -106,5 +106,10 @@ namespace MyMusicGameNew
                 sw.Write(contents);
             }
         }
+
+        public static void DeleteFile(string filePath)
+        {
+            System.IO.File.Delete(filePath);
+        }
     }
 }

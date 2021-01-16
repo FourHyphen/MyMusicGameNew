@@ -69,6 +69,11 @@ namespace TestMyMusicGameNew
             {
                 MainWindow.PlayArea.DisplayMusicSelect();
             }
+
+            public void ResetBestScore(int musicIndex)
+            {
+                MainWindow.ResetBestScore(musicIndex);
+            }
         }
     }
 }

@@ -125,5 +125,10 @@ namespace MyMusicGameNew
 
             return num;
         }
+
+        public void ResetBestScore()
+        {
+            BestResult.Reset();
+        }
     }
 }

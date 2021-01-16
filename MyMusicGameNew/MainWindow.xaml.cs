@@ -60,6 +60,11 @@ namespace MyMusicGameNew
             DebugPlayingMusicStatus.Content = status;
         }
 
+        public void ResetBestScore(int musicIndex)
+        {
+            MusicSelect.ResetBestScore(musicIndex);
+        }
+
         #endregion
 
         #region キー入力処理

@@ -77,5 +77,15 @@ namespace MyMusicGameNew
             string musicResultFilePath = GetMusicResultFilePath(MusicName);
             Common.CreateJsonFile(this, musicResultFilePath);
         }
+
+        public void Reset()
+        {
+            string musicResultFilePath = GetMusicResultFilePath(MusicName);
+            Common.DeleteFile(musicResultFilePath);
+            BestScore = 0;
+            BestResultPerfect = 0;
+            BestResultGood = 0;
+            BestResultBad = 0;
+        }
     }
 }
