@@ -57,7 +57,7 @@ namespace MyMusicGameNew
             _GamePlayingDisplay.DisplayStartingWait(3);
         }
 
-        #region ゲーム開始直前の処理の詳細
+        #region private: ゲーム開始直前の処理の詳細
 
         private void GameInit()
         {
@@ -163,6 +163,10 @@ namespace MyMusicGameNew
             }
         }
 
+        #endregion
+
+        #region private: デバッグ用処理
+
         private void DebugDisplayInfo(string status)
         {
             Main.Dispatcher.Invoke(() =>
@@ -181,7 +185,7 @@ namespace MyMusicGameNew
             GameTimer.Start();
         }
 
-        #region ゲーム開始時処理の詳細
+        #region private: ゲーム開始時処理の詳細
 
         private void PlayMusic()
         {
@@ -202,7 +206,7 @@ namespace MyMusicGameNew
             JudgeCore(inputLine);
         }
 
-        #region ユーザー入力によるNoteのJudge、詳細
+        #region private: ユーザー入力によるNoteのJudge、詳細
 
         private void JudgeCore(int inputLine)
         {

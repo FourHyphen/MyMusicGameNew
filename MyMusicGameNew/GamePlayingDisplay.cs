@@ -52,6 +52,8 @@ namespace MyMusicGameNew
             WaitToFinishCountdown();
         }
 
+        #region private: ゲーム開始時のカウントダウン処理詳細
+
         private void DisplayCountdown(int second)
         {
             _GridPlayArea.Dispatcher.Invoke(() =>
@@ -107,6 +109,8 @@ namespace MyMusicGameNew
             Task.WaitAll(task);
         }
 
+        #endregion
+
         public void DisplayNotePlayArea(Note note)
         {
             note.DisplayPlayArea(_GridPlayArea.PlayArea.Children);
@@ -118,6 +122,8 @@ namespace MyMusicGameNew
             RemoveNotePlayArea(note);
             UpdateJudgeResult(note.JudgeResult);
         }
+
+        #region private: Judge結果の画面への反映処理詳細
 
         private void DisplayNoteJudgeResultImage(NoteJudge.JudgeType result)
         {
@@ -147,6 +153,8 @@ namespace MyMusicGameNew
                 _GridPlayArea.ResultBad.Content = BadNum.ToString();
             }
         }
+
+        #endregion
 
         public void GameFinish()
         {
