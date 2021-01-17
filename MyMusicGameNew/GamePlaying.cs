@@ -26,8 +26,6 @@ namespace MyMusicGameNew
 
         private Task TaskKeepMovingDuringGame { get; set; }
 
-        private bool IsSuspending { get; set; } = false;
-
         public GamePlaying(MainWindow main, GridPlayArea playArea, Music music, bool IsTest)
         {
             Main = main;
@@ -230,36 +228,26 @@ namespace MyMusicGameNew
 
         public void Suspend()
         {
-            if (!IsSuspending)
-            {
-                SuspendCore();
-                IsSuspending = true;
-            }
-        }
-
-        private void SuspendCore()
-        {
             GameTimer.Stop();
             GameFinishTimer.Stop();
-            _GamePlayingDisplay.GameSuspend();
+            _GamePlayingDisplay.DisplaySuspend();
             DebugDisplayInfo("Suspending...");
         }
 
         public void Restart()
         {
-            if (IsSuspending)
-            {
-                RestartCore();
-                IsSuspending = false;
-            }
+            RestartCore();
         }
 
-        private void RestartCore()
+        private async void RestartCore()
         {
-            GameTimer.Start();
-            GameFinishTimer.Start();
-            _GamePlayingDisplay.GameRestart();
-            DebugDisplayInfo("Playing...");
+            await Task.Run(() =>
+            {
+                _GamePlayingDisplay.DisplayRestartWait(3);    // TODO 時間設定の外部管理化
+                DebugDisplayInfo("Playing...");
+                GameTimer.Start();
+                GameFinishTimer.Start();
+            });
         }
     }
 }

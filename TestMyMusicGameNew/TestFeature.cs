@@ -259,7 +259,6 @@ namespace TestMyMusicGameNew
             Assert.AreEqual(expected: 0, actual: Driver.PlayingResultBad.Number());
 
             Driver.EmurateRestartGame();
-            // メッセージ：中断と再開はできた、あとは再開時のカウントダウン表示を実装する
             Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Suspend"));
             Sleep(UntilGameStartFromSuspend.TotalSeconds);
             Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Playing"));
@@ -271,6 +270,8 @@ namespace TestMyMusicGameNew
 
             Sleep(Test1MusicTimeSecond - emurateNote1.JustTiming.TotalSeconds + 1);    // 1[s]余裕を持たせる
             Assert.AreEqual(expected: 1, actual: Driver.PlayingResultBad.Number());
+
+            // メッセージ：ここでNG -> Timerのrestart時にカウントが0から始まってるのでは？
             Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Finish"));
         }
 

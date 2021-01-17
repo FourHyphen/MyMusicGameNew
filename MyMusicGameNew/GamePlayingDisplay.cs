@@ -13,8 +13,6 @@ namespace MyMusicGameNew
 
         private JudgeResultImage _JudgeResultImage { get; set; }
 
-        private System.Timers.Timer CountdownTimer { get; set; }
-
         // 処理高速化のために判定結果を別に保持するための変数
         private int PerfectNum { get; set; } = 0;
 
@@ -47,12 +45,37 @@ namespace MyMusicGameNew
 
         public void DisplayStartingWait(int countdownStartSecond)
         {
-            DisplayCountdown(countdownStartSecond);
-            StartDisplayCountdown(countdownStartSecond - 1);
-            WaitToFinishCountdown();
+            Countdown(countdownStartSecond);
         }
 
         #region private: ゲーム開始時のカウントダウン処理詳細
+
+        private void Countdown(int countdownStartSecond)
+        {
+            System.Timers.Timer countdownTimer = new System.Timers.Timer();
+            StartDisplayCountdown(countdownTimer, countdownStartSecond);
+            WaitToFinishCountdown(countdownTimer);
+        }
+
+        private void StartDisplayCountdown(System.Timers.Timer countdownTimer, int countdownStartSecond)
+        {
+            DisplayCountdown(countdownStartSecond);
+            int countdownSecond = countdownStartSecond - 1;
+
+            countdownTimer.Interval = 1000;  // 1[s]
+            countdownTimer.Elapsed += (s, e) =>
+            {
+                DisplayCountdown(countdownSecond);
+                if (countdownSecond <= 0)
+                {
+                    countdownTimer.Stop();
+                    countdownTimer.Enabled = false;
+                }
+                countdownSecond--;
+            };
+
+            countdownTimer.Start();
+        }
 
         private void DisplayCountdown(int second)
         {
@@ -73,33 +96,13 @@ namespace MyMusicGameNew
             });
         }
 
-        private void StartDisplayCountdown(int countdownStartSecond)
-        {
-            int countdownSecond = countdownStartSecond;
-            CountdownTimer = new System.Timers.Timer();
-
-            CountdownTimer.Interval = 1000;  // 1[s]
-            CountdownTimer.Elapsed += (s, e) =>
-            {
-                DisplayCountdown(countdownSecond);
-                if (countdownSecond <= 0)
-                {
-                    CountdownTimer.Stop();
-                    CountdownTimer.Enabled = false;
-                }
-                countdownSecond--;
-            };
-
-            CountdownTimer.Start();
-        }
-
-        private void WaitToFinishCountdown()
+        private void WaitToFinishCountdown(System.Timers.Timer countdownTimer)
         {
             Task task = Task.Run(() =>
             {
                 while (true)
                 {
-                    if (!CountdownTimer.Enabled)
+                    if (!countdownTimer.Enabled)
                     {
                         return;
                     }
@@ -170,14 +173,14 @@ namespace MyMusicGameNew
             _GridPlayArea.ResultFinishBad.Content = _GridPlayArea.ResultBad.Content;
         }
 
-        public void GameSuspend()
+        public void DisplaySuspend()
         {
             DisplayGameStatus("Suspending...");
         }
 
-        public void GameRestart()
+        public void DisplayRestartWait(int countdownRestartSecond)
         {
-            DisplayGameStatus("Playing...");
+            Countdown(countdownRestartSecond);
         }
     }
 }
