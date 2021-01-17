@@ -32,7 +32,8 @@ namespace TestMyMusicGameNew
 
             public bool Contains(string str)
             {
-                return Content().Contains(str);
+                string content = Content();
+                return content.Contains(str);
             }
 
             public int Number()
