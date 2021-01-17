@@ -11,6 +11,8 @@ namespace MyMusicGameNew
         {
             JudgeLine1,
             JudgeLine2,
+            Suspend,
+            Restart,    // TODO: キー入力に対応(現在Suspend画面のOKボタンでのみRestartできる)
             Else
         }
 
@@ -62,6 +64,10 @@ namespace MyMusicGameNew
             else if (key == Key.J)
             {
                 return EnableKeys.JudgeLine2;
+            }
+            else if (key == Key.Enter)
+            {
+                return EnableKeys.Suspend;
             }
 
             return EnableKeys.Else;

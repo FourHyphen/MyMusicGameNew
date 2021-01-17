@@ -4,6 +4,7 @@ using RM.Friendly.WPFStandardControls;
 using System.Reflection.Emit;
 using System.Windows.Documents;
 using Codeer.Friendly.Dynamic;
+using System;
 
 namespace TestMyMusicGameNew
 {
@@ -62,7 +63,7 @@ namespace TestMyMusicGameNew
 
             public void EmuratePressKeyboardGamePlaying(MyMusicGameNew.Keys.EnableKeys key)
             {
-                MainWindow.PlayArea.Judge(key);
+                MainWindow.PlayArea.ProcessKeyDown(key);
             }
 
             public void EmurateGamePlayingResultOKButtonClick()
@@ -73,6 +74,16 @@ namespace TestMyMusicGameNew
             public void ResetBestScore(int musicIndex)
             {
                 MainWindow.ResetBestScore(musicIndex);
+            }
+
+            public void EmurateSuspendGame()
+            {
+                MainWindow.SuspendGame();
+            }
+
+            public void EmurateRestartGame()
+            {
+                MainWindow.RestartGame();
             }
         }
     }

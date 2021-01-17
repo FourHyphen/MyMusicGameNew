@@ -36,6 +36,7 @@ namespace TestMyMusicGameNew
         private readonly int Test2MusicTimeSecond = 2;
 
         private readonly TimeSpan UntilGameStart = new TimeSpan(0, 0, 3);
+        private readonly TimeSpan UntilGameStartFromSuspend = new TimeSpan(0, 0, 3);
 
         [TestInitialize]
         public void Init()
@@ -239,6 +240,38 @@ namespace TestMyMusicGameNew
             Assert.AreEqual(expected: 1, actual: Driver.BestResultPerfect.Number());
             Assert.AreEqual(expected: 0, actual: Driver.BestResultGood.Number());
             Assert.AreEqual(expected: 1, actual: Driver.BestResultBad.Number());
+        }
+
+        [TestMethod]
+        public void TestSuspendAndRestartWhenGamePlaying()
+        {
+            EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
+            System.Windows.Point clickPointNote1 = emurateNote1.EmurateCalcJustJudgeLinePoint();
+
+            GameStart(Test1MusicIndex);
+            Sleep(emurateNote1.JustTiming.TotalSeconds / 2);
+            Driver.EmurateSuspendGame();
+            // TODO: statusのチェック、MainWindowのデバッグ用ではなく本番稼働のテキストを見るようにする
+            Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Suspend"));
+
+            // 待機時間は適当でOK
+            Sleep(1);
+            Assert.AreEqual(expected: 0, actual: Driver.PlayingResultBad.Number());
+
+            Driver.EmurateRestartGame();
+            // メッセージ：中断と再開はできた、あとは再開時のカウントダウン表示を実装する
+            Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Suspend"));
+            Sleep(UntilGameStartFromSuspend.TotalSeconds);
+            Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Playing"));
+
+            Sleep(emurateNote1.JustTiming.TotalSeconds / 2);
+            Driver.EmurateLeftClickGamePlaying(clickPointNote1);
+            Assert.AreEqual(expected: 1, actual: Driver.PlayingResultPerfect.Number());
+            Assert.AreEqual(expected: 0, actual: Driver.PlayingResultBad.Number());
+
+            Sleep(Test1MusicTimeSecond - emurateNote1.JustTiming.TotalSeconds + 1);    // 1[s]余裕を持たせる
+            Assert.AreEqual(expected: 1, actual: Driver.PlayingResultBad.Number());
+            Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Finish"));
         }
 
         private void GameStart(int musicIndex)

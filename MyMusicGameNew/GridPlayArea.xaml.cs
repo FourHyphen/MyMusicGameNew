@@ -68,18 +68,70 @@ namespace MyMusicGameNew
             GamePlay.Judge(p);
         }
 
-        public void Judge(KeyEventArgs e)
+        public void ProcessKeyDown(Keys.EnableKeys key)
         {
             if (DoGamePlaying())
             {
-                Keys.EnableKeys key = Keys.ToEnableKeys(e.Key, e.KeyboardDevice);
-                Judge(key);
+                ProcessKeyDownCore(key);
             }
         }
 
-        private void Judge(Keys.EnableKeys key)
+        private void ProcessKeyDownCore(Keys.EnableKeys key)
         {
-            GamePlay.Judge(key);
+            if (IsKeyDownForJudge(key))
+            {
+                GamePlay.Judge(key);
+            }
+            else if (IsKeyDownForSuspend(key))
+            {
+                SuspendGame();
+            }
+            else if (IsKeyDownForRestart(key))
+            {
+                RestartGame();
+            }
+        }
+
+        private bool IsKeyDownForJudge(Keys.EnableKeys key)
+        {
+            return (key == Keys.EnableKeys.JudgeLine1 || key == Keys.EnableKeys.JudgeLine2);
+        }
+
+        private bool IsKeyDownForSuspend(Keys.EnableKeys key)
+        {
+            return (key == Keys.EnableKeys.Suspend);
+        }
+
+        private bool IsKeyDownForRestart(Keys.EnableKeys key)
+        {
+            return (key == Keys.EnableKeys.Restart);
+        }
+
+        private void SuspendGame()
+        {
+            ShowSuspend();
+            GamePlay.Suspend();
+        }
+
+        private void ShowSuspend()
+        {
+            Suspend.Visibility = Visibility.Visible;
+        }
+
+        private void RestartGame()
+        {
+            HideSuspend();
+            GamePlay.Restart();
+        }
+
+        private void HideSuspend()
+        {
+            Suspend.Visibility = Visibility.Hidden;
+        }
+
+        private void RestartClicked(object sender, RoutedEventArgs e)
+        {
+            RestartGame();
         }
 
         public void GameFinish()

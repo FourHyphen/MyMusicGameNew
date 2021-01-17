@@ -60,15 +60,15 @@ namespace MyMusicGameNew
             {
                 if (second == 1)
                 {
-                    _GridPlayArea.GameStatus.Content = "Ready";
+                    DisplayGameStatus("Ready");
                 }
                 else if (second == 0)
                 {
-                    _GridPlayArea.GameStatus.Content = "Playing...";
+                    DisplayGameStatus("Playing...");
                 }
                 else
                 {
-                    _GridPlayArea.GameStatus.Content = second.ToString();
+                    DisplayGameStatus(second.ToString());
                 }
             });
         }
@@ -110,6 +110,11 @@ namespace MyMusicGameNew
         }
 
         #endregion
+
+        public void DisplayGameStatus(string status)
+        {
+            _GridPlayArea.GameStatus.Content = status;
+        }
 
         public void DisplayNotePlayArea(Note note)
         {
@@ -158,11 +163,21 @@ namespace MyMusicGameNew
 
         public void GameFinish()
         {
-            _GridPlayArea.GameStatus.Content = "Finished";
+            DisplayGameStatus("Finished");
             _GridPlayArea.ResultFinishNotesNum.Content = _GridPlayArea.NotesNum.Content;
             _GridPlayArea.ResultFinishPerfect.Content = _GridPlayArea.ResultPerfect.Content;
             _GridPlayArea.ResultFinishGood.Content = _GridPlayArea.ResultGood.Content;
             _GridPlayArea.ResultFinishBad.Content = _GridPlayArea.ResultBad.Content;
+        }
+
+        public void GameSuspend()
+        {
+            DisplayGameStatus("Suspending...");
+        }
+
+        public void GameRestart()
+        {
+            DisplayGameStatus("Playing...");
         }
     }
 }

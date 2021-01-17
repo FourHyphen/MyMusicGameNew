@@ -64,6 +64,16 @@ namespace MyMusicGameNew
             MusicSelect.ResetBestScore(musicIndex);
         }
 
+        public void SuspendGame()
+        {
+            PlayArea.ProcessKeyDown(Keys.EnableKeys.Suspend);
+        }
+
+        public void RestartGame()
+        {
+            PlayArea.ProcessKeyDown(Keys.EnableKeys.Restart);
+        }
+
         #endregion
 
         #region キー入力処理
@@ -72,7 +82,8 @@ namespace MyMusicGameNew
         {
             if (DoGamePlaying())
             {
-                PlayArea.Judge(e);
+                Keys.EnableKeys key = Keys.ToEnableKeys(e.Key, e.KeyboardDevice);
+                PlayArea.ProcessKeyDown(key);
             }
         }
 

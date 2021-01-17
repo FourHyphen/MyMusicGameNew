@@ -26,6 +26,8 @@ namespace MyMusicGameNew
 
         private Task TaskKeepMovingDuringGame { get; set; }
 
+        private bool IsSuspending { get; set; } = false;
+
         public GamePlaying(MainWindow main, GridPlayArea playArea, Music music, bool IsTest)
         {
             Main = main;
@@ -225,5 +227,39 @@ namespace MyMusicGameNew
         }
 
         #endregion
+
+        public void Suspend()
+        {
+            if (!IsSuspending)
+            {
+                SuspendCore();
+                IsSuspending = true;
+            }
+        }
+
+        private void SuspendCore()
+        {
+            GameTimer.Stop();
+            GameFinishTimer.Stop();
+            _GamePlayingDisplay.GameSuspend();
+            DebugDisplayInfo("Suspending...");
+        }
+
+        public void Restart()
+        {
+            if (IsSuspending)
+            {
+                RestartCore();
+                IsSuspending = false;
+            }
+        }
+
+        private void RestartCore()
+        {
+            GameTimer.Start();
+            GameFinishTimer.Start();
+            _GamePlayingDisplay.GameRestart();
+            DebugDisplayInfo("Playing...");
+        }
     }
 }
