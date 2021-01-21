@@ -64,15 +64,15 @@ namespace MyMusicGameNew
             GameTimer = new System.Diagnostics.Stopwatch();
 
             var cts = new CancellationTokenSource();
-            InitGameFinishedTimer(Music.TimeSecond, cts);
+            InitGameFinishedTimer(Music.TimeMilliSecond, cts);
             StartTaskKeepMovingDuringGame(cts.Token);
         }
 
         // ゲーム終了時の処理
-        private void InitGameFinishedTimer(int musicTimeSecond, CancellationTokenSource cts)
+        private void InitGameFinishedTimer(int musicTimeMilliSecond, CancellationTokenSource cts)
         {
             GameFinishTimer = new System.Timers.Timer();
-            GameFinishTimer.Interval = (musicTimeSecond + 1) * 1000;  // 1[s]余裕を持たせる
+            GameFinishTimer.Interval = musicTimeMilliSecond + 1000;  // 1[s]余裕を持たせる
             GameFinishTimer.Elapsed += (s, e) =>
             {
                 _GridPlayArea.Dispatcher.Invoke(new Action(() =>
