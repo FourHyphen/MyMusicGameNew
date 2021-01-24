@@ -51,36 +51,15 @@ namespace MyMusicGameNew
 
         private void PlayAreaMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (DoGamePlaying())
-            {
-                Point p = e.GetPosition(this);
-                Judge(p);
-            }
-        }
-
-        public bool DoGamePlaying()
-        {
-            return (GamePlay != null);
-        }
-
-        private void Judge(System.Windows.Point p)
-        {
-            GamePlay.Judge(p);
+            Point p = e.GetPosition(this);
+            Judge(p);
         }
 
         public void ProcessKeyDown(Keys.EnableKeys key)
         {
-            if (DoGamePlaying())
-            {
-                ProcessKeyDownCore(key);
-            }
-        }
-
-        private void ProcessKeyDownCore(Keys.EnableKeys key)
-        {
             if (IsKeyDownForJudge(key))
             {
-                GamePlay.Judge(key);
+                Judge(key);
             }
             else if (IsKeyDownForSuspend(key))
             {
@@ -91,6 +70,8 @@ namespace MyMusicGameNew
                 RestartGame();
             }
         }
+
+        #region private: キー入力種別判断の詳細
 
         private bool IsKeyDownForJudge(Keys.EnableKeys key)
         {
@@ -106,6 +87,39 @@ namespace MyMusicGameNew
         {
             return (key == Keys.EnableKeys.Restart);
         }
+
+        #endregion
+
+        #region private Judge詳細
+
+        private void Judge(System.Windows.Point mousePoint)
+        {
+            if (DoGamePlaying())
+            {
+                GamePlay.Judge(mousePoint);
+            }
+        }
+
+        private void Judge(Keys.EnableKeys key)
+        {
+            if (DoGamePlaying())
+            {
+                GamePlay.Judge(key);
+            }
+        }
+
+        #endregion
+
+        public bool DoGamePlaying()
+        {
+            if (GamePlay == null)
+            {
+                return false;
+            }
+            return (GamePlay.DoPlaying());
+        }
+
+        #region ゲーム中断/再開処理
 
         private void SuspendGame()
         {
@@ -134,6 +148,10 @@ namespace MyMusicGameNew
             RestartGame();
         }
 
+        #endregion
+
+        #region ゲーム終了時処理
+
         public void GameFinish()
         {
             PlayResult.Visibility = Visibility.Visible;
@@ -149,5 +167,7 @@ namespace MyMusicGameNew
             Main.GameFinish();
             PlayResult.Visibility = Visibility.Hidden;
         }
+
+        #endregion
     }
 }

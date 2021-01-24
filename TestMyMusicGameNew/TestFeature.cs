@@ -249,13 +249,19 @@ namespace TestMyMusicGameNew
             System.Windows.Point clickPointNote1 = emurateNote1.EmurateCalcJustJudgeLinePoint();
 
             GameStart(Test1MusicIndex);
-            Sleep(emurateNote1.JustTiming.TotalSeconds / 2);
+
+            // 中断中のjudge無効確認のためにPerfectタイミングちょうどで中断
+            Sleep(emurateNote1.JustTiming.TotalSeconds);
             Driver.EmurateSuspendGame();
             // TODO: statusのチェック、MainWindowのデバッグ用ではなく本番稼働のテキストを見るようにする
             Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Suspend"));
 
-            // 待機時間は適当でOK
+            // この待機時間は適当でOK, 1秒も中断すれば以降の動作確認に問題なしと主観で判断
             Sleep(1);
+
+            // 中断中のjudge無効を確認するための左クリック
+            Driver.EmurateLeftClickGamePlaying(clickPointNote1);
+            Assert.AreEqual(expected: 0, actual: Driver.PlayingResultPerfect.Number());
             Assert.AreEqual(expected: 0, actual: Driver.PlayingResultBad.Number());
 
             Driver.EmurateRestartGame();
@@ -263,15 +269,14 @@ namespace TestMyMusicGameNew
             Sleep(UntilGameStartFromSuspend.TotalSeconds);
             Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Playing"));
 
-            Sleep(emurateNote1.JustTiming.TotalSeconds / 2);
             Driver.EmurateLeftClickGamePlaying(clickPointNote1);
             Assert.AreEqual(expected: 1, actual: Driver.PlayingResultPerfect.Number());
             Assert.AreEqual(expected: 0, actual: Driver.PlayingResultBad.Number());
 
             Sleep(Test1MusicTimeSecond - emurateNote1.JustTiming.TotalSeconds + 1);    // 1[s]余裕を持たせる
-            Assert.AreEqual(expected: 1, actual: Driver.PlayingResultBad.Number());
+            Assert.AreEqual(expected: 1, actual: Driver.PlayingResultBad.Number());    // 見逃しBad判定機能の確認
 
-            // メッセージ：ここでNG -> Timerのrestart時にカウントが0から始まってるのでは？
+            // 曲終了の確認
             Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Finish"));
         }
 

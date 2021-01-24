@@ -24,6 +24,8 @@ namespace MyMusicGameNew
 
         private System.Timers.Timer GameFinishTimer { get; set; }
 
+        private CancellationTokenSource ToCallGameFinish { get; set; }
+
         private Task TaskKeepMovingDuringGame { get; set; }
 
         public GamePlaying(MainWindow main, GridPlayArea playArea, Music music, bool IsTest)
@@ -62,31 +64,38 @@ namespace MyMusicGameNew
         private void GameInit()
         {
             GameTimer = new System.Diagnostics.Stopwatch();
+            StartProcessingGame(Music.TimeMilliSecond);
+        }
 
-            var cts = new CancellationTokenSource();
-            InitGameFinishedTimer(Music.TimeMilliSecond, cts);
-            StartTaskKeepMovingDuringGame(cts.Token);
+        private void StartProcessingGame(double musicRemainingTimeMilliSecond)
+        {
+            if (ToCallGameFinish != null)
+            {
+                ToCallGameFinish.Dispose();
+                ToCallGameFinish = null;
+            }
+            ToCallGameFinish = new CancellationTokenSource();
+            InitGameFinishedTimer(musicRemainingTimeMilliSecond);
+            StartTaskKeepMovingDuringGame();
         }
 
         // ゲーム終了時の処理
-        private void InitGameFinishedTimer(int musicTimeMilliSecond, CancellationTokenSource cts)
+        private void InitGameFinishedTimer(double musicTimeMilliSecond)
         {
             GameFinishTimer = new System.Timers.Timer();
-            GameFinishTimer.Interval = musicTimeMilliSecond + 1000;  // 1[s]余裕を持たせる
+            GameFinishTimer.Interval = musicTimeMilliSecond + 1000.0;  // 1[s]余裕を持たせる
             GameFinishTimer.Elapsed += (s, e) =>
             {
                 _GridPlayArea.Dispatcher.Invoke(new Action(() =>
                 {
-                    ProcessGameFinished(cts);
+                    ProcessGameFinished();
                 }));
             };
         }
 
-        private void ProcessGameFinished(CancellationTokenSource cts)
+        private void ProcessGameFinished()
         {
-            GameFinishTimer.Stop();
-            GameFinishTimer.Dispose();
-            StopDisplayingNotes(cts);
+            StopTimer();
 
             DebugDisplayInfo("Finished");
             _GamePlayingDisplay.GameFinish();
@@ -95,9 +104,17 @@ namespace MyMusicGameNew
             ResultSave();
         }
 
-        private void StopDisplayingNotes(CancellationTokenSource cts)
+        private void StopTimer()
         {
-            cts.Cancel();
+            GameTimer.Stop();
+            GameFinishTimer.Stop();
+            GameFinishTimer.Dispose();
+            StopDisplayingNotes();
+        }
+
+        private void StopDisplayingNotes()
+        {
+            ToCallGameFinish.Cancel();
         }
 
         private void ResultSave()
@@ -106,16 +123,17 @@ namespace MyMusicGameNew
         }
 
         // ゲーム中に常駐させる処理
-        private void StartTaskKeepMovingDuringGame(CancellationToken ct)
+        private void StartTaskKeepMovingDuringGame()
         {
             TaskKeepMovingDuringGame = Task.Run(() =>
             {
-                DisplayNotesAndCheckMissedNotes(ct);
+                DisplayNotesAndCheckMissedNotes();
             });
         }
 
-        private void DisplayNotesAndCheckMissedNotes(CancellationToken ct)
+        private void DisplayNotesAndCheckMissedNotes()
         {
+            CancellationToken ct = ToCallGameFinish.Token;
             while (true)
             {
                 _GridPlayArea.JudgeLine.Dispatcher.Invoke(new Action(() =>
@@ -226,10 +244,14 @@ namespace MyMusicGameNew
 
         #endregion
 
+        public bool DoPlaying()
+        {
+            return GameTimer.IsRunning;
+        }
+
         public void Suspend()
         {
-            GameTimer.Stop();
-            GameFinishTimer.Stop();
+            StopTimer();
             _GamePlayingDisplay.DisplaySuspend();
             DebugDisplayInfo("Suspending...");
         }
@@ -241,13 +263,20 @@ namespace MyMusicGameNew
 
         private async void RestartCore()
         {
+            // TODO 時間設定の外部管理化
+            int waitSecond = 3;
+
+            // 時間のかかる処理をゲーム再開前に済ます
+            double untilMusicFinishedTimeMilliSecond = Music.TimeMilliSecond - GameTimer.Elapsed.TotalMilliseconds;
+            StartProcessingGame(untilMusicFinishedTimeMilliSecond);
+
             await Task.Run(() =>
             {
-                _GamePlayingDisplay.DisplayRestartWait(3);    // TODO 時間設定の外部管理化
+                _GamePlayingDisplay.DisplayRestartWait(waitSecond);
                 DebugDisplayInfo("Playing...");
-                GameTimer.Start();
-                GameFinishTimer.Start();
             });
+            GameTimer.Start();
+            GameFinishTimer.Start();
         }
     }
 }

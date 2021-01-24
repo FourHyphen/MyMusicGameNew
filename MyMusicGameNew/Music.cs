@@ -10,7 +10,7 @@ namespace MyMusicGameNew
     {
         public string Name { get; }
 
-        public int TimeMilliSecond { get; }
+        public double TimeMilliSecond { get; }
 
         public List<Note> Notes { get; private set; }
 
@@ -31,7 +31,7 @@ namespace MyMusicGameNew
         public Music(string name, int timeSecond, List<Note> notes, PlayingMusic play)
         {
             Name = name;
-            TimeMilliSecond = timeSecond * 1000;
+            TimeMilliSecond = (double)timeSecond * 1000.0;
             Notes = notes;
             PlayingMusic = play;
             InitMusicNoteImage();
