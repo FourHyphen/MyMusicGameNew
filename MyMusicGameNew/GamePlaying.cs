@@ -26,8 +26,6 @@ namespace MyMusicGameNew
 
         private CancellationTokenSource ToCallGameFinish { get; set; }
 
-        private Task TaskKeepMovingDuringGame { get; set; }
-
         public GamePlaying(MainWindow main, GridPlayArea playArea, Music music, bool IsTest)
         {
             Main = main;
@@ -72,7 +70,6 @@ namespace MyMusicGameNew
             if (ToCallGameFinish != null)
             {
                 ToCallGameFinish.Dispose();
-                ToCallGameFinish = null;
             }
             ToCallGameFinish = new CancellationTokenSource();
             InitGameFinishedTimer(musicRemainingTimeMilliSecond);
@@ -95,7 +92,7 @@ namespace MyMusicGameNew
 
         private void ProcessGameFinished()
         {
-            StopTimer();
+            StopGame();
 
             DebugDisplayInfo("Finished");
             _GamePlayingDisplay.GameFinish();
@@ -104,7 +101,7 @@ namespace MyMusicGameNew
             ResultSave();
         }
 
-        private void StopTimer()
+        private void StopGame()
         {
             GameTimer.Stop();
             GameFinishTimer.Stop();
@@ -125,7 +122,7 @@ namespace MyMusicGameNew
         // ゲーム中に常駐させる処理
         private void StartTaskKeepMovingDuringGame()
         {
-            TaskKeepMovingDuringGame = Task.Run(() =>
+            Task.Run(() =>
             {
                 DisplayNotesAndCheckMissedNotes();
             });
@@ -251,7 +248,7 @@ namespace MyMusicGameNew
 
         public void Suspend()
         {
-            StopTimer();
+            StopGame();
             _GamePlayingDisplay.DisplaySuspend();
             DebugDisplayInfo("Suspending...");
         }
@@ -263,20 +260,19 @@ namespace MyMusicGameNew
 
         private async void RestartCore()
         {
-            // TODO 時間設定の外部管理化
-            int waitSecond = 3;
-
             // 時間のかかる処理をゲーム再開前に済ます
             double untilMusicFinishedTimeMilliSecond = Music.TimeMilliSecond - GameTimer.Elapsed.TotalMilliseconds;
             StartProcessingGame(untilMusicFinishedTimeMilliSecond);
 
             await Task.Run(() =>
             {
-                _GamePlayingDisplay.DisplayRestartWait(waitSecond);
+                // TODO 時間設定の外部管理化
+                _GamePlayingDisplay.DisplayRestartWait(3);
                 DebugDisplayInfo("Playing...");
             });
-            GameTimer.Start();
+
             GameFinishTimer.Start();
+            GameTimer.Start();
         }
     }
 }
