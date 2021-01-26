@@ -8,7 +8,7 @@ namespace MyMusicGameNew
 {
     public class PlayingMusicFactory
     {
-        public static PlayingMusic Create(string musicDataPath, bool isTest=false)
+        public static PlayingMusic Create(string musicDataPath, GridPlayArea playArea, bool isTest=false)
         {
             if (isTest)
             {
@@ -16,7 +16,7 @@ namespace MyMusicGameNew
             }
             else
             {
-                return new PlayingMusicWav(musicDataPath);
+                return new PlayingMusicWav(musicDataPath, playArea);
             }
         }
     }

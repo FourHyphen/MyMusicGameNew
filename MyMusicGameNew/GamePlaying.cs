@@ -20,6 +20,8 @@ namespace MyMusicGameNew
 
         private Music Music { get; }
 
+        private PlayingMusic PlayingMusic { get; set; }
+
         private System.Diagnostics.Stopwatch GameTimer { get; set; }
 
         private System.Timers.Timer GameFinishTimer { get; set; }
@@ -33,6 +35,7 @@ namespace MyMusicGameNew
             _GamePlayingArea = new GamePlayingArea((int)playArea.PlayArea.ActualWidth, (int)playArea.PlayArea.ActualHeight);
             _GamePlayingDisplay = new GamePlayingDisplay(playArea, music.NotesNum);
             Music = music;
+            InitPlayingMusic(Music.GetMusicDataPath(), playArea, IsTest);
         }
 
         ~GamePlaying()
@@ -47,6 +50,11 @@ namespace MyMusicGameNew
             {
                 GameTimer.Stop();
             }
+        }
+
+        private void InitPlayingMusic(string musicDataPath, GridPlayArea playArea, bool isTest)
+        {
+            PlayingMusic = PlayingMusicFactory.Create(musicDataPath, playArea, isTest);
         }
 
         public void Starting()
@@ -104,6 +112,8 @@ namespace MyMusicGameNew
         private void StopGame()
         {
             GameTimer.Stop();
+            PlayingMusic.Stop();
+
             GameFinishTimer.Stop();
             GameFinishTimer.Dispose();
             StopDisplayingNotes();
@@ -196,18 +206,9 @@ namespace MyMusicGameNew
         public void Start()
         {
             GameFinishTimer.Start();
-            PlayMusic();
+            PlayingMusic.PlayAsync();
             GameTimer.Start();
         }
-
-        #region private: ゲーム開始時処理の詳細
-
-        private void PlayMusic()
-        {
-            Music.PlayAsync();
-        }
-
-        #endregion
 
         public void Judge(Keys.EnableKeys key)
         {
@@ -272,6 +273,7 @@ namespace MyMusicGameNew
             });
 
             GameFinishTimer.Start();
+            PlayingMusic.Restart();
             GameTimer.Start();
         }
     }

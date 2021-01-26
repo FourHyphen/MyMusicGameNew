@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace MyMusicGameNew
 {
@@ -10,11 +11,11 @@ namespace MyMusicGameNew
     {
         public string Name { get; }
 
+        private MusicInfo Info { get; }
+
         public double TimeMilliSecond { get; }
 
         public List<Note> Notes { get; private set; }
-
-        private PlayingMusic PlayingMusic { get; set; }
 
         private MusicBestResult BestResult { get; set; }
 
@@ -28,14 +29,19 @@ namespace MyMusicGameNew
 
         public int BestResultBad { get { return BestResult.BestResultBad; } }
 
-        public Music(string name, int timeSecond, List<Note> notes, PlayingMusic play)
+        public Music(string name, MusicInfo info, List<Note> notes)
         {
             Name = name;
-            TimeMilliSecond = (double)timeSecond * 1000.0;
+            Info = info;
+            TimeMilliSecond = (double)info.TimeSecond * 1000.0;
             Notes = notes;
-            PlayingMusic = play;
             InitMusicNoteImage();
             InitBestResult();
+        }
+
+        public string GetMusicDataPath()
+        {
+            return Info.MusicData;
         }
 
         private void InitMusicNoteImage()
@@ -49,11 +55,6 @@ namespace MyMusicGameNew
         private void InitBestResult()
         {
             BestResult = MusicBestResult.Create(Name);
-        }
-
-        public void PlayAsync()
-        {
-            PlayingMusic.PlayAsync();
         }
 
         public Note GetLatestUnjudgedNoteForLine(int inputLine)

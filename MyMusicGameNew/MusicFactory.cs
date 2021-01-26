@@ -13,8 +13,7 @@ namespace MyMusicGameNew
         {
             MusicInfo info = GetMusicInfo(musicName);
             List<Note> notes = GetNotes(info.Note);
-            PlayingMusic play = GetPlayingMusic(info.MusicData, isTest);
-            return new Music(musicName, info.TimeSecond, notes, play);
+            return new Music(musicName, info, notes);
         }
 
         private MusicInfo GetMusicInfo(string musicName)
@@ -42,11 +41,6 @@ namespace MyMusicGameNew
             string jsonPath = Common.GetFilePathOfDependentEnvironment(notePath);
             string jsonStr = Common.ReadFile(jsonPath);
             return JsonConvert.DeserializeObject<List<NoteData>>(jsonStr);
-        }
-
-        private PlayingMusic GetPlayingMusic(string musicDataPath, bool isTest)
-        {
-            return PlayingMusicFactory.Create(musicDataPath, isTest);
         }
     }
 }

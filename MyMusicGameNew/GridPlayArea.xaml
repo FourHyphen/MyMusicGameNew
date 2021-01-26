@@ -147,5 +147,10 @@
                 </StackPanel>
             </Grid>
         </Grid>
+
+        <!--曲再生(中断機能を入れるためMediaElement)-->
+        <MediaElement x:Name="MusicMedia"
+                      Height="0"
+                      Width="0"/>
     </Grid>
 </UserControl>

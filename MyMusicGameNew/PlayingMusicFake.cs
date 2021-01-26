@@ -14,5 +14,15 @@ namespace MyMusicGameNew
         {
             // not play music
         }
+
+        public override void Stop()
+        {
+            // not play music
+        }
+
+        public override void Restart()
+        {
+            // not play music
+        }
     }
 }
