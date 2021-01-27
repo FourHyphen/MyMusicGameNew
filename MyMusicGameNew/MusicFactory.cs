@@ -9,10 +9,10 @@ namespace MyMusicGameNew
 {
     public class MusicFactory
     {
-        public Music Create(string musicName, bool isTest=false)
+        public Music Create(string musicName)
         {
             MusicInfo info = GetMusicInfo(musicName);
-            List<Note> notes = GetNotes(info.Note);
+            List<Note> notes = GetNotes(info.NoteDataFilePath);
             return new Music(musicName, info, notes);
         }
 

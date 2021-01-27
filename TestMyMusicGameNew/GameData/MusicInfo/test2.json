@@ -1,5 +1,5 @@
 {
     "MusicData" : null,
-    "Note"      : "./GameData/Note/test2.json",
+    "Note"      : "/GameData/Note/test2.json",
     "TimeSecond": 2
 }

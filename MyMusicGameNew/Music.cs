@@ -41,7 +41,7 @@ namespace MyMusicGameNew
 
         public string GetMusicDataPath()
         {
-            return Info.MusicData;
+            return Info.MusicDataFilePath;
         }
 
         private void InitMusicNoteImage()

@@ -15,7 +15,7 @@ namespace MyMusicGameNew
         {
             get
             {
-                return System.IO.Path.GetFullPath(_DataPath);
+                return Common.GetFilePathOfDependentEnvironment(_DataPath);
             }
         }
 

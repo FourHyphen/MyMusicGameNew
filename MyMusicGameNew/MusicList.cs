@@ -13,10 +13,10 @@ namespace MyMusicGameNew
 
         public List<string> Names { get; private set; } = new List<string>();
 
-        public MusicList(bool isTest)
+        public MusicList()
         {
             SetMusicNames();
-            CreateMusics(Names, isTest);
+            CreateMusics(Names);
         }
 
         private void SetMusicNames()
@@ -25,12 +25,12 @@ namespace MyMusicGameNew
             Names = Common.GetStringListInJson(musicsFilePath);
         }
 
-        private void CreateMusics(List<string> musicNames, bool isTest)
+        private void CreateMusics(List<string> musicNames)
         {
             MusicFactory mf = new MusicFactory();
             foreach (string name in musicNames)
             {
-                Music music = mf.Create(name, isTest);
+                Music music = mf.Create(name);
                 Musics.Add(music);
             }
         }

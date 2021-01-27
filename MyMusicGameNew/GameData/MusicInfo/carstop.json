@@ -1,5 +1,5 @@
 {
-    "MusicData" : "./GameData/MusicData/carstop.wav",
-    "Note"      : "./GameData/Note/carstop.json",
+    "MusicData" : "/GameData/MusicData/carstop.wav",
+    "Note"      : "/GameData/Note/carstop.json",
     "TimeSecond": 2
 }

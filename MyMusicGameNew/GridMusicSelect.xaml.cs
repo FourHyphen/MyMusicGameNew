@@ -17,8 +17,6 @@ namespace MyMusicGameNew
 {
     public partial class GridMusicSelect : UserControl
     {
-        private bool IsTest { get; set; }
-
         private MusicList Musics { get; set; }
 
         private MainWindow Main { get; set; }
@@ -28,9 +26,8 @@ namespace MyMusicGameNew
             InitializeComponent();
         }
 
-        public void Init(MainWindow main, bool isTest)
+        public void Init(MainWindow main)
         {
-            IsTest = isTest;
             Main = main;
             InitMusicList();
             InitDisplay();
@@ -38,7 +35,7 @@ namespace MyMusicGameNew
 
         private void InitMusicList()
         {
-            Musics = new MusicList(IsTest);
+            Musics = new MusicList();
         }
 
         private void InitDisplay()

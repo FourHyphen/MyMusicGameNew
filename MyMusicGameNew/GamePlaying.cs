@@ -236,6 +236,7 @@ namespace MyMusicGameNew
             note.Judge(now);
             if (note.AlreadyJudged())
             {
+                // メッセージ：judge時に効果音を鳴らす(叩いたときと見逃しミス両方)
                 _GamePlayingDisplay.DisplayNoteJudgeResult(note);
             }
         }

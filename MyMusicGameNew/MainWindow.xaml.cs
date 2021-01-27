@@ -42,7 +42,7 @@ namespace MyMusicGameNew
 
         private void ShowMusicSelect()
         {
-            MusicSelect.Init(this, IsTest);
+            MusicSelect.Init(this);
             MusicSelect.Visibility = Visibility.Visible;
             PlayArea.Visibility = Visibility.Hidden;
         }
