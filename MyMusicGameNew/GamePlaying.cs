@@ -22,6 +22,8 @@ namespace MyMusicGameNew
 
         private PlayingMusic PlayingMusic { get; set; }
 
+        private NoteSE NoteSE { get; }
+
         private System.Diagnostics.Stopwatch GameTimer { get; set; }
 
         private System.Timers.Timer GameFinishTimer { get; set; }
@@ -36,6 +38,7 @@ namespace MyMusicGameNew
             _GamePlayingDisplay = new GamePlayingDisplay(playArea, music.NotesNum);
             Music = music;
             InitPlayingMusic(Music.GetMusicDataPath(), playArea, IsTest);
+            NoteSE = new NoteSEFactory().Create(IsTest);
         }
 
         ~GamePlaying()
@@ -234,9 +237,14 @@ namespace MyMusicGameNew
 
             TimeSpan now = GameTimer.Elapsed;
             note.Judge(now);
+            Judged(note);
+        }
+
+        private void Judged(Note note)
+        {
             if (note.AlreadyJudged())
             {
-                // メッセージ：judge時に効果音を鳴らす(叩いたときと見逃しミス両方)
+                NoteSE.Sound();
                 _GamePlayingDisplay.DisplayNoteJudgeResult(note);
             }
         }

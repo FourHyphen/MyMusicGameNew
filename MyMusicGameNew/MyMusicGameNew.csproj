@@ -105,6 +105,10 @@
     <Compile Include="NoteData.cs" />
     <Compile Include="NoteImage.cs" />
     <Compile Include="NoteJudge.cs" />
+    <Compile Include="NoteSE.cs" />
+    <Compile Include="NoteSEFake.cs" />
+    <Compile Include="NoteSEWav.cs" />
+    <Compile Include="NoteSEFactory.cs" />
     <Compile Include="PlayingMusic.cs" />
     <Compile Include="PlayingMusicFactory.cs" />
     <Compile Include="PlayingMusicFake.cs" />
