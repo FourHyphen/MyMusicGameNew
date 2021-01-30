@@ -50,6 +50,8 @@ namespace TestMyMusicGameNew
                 BestResultBad = new LabelAdapter(Tree, "BestResultBad");
             }
 
+            /// <param name="startIndex">0始まり</param>
+            /// <returns></returns>
             public int GetDisplayNotesNum(int startIndex)
             {
                 Tree = new WindowControl(MainWindow).LogicalTree();  // 現在の画面状況を取得
@@ -84,6 +86,16 @@ namespace TestMyMusicGameNew
             public void EmurateRestartGame()
             {
                 MainWindow.RestartGame();
+            }
+
+            public void EmurateChangeSpeedRate(double rate)
+            {
+                if (rate < 0.5 || rate > 3.0)
+                {
+                    throw new Exception("0.5 <= rate <= 3.0");
+                }
+
+                MainWindow.DebugSetNoteSpeedRate(rate);
             }
         }
     }

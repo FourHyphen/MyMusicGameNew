@@ -39,7 +39,7 @@ namespace TestMyMusicGameNew
             NoteData nd = new NoteData(en.XLine, en.JustTiming);
             Note noteOutside = new Note(nd, PlayAreaY * 10);    // 10倍ならNoteSpeedYPerSecによらず、確実に初期値が画面外になる
 
-            GamePlayingArea area = new GamePlayingArea(PlayAreaX, PlayAreaY);
+            GamePlayingArea area = new GamePlayingArea(PlayAreaX, PlayAreaY, 1.0);
             noteOutside.CalcNowPoint(area, ZeroTime);
             Assert.IsFalse(area.IsInsidePlayArea(noteOutside));
 

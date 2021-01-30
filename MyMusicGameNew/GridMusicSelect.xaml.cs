@@ -92,7 +92,8 @@ namespace MyMusicGameNew
             if (ReadyGameStart())
             {
                 Music music = GetSelectedMusic();
-                Main.GameStart(music);
+                double rate = GetNoteSpeedRate();
+                Main.GameStart(music, rate);
             }
         }
 
@@ -109,6 +110,18 @@ namespace MyMusicGameNew
         private Music GetSelectedMusic()
         {
             return Musics.GetMusic(MusicListBox.SelectedIndex);
+        }
+
+        private double GetNoteSpeedRate()
+        {
+            foreach (RadioButton rb in NoteSpeedRateList.Items)
+            {
+                if (rb.IsChecked == true)
+                {
+                    return double.Parse((string)rb.Content);
+                }
+            }
+            return 1.0;
         }
 
         public void ResetBestScore(int musicIndex)

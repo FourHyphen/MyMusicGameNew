@@ -30,11 +30,11 @@ namespace MyMusicGameNew
 
         private CancellationTokenSource ToCallGameFinish { get; set; }
 
-        public GamePlaying(MainWindow main, GridPlayArea playArea, Music music, bool IsTest)
+        public GamePlaying(MainWindow main, GridPlayArea playArea, Music music, double noteSpeedRate, bool IsTest)
         {
             Main = main;
             _GridPlayArea = playArea;
-            _GamePlayingArea = new GamePlayingArea((int)playArea.PlayArea.ActualWidth, (int)playArea.PlayArea.ActualHeight);
+            _GamePlayingArea = new GamePlayingArea((int)playArea.PlayArea.ActualWidth, (int)playArea.PlayArea.ActualHeight, noteSpeedRate);
             _GamePlayingDisplay = new GamePlayingDisplay(playArea, music.NotesNum);
             Music = music;
             InitPlayingMusic(Music.GetMusicDataPath(), playArea, IsTest);
@@ -169,8 +169,11 @@ namespace MyMusicGameNew
                 }
 
                 JudgeBadWhenNotePassedJudgeLineForAWhile(note, now);
-                note.CalcNowPoint(_GamePlayingArea, now);
-                DisplayNote(note);
+                if (!note.AlreadyJudged())
+                {
+                    note.CalcNowPoint(_GamePlayingArea, now);
+                    DisplayNote(note);
+                }
             }
         }
 

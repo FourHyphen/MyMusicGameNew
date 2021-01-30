@@ -14,12 +14,15 @@ namespace MyMusicGameNew
 
         private int PlayAreaHeight { get; set; }
 
-        public GamePlayingArea(int playAreaWidth, int playAreaHeight)
+        private double NoteSpeedRate { get; }
+
+        public GamePlayingArea(int playAreaWidth, int playAreaHeight, double noteSpeedRate)
         {
             // TODO: 設定値の外部管理化
             PlayAreaWidth = playAreaWidth;
             PlayAreaHeight = playAreaHeight;
             JudgeLineYFromAreaTop = playAreaHeight - 100;
+            NoteSpeedRate = noteSpeedRate;
         }
 
         public bool IsInsidePlayArea(Note note)
@@ -44,7 +47,7 @@ namespace MyMusicGameNew
 
         private double CalcNowY(double diffMillisec, double noteSpeedYPerSec)
         {
-            double dist = (diffMillisec / 1000.0) * noteSpeedYPerSec;
+            double dist = (diffMillisec / 1000.0) * (noteSpeedYPerSec * NoteSpeedRate);
             return JudgeLineYFromAreaTop - dist;
         }
 

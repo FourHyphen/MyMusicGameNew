@@ -74,6 +74,17 @@ namespace MyMusicGameNew
             PlayArea.ProcessKeyDown(Keys.EnableKeys.Restart);
         }
 
+        public void DebugSetNoteSpeedRate(double noteSpeedRate)
+        {
+            foreach (RadioButton rb in MusicSelect.NoteSpeedRateList.Items)
+            {
+                if (double.Parse((string)rb.Content) == noteSpeedRate)
+                {
+                    rb.IsChecked = true;
+                }
+            }
+        }
+
         #endregion
 
         #region キー入力処理
@@ -96,10 +107,10 @@ namespace MyMusicGameNew
             return PlayArea.DoGamePlaying();
         }
 
-        public void GameStart(Music music)
+        public void GameStart(Music music, double noteSpeedRate)
         {
             ShowPlayArea();
-            PlayArea.GameStart(this, music);
+            PlayArea.GameStart(this, music, noteSpeedRate);
         }
 
         private void ShowPlayArea()

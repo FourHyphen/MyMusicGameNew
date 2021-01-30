@@ -280,6 +280,28 @@ namespace TestMyMusicGameNew
             Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Finish"));
         }
 
+        [TestMethod]
+        public void TestEnableOfChangingNoteSpeedRate()
+        {
+            // プレイヤーは、ノートの落下速度の倍率を指定できる
+            Driver.EmurateChangeSpeedRate(0.5);
+            GameStart(Test1MusicIndex);
+
+            Assert.AreEqual(expected: 2, actual: Driver.GetDisplayNotesNum(0));
+            Sleep(Test1MusicTimeSecond);
+            Assert.AreEqual(expected: 0, actual: Driver.GetDisplayNotesNum(0));    // 初期実装時、速度0.5倍のnoteが画面から消えなかったことがあった
+            Sleep(1);    // 同期するための少しの余裕
+            Driver.EmurateGamePlayingResultOKButtonClick();
+
+            Sleep(1);    // 同期するための少しの余裕
+            Driver.EmurateChangeSpeedRate(3.0);
+            GameStart(Test1MusicIndex);
+
+            Assert.AreEqual(expected: 0, actual: Driver.GetDisplayNotesNum(0));
+            Sleep(Test1MusicTimeSecond);
+            Assert.AreEqual(expected: 0, actual: Driver.GetDisplayNotesNum(0));    // 0.5倍で画面に残ったことがあったので一応テスト
+        }
+
         private void GameStart(int musicIndex)
         {
             Driver.MusicList.ChangeSelectedIndex(musicIndex);
