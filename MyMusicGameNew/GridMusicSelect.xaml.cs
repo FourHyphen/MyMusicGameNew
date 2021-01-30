@@ -43,7 +43,6 @@ namespace MyMusicGameNew
             ResetMusicListBox();
             SetMusicListBox();
             Main.SetGameStatus("Select Music");
-            Main.SetPlayingMusicStatus("Not");
         }
 
         private void ResetMusicListBox()

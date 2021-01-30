@@ -17,7 +17,5 @@
         <Label x:Name="DebugGameStatus"
                HorizontalAlignment="Center"
                Visibility="Hidden"/>
-        <Label x:Name="DebugPlayingMusicStatus"
-               Visibility="Hidden"/>
     </Grid>
 </Window>

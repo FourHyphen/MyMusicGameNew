@@ -66,7 +66,7 @@ namespace TestMyMusicGameNew
         public void TestNotStartOfGameWhenNotSelectMusicAndCallStartOfGame()
         {
             GameStart();
-            Assert.IsFalse(Driver.GameStatus.Contains("Playing"));
+            Assert.IsFalse(Driver.PlayingMusicStatus.Contains("Playing"));
         }
 
         [TestMethod]
@@ -253,8 +253,6 @@ namespace TestMyMusicGameNew
             // 中断中のjudge無効確認のためにPerfectタイミングちょうどで中断
             Sleep(emurateNote1.JustTiming.TotalSeconds);
             Driver.EmurateSuspendGame();
-            // TODO: statusのチェック、MainWindowのデバッグ用ではなく本番稼働のテキストを見るようにする
-            //  -> メッセージ：後はMainWindow側を削除する
             Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Suspend"));
 
             // この待機時間は適当でOK, 1秒も中断すれば以降の動作確認に問題なしと主観で判断

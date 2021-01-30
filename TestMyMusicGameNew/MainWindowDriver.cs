@@ -16,7 +16,6 @@ namespace TestMyMusicGameNew
             private dynamic MainWindow { get; }
             private IWPFDependencyObjectCollection<System.Windows.DependencyObject> Tree { get; set; }
             public MusicListAdapter MusicList { get; }
-            public LabelAdapter GameStatus { get; }
             public ButtonAdapter GameStartButton { get; }
             public LabelAdapter PlayingMusicStatus { get; }
             public LabelAdapter NotesNum { get; }
@@ -35,7 +34,6 @@ namespace TestMyMusicGameNew
                 MainWindow = mainWindow;
                 Tree = new WindowControl(mainWindow).LogicalTree();
                 MusicList = new MusicListAdapter(Tree, "MusicListBox");
-                GameStatus = new LabelAdapter(Tree, "DebugGameStatus");
                 GameStartButton = new ButtonAdapter(Tree, "GameStartButton");
                 PlayingMusicStatus = new LabelAdapter(Tree, "GameStatus");
                 NotesNum = new LabelAdapter(Tree, "NotesNum");

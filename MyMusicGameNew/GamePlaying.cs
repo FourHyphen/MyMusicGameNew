@@ -203,7 +203,6 @@ namespace MyMusicGameNew
             Main.Dispatcher.Invoke(() =>
             {
                 Main.SetGameStatus(status);
-                Main.SetPlayingMusicStatus(status);
             });
         }
 
