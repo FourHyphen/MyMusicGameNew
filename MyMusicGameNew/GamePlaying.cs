@@ -10,8 +10,6 @@ namespace MyMusicGameNew
 {
     public class GamePlaying
     {
-        private MainWindow Main { get; set; }
-
         private GridPlayArea _GridPlayArea { get; set; }
 
         private GamePlayingArea _GamePlayingArea { get; set; }
@@ -30,9 +28,8 @@ namespace MyMusicGameNew
 
         private CancellationTokenSource ToCallGameFinish { get; set; }
 
-        public GamePlaying(MainWindow main, GridPlayArea playArea, Music music, double noteSpeedRate, bool IsTest)
+        public GamePlaying(GridPlayArea playArea, Music music, double noteSpeedRate, bool IsTest)
         {
-            Main = main;
             _GridPlayArea = playArea;
             _GamePlayingArea = new GamePlayingArea((int)playArea.PlayArea.ActualWidth, (int)playArea.PlayArea.ActualHeight, noteSpeedRate);
             _GamePlayingDisplay = new GamePlayingDisplay(playArea, music.NotesNum);
@@ -64,7 +61,6 @@ namespace MyMusicGameNew
         {
             // TODO: 待機時間の外部管理化
             GameInit();
-            DebugDisplayInfo("Playing");
             _GamePlayingDisplay.DisplayStartingWait(3);
         }
 
@@ -105,7 +101,6 @@ namespace MyMusicGameNew
         {
             StopGame();
 
-            DebugDisplayInfo("Finished");
             _GamePlayingDisplay.GameFinish();
             _GridPlayArea.GameFinish();
 
@@ -196,18 +191,6 @@ namespace MyMusicGameNew
 
         #endregion
 
-        #region private: デバッグ用処理
-
-        private void DebugDisplayInfo(string status)
-        {
-            Main.Dispatcher.Invoke(() =>
-            {
-                Main.SetGameStatus(status);
-            });
-        }
-
-        #endregion
-
         public void Start()
         {
             GameFinishTimer.Start();
@@ -262,7 +245,6 @@ namespace MyMusicGameNew
         {
             StopGame();
             _GamePlayingDisplay.DisplaySuspend();
-            DebugDisplayInfo("Suspending...");
         }
 
         public void Restart()
@@ -280,7 +262,6 @@ namespace MyMusicGameNew
             {
                 // TODO 時間設定の外部管理化
                 _GamePlayingDisplay.DisplayRestartWait(3);
-                DebugDisplayInfo("Playing...");
             });
 
             GameFinishTimer.Start();

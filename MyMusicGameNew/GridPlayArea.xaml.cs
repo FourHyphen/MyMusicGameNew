@@ -34,9 +34,9 @@ namespace MyMusicGameNew
             IsTest = isTest;
         }
 
-        public void GameStart(MainWindow main, Music music, double noteSpeedRate)
+        public void GameStart(Music music, double noteSpeedRate)
         {
-            GamePlay = new GamePlaying(main, this, music, noteSpeedRate, IsTest);
+            GamePlay = new GamePlaying(this, music, noteSpeedRate, IsTest);
             GameStartCore();
         }
 

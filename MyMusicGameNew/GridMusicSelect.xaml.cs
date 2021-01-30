@@ -42,7 +42,6 @@ namespace MyMusicGameNew
         {
             ResetMusicListBox();
             SetMusicListBox();
-            Main.SetGameStatus("Select Music");
         }
 
         private void ResetMusicListBox()

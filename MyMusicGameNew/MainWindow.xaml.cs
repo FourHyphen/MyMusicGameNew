@@ -49,13 +49,6 @@ namespace MyMusicGameNew
 
         #region テスト用処理
 
-        // TODO: 不要にしたので削除する
-
-        public void SetGameStatus(string status)
-        {
-            DebugGameStatus.Content = status;
-        }
-
         public void ResetBestScore(int musicIndex)
         {
             MusicSelect.ResetBestScore(musicIndex);
@@ -107,7 +100,7 @@ namespace MyMusicGameNew
         public void GameStart(Music music, double noteSpeedRate)
         {
             ShowPlayArea();
-            PlayArea.GameStart(this, music, noteSpeedRate);
+            PlayArea.GameStart(music, noteSpeedRate);
         }
 
         private void ShowPlayArea()
