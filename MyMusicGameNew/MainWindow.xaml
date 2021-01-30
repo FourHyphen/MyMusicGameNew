@@ -12,10 +12,5 @@
                             Visibility="Visible"/>
         <local:GridPlayArea x:Name="PlayArea"
                             Visibility="Hidden"/>
-
-        <!--Debug Info-->
-        <Label x:Name="DebugGameStatus"
-               HorizontalAlignment="Center"
-               Visibility="Hidden"/>
     </Grid>
 </Window>

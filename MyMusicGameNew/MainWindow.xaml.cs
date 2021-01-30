@@ -49,21 +49,6 @@ namespace MyMusicGameNew
 
         #region テスト用処理
 
-        public void ResetBestScore(int musicIndex)
-        {
-            MusicSelect.ResetBestScore(musicIndex);
-        }
-
-        public void SuspendGame()
-        {
-            PlayArea.ProcessKeyDown(Keys.EnableKeys.Suspend);
-        }
-
-        public void RestartGame()
-        {
-            PlayArea.ProcessKeyDown(Keys.EnableKeys.Restart);
-        }
-
         public void DebugSetNoteSpeedRate(double noteSpeedRate)
         {
             foreach (RadioButton rb in MusicSelect.NoteSpeedRateList.Items)

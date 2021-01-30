@@ -73,17 +73,17 @@ namespace TestMyMusicGameNew
 
             public void ResetBestScore(int musicIndex)
             {
-                MainWindow.ResetBestScore(musicIndex);
+                MainWindow.MusicSelect.ResetBestScore(musicIndex);
             }
 
             public void EmurateSuspendGame()
             {
-                MainWindow.SuspendGame();
+                MainWindow.PlayArea.ProcessKeyDown(MyMusicGameNew.Keys.EnableKeys.Suspend);
             }
 
             public void EmurateRestartGame()
             {
-                MainWindow.RestartGame();
+                MainWindow.PlayArea.ProcessKeyDown(MyMusicGameNew.Keys.EnableKeys.Restart);
             }
 
             public void EmurateChangeSpeedRate(double rate)

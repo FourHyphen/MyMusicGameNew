@@ -122,6 +122,10 @@ namespace MyMusicGameNew
             return 1.0;
         }
 
+        /// <summary>
+        /// テストで使用している(MainWindowDriverから呼び出す)ため削除しないこと
+        /// </summary>
+        /// <param name="musicIndex"></param>
         public void ResetBestScore(int musicIndex)
         {
             Musics.GetMusic(musicIndex).ResetBestScore();
