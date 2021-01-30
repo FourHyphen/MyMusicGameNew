@@ -79,11 +79,10 @@ namespace TestMyMusicGameNew
         [TestMethod]
         public void TestPlayingMusicWhenGameStartAndFinish()
         {
-            Assert.IsTrue(Driver.PlayingMusicStatus.Content().Contains("Not"));
+            Assert.IsFalse(Driver.PlayingMusicStatus.Content().Contains("Playing"));
 
             GameStart(Test2MusicIndex);
-
-            Assert.IsFalse(Driver.PlayingMusicStatus.Contains("Not"));
+            Sleep(0.5);    // sleepなしだと失敗したことがある
             Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Playing"));
 
             Sleep(Test2MusicTimeSecond + 2);  // いくらか余裕を持たせる、1[s]だと失敗したことがある
@@ -234,6 +233,7 @@ namespace TestMyMusicGameNew
 
             Sleep(Test1MusicTimeSecond - emurateNote1.JustTiming.TotalSeconds + 1);    // 1[s]余裕を持たせる
             Driver.EmurateGamePlayingResultOKButtonClick();
+            Sleep(0.5);    // sleepなしだと失敗したことがある
 
             Driver.MusicList.ChangeSelectedIndex(Test1MusicIndex);
             Assert.AreEqual(expected: 2, actual: Driver.BestScore.Number());
@@ -254,6 +254,7 @@ namespace TestMyMusicGameNew
             Sleep(emurateNote1.JustTiming.TotalSeconds);
             Driver.EmurateSuspendGame();
             // TODO: statusのチェック、MainWindowのデバッグ用ではなく本番稼働のテキストを見るようにする
+            //  -> メッセージ：後はMainWindow側を削除する
             Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Suspend"));
 
             // この待機時間は適当でOK, 1秒も中断すれば以降の動作確認に問題なしと主観で判断
@@ -265,7 +266,7 @@ namespace TestMyMusicGameNew
             Assert.AreEqual(expected: 0, actual: Driver.PlayingResultBad.Number());
 
             Driver.EmurateRestartGame();
-            Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Suspend"));
+            Assert.IsFalse(Driver.PlayingMusicStatus.Contains("Playing"));
             Sleep(UntilGameStartFromSuspend.TotalSeconds);
             Assert.IsTrue(Driver.PlayingMusicStatus.Contains("Playing"));
 

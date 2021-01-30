@@ -37,7 +37,7 @@ namespace TestMyMusicGameNew
                 MusicList = new MusicListAdapter(Tree, "MusicListBox");
                 GameStatus = new LabelAdapter(Tree, "DebugGameStatus");
                 GameStartButton = new ButtonAdapter(Tree, "GameStartButton");
-                PlayingMusicStatus = new LabelAdapter(Tree, "DebugPlayingMusicStatus");
+                PlayingMusicStatus = new LabelAdapter(Tree, "GameStatus");
                 NotesNum = new LabelAdapter(Tree, "NotesNum");
                 DisplayNotes = new DisplayNotesAdapter("Note");
                 PlayingResultPerfect = new LabelAdapter(Tree, "ResultPerfect");
