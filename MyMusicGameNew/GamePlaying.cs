@@ -132,11 +132,11 @@ namespace MyMusicGameNew
         {
             Task.Run(() =>
             {
-                DisplayNotesAndCheckMissedNotes();
+                CheckMissedNotesAndDisplayNotes();
             });
         }
 
-        private void DisplayNotesAndCheckMissedNotes()
+        private void CheckMissedNotesAndDisplayNotes()
         {
             CancellationToken ct = ToCallGameFinish.Token;
             while (true)
@@ -144,7 +144,7 @@ namespace MyMusicGameNew
                 _GridPlayArea.JudgeLine.Dispatcher.Invoke(new Action(() =>
                 {
                     TimeSpan now = GameTimer.Elapsed;
-                    DisplayNotesAndCheckMissedNotesCore(now);
+                    CheckMissedNotesAndDisplayNotesCore(now);
                 }));
 
                 if (ct.IsCancellationRequested)
@@ -154,7 +154,7 @@ namespace MyMusicGameNew
             }
         }
 
-        private void DisplayNotesAndCheckMissedNotesCore(TimeSpan now)
+        private void CheckMissedNotesAndDisplayNotesCore(TimeSpan now)
         {
             foreach (Note note in Music.Notes)
             {
@@ -163,21 +163,16 @@ namespace MyMusicGameNew
                     continue;
                 }
 
-                JudgeBadWhenNotePassedJudgeLineForAWhile(note, now);
-                if (!note.AlreadyJudged())
+                note.JudgeBadWhenNotePassedJudgeLineForAWhile(now);
+                if (note.AlreadyJudged())
+                {
+                    DisplayNoteJudgeResult(note);
+                }
+                else
                 {
                     note.CalcNowPoint(_GamePlayingArea, now);
                     DisplayNote(note);
                 }
-            }
-        }
-
-        private void JudgeBadWhenNotePassedJudgeLineForAWhile(Note note, TimeSpan now)
-        {
-            note.JudgeBadWhenNotePassedJudgeLineForAWhile(now);
-            if (note.AlreadyJudged())
-            {
-                _GamePlayingDisplay.DisplayNoteJudgeResult(note);
             }
         }
 
@@ -222,16 +217,17 @@ namespace MyMusicGameNew
 
             TimeSpan now = GameTimer.Elapsed;
             note.Judge(now);
-            Judged(note);
-        }
-
-        private void Judged(Note note)
-        {
             if (note.AlreadyJudged())
             {
                 NoteSE.Sound();
-                _GamePlayingDisplay.DisplayNoteJudgeResult(note);
+                DisplayNoteJudgeResult(note);
             }
+        }
+
+        private void DisplayNoteJudgeResult(Note note)
+        {
+            _GamePlayingDisplay.DisplayNoteJudgeResult(note);
+            _GamePlayingDisplay.RemoveNotePlayArea(note);
         }
 
         #endregion

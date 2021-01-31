@@ -127,7 +127,6 @@ namespace MyMusicGameNew
         public void DisplayNoteJudgeResult(Note note)
         {
             DisplayNoteJudgeResultImage(note.JudgeResult);
-            RemoveNotePlayArea(note);
             UpdateJudgeResult(note.JudgeResult);
         }
 
@@ -136,11 +135,6 @@ namespace MyMusicGameNew
         private void DisplayNoteJudgeResultImage(NoteJudge.JudgeType result)
         {
             _JudgeResultImage.Show(result);
-        }
-
-        private void RemoveNotePlayArea(Note note)
-        {
-            note.HidePlayArea(_GridPlayArea.PlayArea.Children);
         }
 
         private void UpdateJudgeResult(NoteJudge.JudgeType result)
@@ -163,6 +157,11 @@ namespace MyMusicGameNew
         }
 
         #endregion
+
+        public void RemoveNotePlayArea(Note note)
+        {
+            note.HidePlayArea(_GridPlayArea.PlayArea.Children);
+        }
 
         public void GameFinish()
         {
