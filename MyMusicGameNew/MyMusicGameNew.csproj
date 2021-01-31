@@ -101,10 +101,10 @@
     <Compile Include="Music\MusicFactory.cs" />
     <Compile Include="Music\MusicInfo.cs" />
     <Compile Include="Music\MusicList.cs" />
-    <Compile Include="Note.cs" />
-    <Compile Include="NoteData.cs" />
-    <Compile Include="NoteImage.cs" />
-    <Compile Include="NoteJudge.cs" />
+    <Compile Include="Note\Note.cs" />
+    <Compile Include="Note\NoteData.cs" />
+    <Compile Include="Note\NoteImage.cs" />
+    <Compile Include="Note\NoteJudge.cs" />
     <Compile Include="NoteSE\NoteSE.cs" />
     <Compile Include="NoteSE\NoteSEFake.cs" />
     <Compile Include="NoteSE\NoteSEWav.cs" />
