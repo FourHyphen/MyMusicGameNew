@@ -93,7 +93,7 @@ namespace TestMyMusicGameNew
                     throw new Exception("0.5 <= rate <= 3.0");
                 }
 
-                MainWindow.DebugSetNoteSpeedRate(rate);
+                MainWindow.MusicSelect.SetNoteSpeedRate(rate);
             }
         }
     }

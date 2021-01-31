@@ -126,6 +126,22 @@ namespace MyMusicGameNew
         /// テストで使用している(MainWindowDriverから呼び出す)ため削除しないこと
         /// </summary>
         /// <param name="musicIndex"></param>
+        public void SetNoteSpeedRate(double noteSpeedRate)
+        {
+            foreach (RadioButton rb in NoteSpeedRateList.Items)
+            {
+                if (double.Parse((string)rb.Content) == noteSpeedRate)
+                {
+                    rb.IsChecked = true;
+                    return;
+                }
+            }
+        }
+
+        /// <summary>
+        /// テストで使用している(MainWindowDriverから呼び出す)ため削除しないこと
+        /// </summary>
+        /// <param name="musicIndex"></param>
         public void ResetBestScore(int musicIndex)
         {
             Musics.GetMusic(musicIndex).ResetBestScore();

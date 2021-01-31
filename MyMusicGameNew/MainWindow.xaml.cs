@@ -47,21 +47,6 @@ namespace MyMusicGameNew
             PlayArea.Visibility = Visibility.Hidden;
         }
 
-        #region テスト用処理
-
-        public void DebugSetNoteSpeedRate(double noteSpeedRate)
-        {
-            foreach (RadioButton rb in MusicSelect.NoteSpeedRateList.Items)
-            {
-                if (double.Parse((string)rb.Content) == noteSpeedRate)
-                {
-                    rb.IsChecked = true;
-                }
-            }
-        }
-
-        #endregion
-
         #region キー入力処理
 
         private void MainWindowKeyDown(object sender, KeyEventArgs e)
