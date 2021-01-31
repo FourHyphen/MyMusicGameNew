@@ -109,10 +109,10 @@
     <Compile Include="NoteSEFake.cs" />
     <Compile Include="NoteSEWav.cs" />
     <Compile Include="NoteSEFactory.cs" />
-    <Compile Include="PlayingMusic.cs" />
-    <Compile Include="PlayingMusicFactory.cs" />
-    <Compile Include="PlayingMusicFake.cs" />
-    <Compile Include="PlayingMusicWav.cs" />
+    <Compile Include="PlayingMusic\PlayingMusic.cs" />
+    <Compile Include="PlayingMusic\PlayingMusicFactory.cs" />
+    <Compile Include="PlayingMusic\PlayingMusicFake.cs" />
+    <Compile Include="PlayingMusic\PlayingMusicWav.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
