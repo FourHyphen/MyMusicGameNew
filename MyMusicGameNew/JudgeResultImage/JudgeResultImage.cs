@@ -25,12 +25,6 @@ namespace MyMusicGameNew
 
         private static readonly string BadImagePath = ImageDirPath + "Result_Bad.gif";
 
-        private static readonly string PerfectResultName = "Perfect";
-
-        private static readonly string GoodResultName = "Good";
-
-        private static readonly string BadResultName = "Bad";
-
         public JudgeResultImage(GridPlayArea playArea, System.Windows.Point judgeResultImageCenter)
         {
             _GridPlayArea = playArea;
@@ -39,9 +33,9 @@ namespace MyMusicGameNew
 
         private void Init(System.Windows.Point judgeResultImageCenter)
         {
-            PerfectImage = new DisplayImagePeriod(_GridPlayArea, PerfectResultName, PerfectImagePath, judgeResultImageCenter);
-            GoodImage = new DisplayImagePeriod(_GridPlayArea, GoodResultName, GoodImagePath, judgeResultImageCenter);
-            BadImage = new DisplayImagePeriod(_GridPlayArea, BadResultName, BadImagePath, judgeResultImageCenter);
+            PerfectImage = new DisplayImagePeriod(_GridPlayArea, PerfectImagePath, judgeResultImageCenter);
+            GoodImage = new DisplayImagePeriod(_GridPlayArea, GoodImagePath, judgeResultImageCenter);
+            BadImage = new DisplayImagePeriod(_GridPlayArea, BadImagePath, judgeResultImageCenter);
         }
 
         public void Show(NoteJudge.JudgeType result)
@@ -53,9 +47,9 @@ namespace MyMusicGameNew
 
         private void RemoveShowingJudgeResultImage()
         {
-            PerfectImage.RemoveShowingJudgeResultImage(_GridPlayArea);
-            GoodImage.RemoveShowingJudgeResultImage(_GridPlayArea);
-            BadImage.RemoveShowingJudgeResultImage(_GridPlayArea);
+            PerfectImage.RemoveShowingImage(_GridPlayArea);
+            GoodImage.RemoveShowingImage(_GridPlayArea);
+            BadImage.RemoveShowingImage(_GridPlayArea);
         }
 
         private DisplayImagePeriod GetWillShowImage(NoteJudge.JudgeType result)

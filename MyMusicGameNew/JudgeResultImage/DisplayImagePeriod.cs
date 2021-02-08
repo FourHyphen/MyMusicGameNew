@@ -15,13 +15,10 @@ namespace MyMusicGameNew
 
         private BitmapSource Source { get; set; }
 
-        private string ResultName { get; set; }
-
         private System.Timers.Timer DisplayTimer { get; set; }
 
-        public DisplayImagePeriod(GridPlayArea playArea, string resultName, string displayImagePath, System.Windows.Point center)
+        public DisplayImagePeriod(GridPlayArea playArea, string displayImagePath, System.Windows.Point center)
         {
-            ResultName = resultName;
             Init(playArea, displayImagePath, center);
         }
 
@@ -30,7 +27,7 @@ namespace MyMusicGameNew
             Source = Common.GetImage(displayImagePath);
             CreateDisplayImage(Source, center);
             // TODO: 表示時間の外部管理化
-            InitRemoveShowingJudgeResultTimer(playArea, 500);
+            InitRemoveShowingTimer(playArea, 500);
         }
 
         ~DisplayImagePeriod()
@@ -52,7 +49,6 @@ namespace MyMusicGameNew
             DisplayImage.Stretch = Stretch.None;
             DisplayImage.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             DisplayImage.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-            DisplayImage.Name = ResultName;
             DisplayImage.RenderTransform = GetNotesTransform(imagePosition.X, imagePosition.Y);
             DisplayImage.Visibility = System.Windows.Visibility.Visible;
         }
@@ -73,7 +69,7 @@ namespace MyMusicGameNew
             return transform;
         }
 
-        private void InitRemoveShowingJudgeResultTimer(GridPlayArea playArea, int displayTimeMilliseconds)
+        private void InitRemoveShowingTimer(GridPlayArea playArea, int displayTimeMilliseconds)
         {
             DisplayTimer = new System.Timers.Timer();
             DisplayTimer.AutoReset = false;  // 1回だけタイマー処理を実行
@@ -82,12 +78,12 @@ namespace MyMusicGameNew
             {
                 playArea.Dispatcher.Invoke(new Action(() =>
                 {
-                    RemoveShowingJudgeResultImage(playArea);
+                    RemoveShowingImage(playArea);
                 }));
             };
         }
 
-        public void RemoveShowingJudgeResultImage(GridPlayArea playArea)
+        public void RemoveShowingImage(GridPlayArea playArea)
         {
             if (playArea.PlayArea.Children.Contains(DisplayImage))
             {
@@ -122,7 +118,7 @@ namespace MyMusicGameNew
             // TimerはStopするだけで経過時刻がリセットされる
             // (再StartにあたってStop時点での経過時刻は引き継がれない)
             DisplayTimer.Stop();
-            RemoveShowingJudgeResultImage(playArea);
+            RemoveShowingImage(playArea);
         }
 
         private void ShowAndSetHideTimer(GridPlayArea playArea)
