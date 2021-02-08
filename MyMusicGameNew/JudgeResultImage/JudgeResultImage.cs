@@ -11,11 +11,11 @@ namespace MyMusicGameNew
     {
         private GridPlayArea _GridPlayArea { get; set; }
 
-        private JudgeResultImageSource PerfectImage { get; set; }
+        private DisplayImagePeriod PerfectImage { get; set; }
 
-        private JudgeResultImageSource GoodImage { get; set; }
+        private DisplayImagePeriod GoodImage { get; set; }
 
-        private JudgeResultImageSource BadImage { get; set; }
+        private DisplayImagePeriod BadImage { get; set; }
 
         private static readonly string ImageDirPath = "./GameData/JudgeResult/";
 
@@ -39,15 +39,15 @@ namespace MyMusicGameNew
 
         private void Init(System.Windows.Point judgeResultImageCenter)
         {
-            PerfectImage = new JudgeResultImageSource(_GridPlayArea, PerfectResultName, PerfectImagePath, judgeResultImageCenter);
-            GoodImage = new JudgeResultImageSource(_GridPlayArea, GoodResultName, GoodImagePath, judgeResultImageCenter);
-            BadImage = new JudgeResultImageSource(_GridPlayArea, BadResultName, BadImagePath, judgeResultImageCenter);
+            PerfectImage = new DisplayImagePeriod(_GridPlayArea, PerfectResultName, PerfectImagePath, judgeResultImageCenter);
+            GoodImage = new DisplayImagePeriod(_GridPlayArea, GoodResultName, GoodImagePath, judgeResultImageCenter);
+            BadImage = new DisplayImagePeriod(_GridPlayArea, BadResultName, BadImagePath, judgeResultImageCenter);
         }
 
         public void Show(NoteJudge.JudgeType result)
         {
             RemoveShowingJudgeResultImage();
-            JudgeResultImageSource image = GetWillShowImage(result);
+            DisplayImagePeriod image = GetWillShowImage(result);
             image.Show(_GridPlayArea);
         }
 
@@ -58,7 +58,7 @@ namespace MyMusicGameNew
             BadImage.RemoveShowingJudgeResultImage(_GridPlayArea);
         }
 
-        private JudgeResultImageSource GetWillShowImage(NoteJudge.JudgeType result)
+        private DisplayImagePeriod GetWillShowImage(NoteJudge.JudgeType result)
         {
             if (result == NoteJudge.JudgeType.Perfect)
             {

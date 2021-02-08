@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 
 namespace MyMusicGameNew
 {
-    public class JudgeResultImageSource
+    public class DisplayImagePeriod
     {
         public Image DisplayImage { get; private set; }
 
@@ -19,7 +19,7 @@ namespace MyMusicGameNew
 
         private System.Timers.Timer DisplayTimer { get; set; }
 
-        public JudgeResultImageSource(GridPlayArea playArea, string resultName, string displayImagePath, System.Windows.Point center)
+        public DisplayImagePeriod(GridPlayArea playArea, string resultName, string displayImagePath, System.Windows.Point center)
         {
             ResultName = resultName;
             Init(playArea, displayImagePath, center);
@@ -33,7 +33,7 @@ namespace MyMusicGameNew
             InitRemoveShowingJudgeResultTimer(playArea, 500);
         }
 
-        ~JudgeResultImageSource()
+        ~DisplayImagePeriod()
         {
             if (DisplayTimer != null)
             {

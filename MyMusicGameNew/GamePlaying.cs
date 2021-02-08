@@ -209,12 +209,18 @@ namespace MyMusicGameNew
 
         private void JudgeCore(int inputLine)
         {
+            // メッセージ：次これ
+            // ゲーム中、プレイヤーがノートを拾う意思を示す入力を行った場合、入力があったことをわかりやすく表示する
+            //  -> JudgeResultImageSourceの機能(画像を一定時間だけ表示する)をまるまる使える -> この機能を共通化してJudgeResultImageからその共通機能を使うようにする
+
+            // 判定するノートの決定
             Note note = Music.GetLatestUnjudgedNoteForLine(inputLine);
             if (note is null)
             {
                 return;
             }
 
+            // 判定
             TimeSpan now = GameTimer.Elapsed;
             note.Judge(now);
             if (note.AlreadyJudged())
