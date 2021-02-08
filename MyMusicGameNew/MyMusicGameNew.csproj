@@ -87,8 +87,8 @@
     <Compile Include="GridPlayArea.xaml.cs">
       <DependentUpon>GridPlayArea.xaml</DependentUpon>
     </Compile>
-    <Compile Include="JudgeResultImage\JudgeResultImage.cs" />
-    <Compile Include="JudgeResultImage\DisplayImagePeriod.cs" />
+    <Compile Include="JudgeResultImage.cs" />
+    <Compile Include="DisplayImagePeriod.cs" />
     <Compile Include="Keys.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
