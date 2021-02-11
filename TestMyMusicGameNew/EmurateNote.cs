@@ -56,9 +56,9 @@ namespace TestMyMusicGameNew
         public EmurateNote(int playAreaWidth, int playAreaHeight, int noteNumber)
         {
             Init(noteNumber);
-            _GamePlayingArea = new GamePlayingArea(playAreaWidth, playAreaHeight, 1.0);
             PlayAreaX = playAreaWidth;
             PlayAreaY = playAreaHeight;
+            _GamePlayingArea = new GamePlayingArea(playAreaWidth, playAreaHeight, (int)JudgeLineYFromAreaTop, 1.0);
         }
 
         private void Init(int noteNumber)

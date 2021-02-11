@@ -31,8 +31,12 @@ namespace MyMusicGameNew
         public GamePlaying(GridPlayArea playArea, Music music, double noteSpeedRate, bool IsTest)
         {
             _GridPlayArea = playArea;
-            _GamePlayingArea = new GamePlayingArea((int)playArea.PlayArea.ActualWidth, (int)playArea.PlayArea.ActualHeight, noteSpeedRate);
-            _GamePlayingDisplay = new GamePlayingDisplay(playArea, music.NotesNum);
+            _GamePlayingArea = new GamePlayingArea(
+                                    (int)playArea.PlayArea.ActualWidth,
+                                    (int)playArea.PlayArea.ActualHeight,
+                                    (int)playArea.JudgeLine.Y1,
+                                    noteSpeedRate);
+            _GamePlayingDisplay = new GamePlayingDisplay(playArea, _GamePlayingArea, music.NotesNum);
             Music = music;
             InitPlayingMusic(Music.GetMusicDataPath(), playArea, IsTest);
             NoteSE = new NoteSEFactory().Create(IsTest);
@@ -209,9 +213,8 @@ namespace MyMusicGameNew
 
         private void JudgeCore(int inputLine)
         {
-            // メッセージ：次これ
-            // ゲーム中、プレイヤーがノートを拾う意思を示す入力を行った場合、入力があったことをわかりやすく表示する
-            //  -> JudgeResultImageSourceの機能(画像を一定時間だけ表示する)をまるまる使える -> この機能を共通化してJudgeResultImageからその共通機能を使うようにする
+            // ユーザー入力の表示
+            _GamePlayingDisplay.ShowInput(inputLine);
 
             // 判定するノートの決定
             Note note = Music.GetLatestUnjudgedNoteForLine(inputLine);

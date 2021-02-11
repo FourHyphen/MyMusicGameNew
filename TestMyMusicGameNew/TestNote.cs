@@ -12,6 +12,7 @@ namespace TestMyMusicGameNew
         private static readonly TimeSpan ZeroTime = new TimeSpan(0, 0, 0, 0, 0);
         private static readonly int PlayAreaX = 800;
         private static readonly int PlayAreaY = 600;
+        private static readonly int JudgeLineYFromAreaTop = PlayAreaY - 100;
 
         [TestMethod]
         public void TestCorrectNoteCoordinateAtTheTime()
@@ -39,7 +40,7 @@ namespace TestMyMusicGameNew
             NoteData nd = new NoteData(en.XLine, en.JustTiming);
             Note noteOutside = new Note(nd, PlayAreaY * 10);    // 10倍ならNoteSpeedYPerSecによらず、確実に初期値が画面外になる
 
-            GamePlayingArea area = new GamePlayingArea(PlayAreaX, PlayAreaY, 1.0);
+            GamePlayingArea area = new GamePlayingArea(PlayAreaX, PlayAreaY, JudgeLineYFromAreaTop, 1.0);
             noteOutside.CalcNowPoint(area, ZeroTime);
             Assert.IsFalse(area.IsInsidePlayArea(noteOutside));
 

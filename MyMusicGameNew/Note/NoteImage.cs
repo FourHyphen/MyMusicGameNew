@@ -15,6 +15,10 @@ namespace MyMusicGameNew
 
         private BitmapSource NotesBitmap { get; set; }
 
+        private double XDisplayAdjust { get; set; }
+
+        private double YDisplayAdjust { get; set; }
+
         public NoteImage(int index, string noteImagePath = "./GameData/NoteImage/note.png")
         {
             Init(noteImagePath, index);
@@ -29,6 +33,8 @@ namespace MyMusicGameNew
         private void InitBitmap(string noteImagePath)
         {
             NotesBitmap = Common.GetImage(noteImagePath);
+            XDisplayAdjust = NotesBitmap.Width / 2.0;
+            YDisplayAdjust = NotesBitmap.Height / 2.0;
         }
 
         private void CreateDisplayImage(int index)
@@ -49,7 +55,9 @@ namespace MyMusicGameNew
         private Transform GetNotesTransform(double x, double y)
         {
             var transform = new TransformGroup();
-            transform.Children.Add(new TranslateTransform(x, y));
+            double imageLeft = x - XDisplayAdjust;
+            double imageTop = y - YDisplayAdjust;
+            transform.Children.Add(new TranslateTransform(imageLeft, imageTop));
 
             return transform;
         }

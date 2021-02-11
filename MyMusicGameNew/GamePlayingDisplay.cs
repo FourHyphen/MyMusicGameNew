@@ -13,6 +13,8 @@ namespace MyMusicGameNew
 
         private JudgeResultImage _JudgeResultImage { get; set; }
 
+        private UserInputEffect _UserInputEffect { get; set; }
+
         // 処理高速化のために判定結果を別に保持するための変数
         private int PerfectNum { get; set; } = 0;
 
@@ -22,10 +24,11 @@ namespace MyMusicGameNew
         // 処理高速化のために判定結果を別に保持するための変数
         private int BadNum { get; set; } = 0;
 
-        public GamePlayingDisplay(GridPlayArea playArea, int notesNum)
+        public GamePlayingDisplay(GridPlayArea gridPlayArea, GamePlayingArea gamePlayingArea, int notesNum)
         {
-            _GridPlayArea = playArea;
+            _GridPlayArea = gridPlayArea;
             _JudgeResultImage = new JudgeResultImage(_GridPlayArea, GetJudgeResultDisplayCenter());
+            _UserInputEffect = new UserInputEffect(_GridPlayArea, gamePlayingArea);
             InitDisplayingPlayAreaResult(notesNum);
         }
 
@@ -180,6 +183,11 @@ namespace MyMusicGameNew
         public void DisplayRestartWait(int countdownRestartSecond)
         {
             Countdown(countdownRestartSecond);
+        }
+
+        public void ShowInput(int inputLine)
+        {
+            _UserInputEffect.Show(inputLine);
         }
     }
 }

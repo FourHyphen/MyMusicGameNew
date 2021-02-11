@@ -16,12 +16,11 @@ namespace MyMusicGameNew
 
         private double NoteSpeedRate { get; }
 
-        public GamePlayingArea(int playAreaWidth, int playAreaHeight, double noteSpeedRate)
+        public GamePlayingArea(int playAreaWidth, int playAreaHeight, int judgeLineYFromAreaTop, double noteSpeedRate)
         {
-            // TODO: 設定値の外部管理化
             PlayAreaWidth = playAreaWidth;
             PlayAreaHeight = playAreaHeight;
-            JudgeLineYFromAreaTop = playAreaHeight - 100;
+            JudgeLineYFromAreaTop = judgeLineYFromAreaTop;
             NoteSpeedRate = noteSpeedRate;
         }
 
@@ -41,14 +40,24 @@ namespace MyMusicGameNew
 
         private double CalcNowX(NoteData noteData)
         {
-            int basis = (int)((double)PlayAreaWidth * 0.33333);
-            return basis * noteData.XJudgeLinePosition;
+            return GetLinePointX(noteData.XJudgeLinePosition);
         }
 
         private double CalcNowY(double diffMillisec, double noteSpeedYPerSec)
         {
             double dist = (diffMillisec / 1000.0) * (noteSpeedYPerSec * NoteSpeedRate);
             return JudgeLineYFromAreaTop - dist;
+        }
+
+        public double GetLinePointX(int lineNum)
+        {
+            int basis = (int)((double)PlayAreaWidth * 0.33333);
+            return basis * lineNum;
+        }
+
+        public double GetLinePointY()
+        {
+            return JudgeLineYFromAreaTop;
         }
 
         public int ConvertXLine(double x)

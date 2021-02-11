@@ -32,6 +32,14 @@ namespace MyMusicGameNew
         {
             Main = main;
             IsTest = isTest;
+            InitJudgeLine();
+        }
+
+        private void InitJudgeLine()
+        {
+            // TODO: 設定値の外部管理化
+            JudgeLine.Y1 = (int)PlayArea.ActualHeight - 100;
+            JudgeLine.Y2 = (int)PlayArea.ActualHeight - 100;
         }
 
         public void GameStart(Music music, double noteSpeedRate)
