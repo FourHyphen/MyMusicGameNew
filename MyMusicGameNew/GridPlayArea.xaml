@@ -17,12 +17,10 @@
               x:Name="PlayArea"
               MouseDown="PlayAreaMouseDown"
               Background="Black">
-            <!--Y1とY2は実行時に入れること-->
+            <!--線の座標は実行時に入れること-->
             <Line x:Name="JudgeLine"
                     Stroke="White"
-                    StrokeThickness="1"
-                    X1="100"
-                    X2="700"/>
+                    StrokeThickness="1"/>
 
             <!--Suspend (like window)-->
             <Grid x:Name="Suspend"

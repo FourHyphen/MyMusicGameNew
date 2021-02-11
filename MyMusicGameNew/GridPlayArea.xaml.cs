@@ -38,6 +38,8 @@ namespace MyMusicGameNew
         private void InitJudgeLine()
         {
             // TODO: 設定値の外部管理化
+            JudgeLine.X1 = 100;
+            JudgeLine.X2 = (int)PlayArea.ActualWidth - 100;
             JudgeLine.Y1 = (int)PlayArea.ActualHeight - 100;
             JudgeLine.Y2 = (int)PlayArea.ActualHeight - 100;
         }
