@@ -91,7 +91,8 @@ namespace MyMusicGameNew
             {
                 Music music = GetSelectedMusic();
                 double rate = GetNoteSpeedRate();
-                Main.GameStart(music, rate);
+                GamePlaying.NoteDirection noteDirection = GetNoteDirection();
+                Main.GameStart(music, rate, noteDirection);
             }
         }
 
@@ -120,6 +121,18 @@ namespace MyMusicGameNew
                 }
             }
             return 1.0;
+        }
+
+        private GamePlaying.NoteDirection GetNoteDirection()
+        {
+            foreach (RadioButton rb in NoteDirectionList.Items)
+            {
+                if (rb.IsChecked == true)
+                {
+                    return GamePlaying.NoteDirectionToString(rb.Name);
+                }
+            }
+            return GamePlaying.NoteDirection.TopToBottom;
         }
 
         /// <summary>

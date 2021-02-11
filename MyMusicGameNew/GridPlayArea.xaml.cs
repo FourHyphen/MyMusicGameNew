@@ -44,9 +44,9 @@ namespace MyMusicGameNew
             JudgeLine.Y2 = (int)PlayArea.ActualHeight - 100;
         }
 
-        public void GameStart(Music music, double noteSpeedRate)
+        public void GameStart(Music music, double noteSpeedRate, GamePlaying.NoteDirection noteDirection)
         {
-            GamePlay = new GamePlaying(this, music, noteSpeedRate, IsTest);
+            GamePlay = new GamePlaying(this, music, noteSpeedRate, noteDirection, IsTest);
             GameStartCore();
         }
 

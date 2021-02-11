@@ -10,6 +10,12 @@ namespace MyMusicGameNew
 {
     public class GamePlaying
     {
+        public enum NoteDirection
+        {
+            TopToBottom,
+            RightToLeft
+        }
+
         private GridPlayArea _GridPlayArea { get; set; }
 
         private GamePlayingArea _GamePlayingArea { get; set; }
@@ -28,7 +34,7 @@ namespace MyMusicGameNew
 
         private CancellationTokenSource ToCallGameFinish { get; set; }
 
-        public GamePlaying(GridPlayArea playArea, Music music, double noteSpeedRate, bool IsTest)
+        public GamePlaying(GridPlayArea playArea, Music music, double noteSpeedRate, NoteDirection noteDirection, bool IsTest)
         {
             _GridPlayArea = playArea;
             _GamePlayingArea = new GamePlayingArea(
@@ -59,6 +65,15 @@ namespace MyMusicGameNew
         private void InitPlayingMusic(string musicDataPath, GridPlayArea playArea, bool isTest)
         {
             PlayingMusic = PlayingMusicFactory.Create(musicDataPath, playArea, isTest);
+        }
+
+        public static NoteDirection NoteDirectionToString(string name)
+        {
+            if (name.Contains("RightToLeft"))
+            {
+                return NoteDirection.RightToLeft;
+            }
+            return NoteDirection.TopToBottom;
         }
 
         public void Starting()

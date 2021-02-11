@@ -67,10 +67,10 @@ namespace MyMusicGameNew
             return PlayArea.DoGamePlaying();
         }
 
-        public void GameStart(Music music, double noteSpeedRate)
+        public void GameStart(Music music, double noteSpeedRate, GamePlaying.NoteDirection noteDirection)
         {
             ShowPlayArea();
-            PlayArea.GameStart(music, noteSpeedRate);
+            PlayArea.GameStart(music, noteSpeedRate, noteDirection);
         }
 
         private void ShowPlayArea()

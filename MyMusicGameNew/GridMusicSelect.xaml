@@ -83,27 +83,55 @@
 
             <!--Option-->
             <Grid Grid.Row="1" Background="White">
-                <!--NoteSpeedRate-->
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                <Grid Grid.Column="0">
-                    <Label Content="rate of note's speed"
+                <!--direction of note-->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0">
+                        <Label Content="direction of note"
                                HorizontalAlignment="Right"
                                VerticalAlignment="Center"/>
-                </Grid>
-                <Grid Grid.Column="1"
+                    </Grid>
+                    <Grid Grid.Column="1"
                           VerticalAlignment="Center">
-                    <ItemsControl x:Name="NoteSpeedRateList">
-                        <RadioButton Content="0.5"></RadioButton>
-                        <RadioButton Content="1.0" IsChecked="True"></RadioButton>
-                        <RadioButton Content="1.5"></RadioButton>
-                        <RadioButton Content="2.0"></RadioButton>
-                        <RadioButton Content="2.5"></RadioButton>
-                        <RadioButton Content="3.0"></RadioButton>
-                    </ItemsControl>
+                        <ItemsControl x:Name="NoteDirectionList">
+                            <RadioButton Name="NoteDirectionTopToBottom" Content="top to bottom(default)" IsChecked="True"></RadioButton>
+                            <RadioButton Name="NoteDirectionRightToLeft" Content="right to left"></RadioButton>
+                        </ItemsControl>
+                    </Grid>
+                </Grid>
+
+                <!--NoteSpeedRate-->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0">
+                        <Label Content="rate of note's speed"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"/>
+                    </Grid>
+                    <Grid Grid.Column="1"
+                          VerticalAlignment="Center">
+                        <ItemsControl x:Name="NoteSpeedRateList">
+                            <RadioButton Content="0.5"></RadioButton>
+                            <RadioButton Content="1.0" IsChecked="True"></RadioButton>
+                            <RadioButton Content="1.5"></RadioButton>
+                            <RadioButton Content="2.0"></RadioButton>
+                            <RadioButton Content="2.5"></RadioButton>
+                            <RadioButton Content="3.0"></RadioButton>
+                        </ItemsControl>
+                    </Grid>
                 </Grid>
             </Grid>
 
