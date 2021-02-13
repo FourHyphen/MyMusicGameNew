@@ -2,77 +2,38 @@
 
 namespace MyMusicGameNew
 {
-    public class UserInputEffect
+    public abstract class UserInputEffect
     {
-        private GridPlayArea _GridPlayArea { get; set; }
+        protected GridPlayArea _GridPlayArea { get; set; }
 
-        private DisplayImagePeriod EffectLine1 { get; set; }
+        protected DisplayImagePeriod EffectLine1 { get; set; }
 
-        private DisplayImagePeriod EffectLine2 { get; set; }
+        protected DisplayImagePeriod EffectLine2 { get; set; }
 
-        private static readonly string ImageDirPath = "./GameData/UserInputEffect/";
+        protected static readonly string ImageDirPath = "./GameData/UserInputEffect/";
 
-        private static readonly string EffectTopToBottomImagePath = ImageDirPath + "EffectTopToBottom.png";
-
-        private static readonly string EffectRightToLeftImagePath = ImageDirPath + "EffectRightToLeft.png";
-
-        public UserInputEffect(GridPlayArea gridPlayArea, GamePlayingArea gamePlayingArea, GamePlaying.NoteDirection noteDirection)
+        protected UserInputEffect(GridPlayArea gridPlayArea)
         {
             _GridPlayArea = gridPlayArea;
-            Init(gamePlayingArea, noteDirection);
         }
 
-        private void Init(GamePlayingArea gamePlayingArea, GamePlaying.NoteDirection noteDirection)
+        public static UserInputEffect Create(GridPlayArea gridPlayArea, GamePlayingArea gamePlayingArea, GamePlaying.NoteDirection noteDirection)
         {
+            UserInputEffect ret = null;
             if (noteDirection == GamePlaying.NoteDirection.RightToLeft)
             {
-                InitRightToLeft(gamePlayingArea);
+                ret = new UserInputEffectRightToLeft(gridPlayArea);
             }
             else
             {
-                InitTopToBottom(gamePlayingArea);
+                ret = new UserInputEffectTopToBottom(gridPlayArea);
             }
+
+            ret.Init(gamePlayingArea);
+            return ret;
         }
 
-        private void InitRightToLeft(GamePlayingArea gamePlayingArea)
-        {
-            EffectLine1 = new DisplayImagePeriod(_GridPlayArea, EffectRightToLeftImagePath, GetPointLine1RightToLeft(gamePlayingArea));
-            EffectLine2 = new DisplayImagePeriod(_GridPlayArea, EffectRightToLeftImagePath, GetPointLine2RightToLeft(gamePlayingArea));
-        }
-
-        private System.Windows.Point GetPointLine1RightToLeft(GamePlayingArea gamePlayingArea)
-        {
-            double x = gamePlayingArea.GetLinePointXRightToLeft();
-            double y = gamePlayingArea.GetLinePointYRightToLeft(1);
-            return new System.Windows.Point(x, y);
-        }
-
-        private System.Windows.Point GetPointLine2RightToLeft(GamePlayingArea gamePlayingArea)
-        {
-            double x = gamePlayingArea.GetLinePointXRightToLeft();
-            double y = gamePlayingArea.GetLinePointYRightToLeft(2);
-            return new System.Windows.Point(x, y);
-        }
-
-        private void InitTopToBottom(GamePlayingArea gamePlayingArea)
-        {
-            EffectLine1 = new DisplayImagePeriod(_GridPlayArea, EffectTopToBottomImagePath, GetPointLine1TopToBottom(gamePlayingArea));
-            EffectLine2 = new DisplayImagePeriod(_GridPlayArea, EffectTopToBottomImagePath, GetPointLine2TopToBottom(gamePlayingArea));
-        }
-
-        private System.Windows.Point GetPointLine1TopToBottom(GamePlayingArea gamePlayingArea)
-        {
-            double x = gamePlayingArea.GetLinePointXTopToBottom(1);
-            double y = gamePlayingArea.GetLinePointYTopToBottom();
-            return new System.Windows.Point(x, y);
-        }
-
-        private System.Windows.Point GetPointLine2TopToBottom(GamePlayingArea gamePlayingArea)
-        {
-            double x = gamePlayingArea.GetLinePointXTopToBottom(2);
-            double y = gamePlayingArea.GetLinePointYTopToBottom();
-            return new System.Windows.Point(x, y);
-        }
+        public abstract void Init(GamePlayingArea gamePlayingArea);
 
         public void Show(int inputLine)
         {

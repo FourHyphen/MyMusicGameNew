@@ -28,7 +28,7 @@ namespace MyMusicGameNew
         {
             _GridPlayArea = gridPlayArea;
             _JudgeResultImage = new JudgeResultImage(_GridPlayArea, GetJudgeResultDisplayCenter());
-            _UserInputEffect = new UserInputEffect(_GridPlayArea, gamePlayingArea, noteDirection);
+            _UserInputEffect = UserInputEffect.Create(_GridPlayArea, gamePlayingArea, noteDirection);
             InitDisplayingPlayAreaResult(notesNum);
         }
 

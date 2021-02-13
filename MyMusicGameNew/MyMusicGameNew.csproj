@@ -62,6 +62,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="UserInputEffect.cs" />
+    <Compile Include="UserInputEffectRightToLeft.cs" />
+    <Compile Include="UserInputEffectTopToBottom.cs" />
     <Page Include="GridMusicSelect.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
