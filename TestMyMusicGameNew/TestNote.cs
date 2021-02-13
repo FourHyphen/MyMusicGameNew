@@ -12,6 +12,7 @@ namespace TestMyMusicGameNew
         private static readonly TimeSpan ZeroTime = new TimeSpan(0, 0, 0, 0, 0);
         private static readonly int PlayAreaX = 800;
         private static readonly int PlayAreaY = 600;
+        private static readonly int JudgeLineXFromAreaLeft = 100;
         private static readonly int JudgeLineYFromAreaTop = PlayAreaY - 100;
 
         [TestMethod]
@@ -37,10 +38,10 @@ namespace TestMyMusicGameNew
         public void TestCorrectWhetherInsidePlayArea()
         {
             EmurateNote en = new EmurateNote(PlayAreaX, PlayAreaY, 1);
-            NoteData nd = new NoteData(en.XLine, en.JustTiming);
-            Note noteOutside = new Note(nd, PlayAreaY * 10);    // 10倍ならNoteSpeedYPerSecによらず、確実に初期値が画面外になる
+            NoteData nd = new NoteData(en.LineNum, en.JustTiming);
+            Note noteOutside = new Note(nd, PlayAreaX * 10, PlayAreaY * 10);    // 10倍ならNoteSpeedYPerSecによらず、確実に初期値が画面外になる
 
-            GamePlayingArea area = new GamePlayingArea(PlayAreaX, PlayAreaY, JudgeLineYFromAreaTop, 1.0);
+            GamePlayingArea area = new GamePlayingArea(PlayAreaX, PlayAreaY, JudgeLineXFromAreaLeft, JudgeLineYFromAreaTop, 1.0);
             noteOutside.CalcNowPoint(area, ZeroTime);
             Assert.IsFalse(area.IsInsidePlayArea(noteOutside));
 

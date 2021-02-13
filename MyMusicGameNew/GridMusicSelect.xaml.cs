@@ -129,7 +129,7 @@ namespace MyMusicGameNew
             {
                 if (rb.IsChecked == true)
                 {
-                    return GamePlaying.NoteDirectionToString(rb.Name);
+                    return GamePlaying.ToNoteDirection(rb.Name);
                 }
             }
             return GamePlaying.NoteDirection.TopToBottom;
@@ -144,6 +144,23 @@ namespace MyMusicGameNew
             foreach (RadioButton rb in NoteSpeedRateList.Items)
             {
                 if (double.Parse((string)rb.Content) == noteSpeedRate)
+                {
+                    rb.IsChecked = true;
+                    return;
+                }
+            }
+        }
+
+        /// <summary>
+        /// テストで使用している(MainWindowDriverから呼び出す)ため削除しないこと
+        /// </summary>
+        /// <param name="noteDirection"></param>
+        public void SetNoteDirection(GamePlaying.NoteDirection noteDirection)
+        {
+            foreach (RadioButton rb in NoteDirectionList.Items)
+            {
+                GamePlaying.NoteDirection rbDirection = GamePlaying.ToNoteDirection(rb.Name);
+                if (rbDirection == noteDirection)
                 {
                     rb.IsChecked = true;
                     return;

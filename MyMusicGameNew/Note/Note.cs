@@ -8,6 +8,8 @@ namespace MyMusicGameNew
 {
     public class Note
     {
+        private double NoteSpeedXPerSec { get; set; }
+
         private double NoteSpeedYPerSec { get; set; }
 
         private NoteData _NoteData { get; set; }
@@ -42,16 +44,17 @@ namespace MyMusicGameNew
 
         public NoteJudge.JudgeType JudgeResult { get; private set; } = NoteJudge.JudgeType.NotYet;
 
-        public Note(NoteData noteData, double noteSpeedYPerSec = 300.0)
+        public Note(NoteData noteData, double noteSpeedXPerSec = 300.0, double noteSpeedYPerSec = 300.0)
         {
             _NoteData = noteData;
             NowPoint = new System.Windows.Point();
+            NoteSpeedXPerSec = noteSpeedXPerSec;
             NoteSpeedYPerSec = noteSpeedYPerSec;
         }
 
-        public void CalcNowPoint(GamePlayingArea area, TimeSpan now)
+        public void CalcNowPoint(GamePlayingArea area, TimeSpan now, GamePlaying.NoteDirection noteDirection = GamePlaying.NoteDirection.TopToBottom)
         {
-            NowPoint = area.CalcNowPoint(_NoteData, now, NoteSpeedYPerSec);
+            NowPoint = area.CalcNowPoint(_NoteData, now, NoteSpeedXPerSec, NoteSpeedYPerSec, noteDirection);
             
             if (Image != null)
             {

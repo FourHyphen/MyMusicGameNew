@@ -9,9 +9,11 @@ namespace TestMyMusicGameNew
 {
     public class EmurateNote
     {
+        private static readonly double NoteSpeedXPerSec = 300.0;
+
         private static readonly double NoteSpeedYPerSec = 300.0;
 
-        public int XLine { get; private set; }
+        public int LineNum { get; private set; }
 
         public TimeSpan JustTiming { get; private set; }
 
@@ -43,6 +45,8 @@ namespace TestMyMusicGameNew
 
         private int PlayAreaY { get; set; }
 
+        private double JudgeLineXFromAreaLeft { get { return 100.0; } }
+
         private double JudgeLineYFromAreaTop { get { return PlayAreaY - 100.0; } }
 
         public Note Note { get; private set; }
@@ -58,43 +62,56 @@ namespace TestMyMusicGameNew
             Init(noteNumber);
             PlayAreaX = playAreaWidth;
             PlayAreaY = playAreaHeight;
-            _GamePlayingArea = new GamePlayingArea(playAreaWidth, playAreaHeight, (int)JudgeLineYFromAreaTop, 1.0);
+            _GamePlayingArea = new GamePlayingArea(playAreaWidth,
+                                                   playAreaHeight,
+                                                   (int)JudgeLineXFromAreaLeft,
+                                                   (int)JudgeLineYFromAreaTop,
+                                                   1.0);
         }
 
         private void Init(int noteNumber)
         {
             if (noteNumber == 1)
             {
-                XLine = 1;
+                LineNum = 1;
                 JustTiming = new TimeSpan(0, 0, 0, 1, 0);  // 1[s]
             }
             else if (noteNumber == 2)
             {
-                XLine = 2;
+                LineNum = 2;
                 JustTiming = new TimeSpan(0, 0, 0, 2, 500);  // 2.5[s]
             }
-            NoteData nd = new NoteData(XLine, JustTiming);
-            Note = new Note(nd, NoteSpeedYPerSec);
+            NoteData nd = new NoteData(LineNum, JustTiming);
+            Note = new Note(nd, NoteSpeedXPerSec, NoteSpeedYPerSec);
         }
 
-        public void SetNowPoint(TimeSpan time)
+        public void SetNowPoint(TimeSpan time, GamePlaying.NoteDirection noteDirection = GamePlaying.NoteDirection.TopToBottom)
         {
-            Note.CalcNowPoint(_GamePlayingArea, time);
+            Note.CalcNowPoint(_GamePlayingArea, time, noteDirection);
         }
 
         public System.Windows.Point EmurateCalcPoint(TimeSpan elapsedTimeFromGameStart)
         {
-            double note1XPoint = XLine * (int)((double)PlayAreaX * 0.33333);
+            double note1XPoint = LineNum * (int)((double)PlayAreaX * 0.33333);
             double diff = JustTiming.Subtract(elapsedTimeFromGameStart).TotalMilliseconds;
             double note1YPoint = JudgeLineYFromAreaTop - (diff * NoteSpeedYPerSec / 1000);
             return new System.Windows.Point(note1XPoint, note1YPoint);
         }
 
-        public System.Windows.Point EmurateCalcJustJudgeLinePoint()
+        public System.Windows.Point EmurateCalcJustJudgeLinePoint(GamePlaying.NoteDirection noteDirection = GamePlaying.NoteDirection.TopToBottom)
         {
-            double note1XPoint = XLine * (int)((double)PlayAreaX * 0.33333);
-            double note1YPoint = JudgeLineYFromAreaTop;
-            return new System.Windows.Point(note1XPoint, note1YPoint);
+            if (noteDirection == GamePlaying.NoteDirection.RightToLeft)
+            {
+                double note1XPoint = JudgeLineXFromAreaLeft;
+                double note1YPoint = LineNum * (int)((double)PlayAreaY * 0.33333);
+                return new System.Windows.Point(note1XPoint, note1YPoint);
+            }
+            else
+            {
+                double note1XPoint = LineNum * (int)((double)PlayAreaX * 0.33333);
+                double note1YPoint = JudgeLineYFromAreaTop;
+                return new System.Windows.Point(note1XPoint, note1YPoint);
+            }
         }
 
         public bool IsInsidePlayArea()

@@ -8,6 +8,8 @@ namespace MyMusicGameNew
 {
     public class GamePlayingArea
     {
+        private int JudgeLineXFromAreaLeft { get; set; }
+
         private int JudgeLineYFromAreaTop { get; set; }
 
         private int PlayAreaWidth { get; set; }
@@ -16,10 +18,15 @@ namespace MyMusicGameNew
 
         private double NoteSpeedRate { get; }
 
-        public GamePlayingArea(int playAreaWidth, int playAreaHeight, int judgeLineYFromAreaTop, double noteSpeedRate)
+        public GamePlayingArea(int playAreaWidth,
+                               int playAreaHeight,
+                               int judgeLineXFromAreaLeft,
+                               int judgeLineYFromAreaTop,
+                               double noteSpeedRate)
         {
             PlayAreaWidth = playAreaWidth;
             PlayAreaHeight = playAreaHeight;
+            JudgeLineXFromAreaLeft = judgeLineXFromAreaLeft;
             JudgeLineYFromAreaTop = judgeLineYFromAreaTop;
             NoteSpeedRate = noteSpeedRate;
         }
@@ -32,32 +39,114 @@ namespace MyMusicGameNew
                     (0.0 <= y && y < PlayAreaHeight));
         }
 
-        public System.Windows.Point CalcNowPoint(NoteData noteData, TimeSpan now, double noteSpeedYPerSec)
+        public System.Windows.Point CalcNowPoint(NoteData noteData,
+                                                 TimeSpan now,
+                                                 double noteSpeedXPerSec,
+                                                 double noteSpeedYPerSec,
+                                                 GamePlaying.NoteDirection noteDirection)
         {
             double diffMillsec = Common.DiffMillisecond(noteData.JudgeOfJustTiming, now);
-            return new System.Windows.Point(CalcNowX(noteData), CalcNowY(diffMillsec, noteSpeedYPerSec));
+            double nowX = CalcNowX(noteData, diffMillsec, noteSpeedXPerSec, noteDirection);
+            double nowY = CalcNowY(noteData, diffMillsec, noteSpeedYPerSec, noteDirection);
+            return new System.Windows.Point(nowX, nowY);
         }
 
-        private double CalcNowX(NoteData noteData)
+        private double CalcNowX(NoteData noteData, double diffMillisec, double noteSpeedXPerSec, GamePlaying.NoteDirection noteDirection)
         {
-            return GetLinePointX(noteData.XJudgeLinePosition);
+            if (noteDirection == GamePlaying.NoteDirection.RightToLeft)
+            {
+                return CalcNowXRightToLeft(diffMillisec, noteSpeedXPerSec);
+            }
+            else
+            {
+                return CalcNowXTopToBottom(noteData.XJudgeLinePosition);
+            }
         }
 
-        private double CalcNowY(double diffMillisec, double noteSpeedYPerSec)
+        public double CalcNowXRightToLeft(double diffMillisec, double noteSpeedXPerSec)
         {
-            double dist = (diffMillisec / 1000.0) * (noteSpeedYPerSec * NoteSpeedRate);
-            return JudgeLineYFromAreaTop - dist;
+            double dist = (diffMillisec / 1000.0) * (noteSpeedXPerSec * NoteSpeedRate);
+            return dist + JudgeLineXFromAreaLeft;
         }
 
-        public double GetLinePointX(int lineNum)
+        private double CalcNowXTopToBottom(int lineNum)
         {
             int basis = (int)((double)PlayAreaWidth * 0.33333);
             return basis * lineNum;
         }
 
-        public double GetLinePointY()
+        private double CalcNowY(NoteData noteData, double diffMillisec, double noteSpeedYPerSec, GamePlaying.NoteDirection noteDirection)
+        {
+            if (noteDirection == GamePlaying.NoteDirection.RightToLeft)
+            {
+                return CalcNowYRightToLeft(noteData.XJudgeLinePosition);
+            }
+            else
+            {
+                return CalcNowYTopToBottom(diffMillisec, noteSpeedYPerSec);
+            }
+        }
+
+        private double CalcNowYRightToLeft(int lineNum)
+        {
+            int basis = (int)((double)PlayAreaHeight * 0.33333);
+            return basis * lineNum;
+        }
+
+        private double CalcNowYTopToBottom(double diffMillisec, double noteSpeedYPerSec)
+        {
+            double dist = (diffMillisec / 1000.0) * (noteSpeedYPerSec * NoteSpeedRate);
+            return JudgeLineYFromAreaTop - dist;
+        }
+
+        public double GetLinePointXTopToBottom(int lineNum)
+        {
+            return CalcNowXTopToBottom(lineNum);
+        }
+
+        public double GetLinePointYTopToBottom()
         {
             return JudgeLineYFromAreaTop;
+        }
+
+        public double GetLinePointXRightToLeft()
+        {
+            return JudgeLineXFromAreaLeft;
+        }
+
+        public double GetLinePointYRightToLeft(int lineNum)
+        {
+            return CalcNowYRightToLeft(lineNum);
+        }
+
+        public int ConvertLine(System.Windows.Point mouseClicked, GamePlaying.NoteDirection noteDirection)
+        {
+            if (noteDirection == GamePlaying.NoteDirection.RightToLeft)
+            {
+                return ConvertYLine(mouseClicked.Y);
+            }
+            else
+            {
+                return ConvertXLine(mouseClicked.X);
+            }
+        }
+
+        public int ConvertYLine(double y)
+        {
+            // TODO: 汚い...
+            double halfHeight = PlayAreaHeight / 2;
+            if (y <= halfHeight)
+            {
+                return 1;
+            }
+            else if (y > halfHeight)
+            {
+                return 2;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public int ConvertXLine(double x)
@@ -78,7 +167,7 @@ namespace MyMusicGameNew
             }
         }
 
-        public int ConvertXLine(Keys.EnableKeys key)
+        public int ConvertLine(Keys.EnableKeys key)
         {
             if (key == Keys.EnableKeys.JudgeLine1)
             {

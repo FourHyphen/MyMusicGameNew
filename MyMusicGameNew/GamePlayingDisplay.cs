@@ -24,11 +24,11 @@ namespace MyMusicGameNew
         // 処理高速化のために判定結果を別に保持するための変数
         private int BadNum { get; set; } = 0;
 
-        public GamePlayingDisplay(GridPlayArea gridPlayArea, GamePlayingArea gamePlayingArea, int notesNum)
+        public GamePlayingDisplay(GridPlayArea gridPlayArea, GamePlayingArea gamePlayingArea, GamePlaying.NoteDirection noteDirection, int notesNum)
         {
             _GridPlayArea = gridPlayArea;
             _JudgeResultImage = new JudgeResultImage(_GridPlayArea, GetJudgeResultDisplayCenter());
-            _UserInputEffect = new UserInputEffect(_GridPlayArea, gamePlayingArea);
+            _UserInputEffect = new UserInputEffect(_GridPlayArea, gamePlayingArea, noteDirection);
             InitDisplayingPlayAreaResult(notesNum);
         }
 

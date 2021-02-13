@@ -28,6 +28,8 @@ namespace MyMusicGameNew
 
         private NoteSE NoteSE { get; }
 
+        private GamePlaying.NoteDirection _NoteDirection { get; set; }
+
         private System.Diagnostics.Stopwatch GameTimer { get; set; }
 
         private System.Timers.Timer GameFinishTimer { get; set; }
@@ -40,9 +42,11 @@ namespace MyMusicGameNew
             _GamePlayingArea = new GamePlayingArea(
                                     (int)playArea.PlayArea.ActualWidth,
                                     (int)playArea.PlayArea.ActualHeight,
+                                    (int)playArea.JudgeLine.X1,
                                     (int)playArea.JudgeLine.Y1,
                                     noteSpeedRate);
-            _GamePlayingDisplay = new GamePlayingDisplay(playArea, _GamePlayingArea, music.NotesNum);
+            _NoteDirection = noteDirection;
+            _GamePlayingDisplay = new GamePlayingDisplay(playArea, _GamePlayingArea, _NoteDirection, music.NotesNum);
             Music = music;
             InitPlayingMusic(Music.GetMusicDataPath(), playArea, IsTest);
             NoteSE = new NoteSEFactory().Create(IsTest);
@@ -67,7 +71,7 @@ namespace MyMusicGameNew
             PlayingMusic = PlayingMusicFactory.Create(musicDataPath, playArea, isTest);
         }
 
-        public static NoteDirection NoteDirectionToString(string name)
+        public static NoteDirection ToNoteDirection(string name)
         {
             if (name.Contains("RightToLeft"))
             {
@@ -189,7 +193,7 @@ namespace MyMusicGameNew
                 }
                 else
                 {
-                    note.CalcNowPoint(_GamePlayingArea, now);
+                    note.CalcNowPoint(_GamePlayingArea, now, _NoteDirection);
                     DisplayNote(note);
                 }
             }
@@ -214,13 +218,13 @@ namespace MyMusicGameNew
 
         public void Judge(Keys.EnableKeys key)
         {
-            int inputLine = _GamePlayingArea.ConvertXLine(key);
+            int inputLine = _GamePlayingArea.ConvertLine(key);
             JudgeCore(inputLine);
         }
 
         public void Judge(System.Windows.Point mouseClicked)
         {
-            int inputLine = _GamePlayingArea.ConvertXLine(mouseClicked.X);
+            int inputLine = _GamePlayingArea.ConvertLine(mouseClicked, _NoteDirection);
             JudgeCore(inputLine);
         }
 

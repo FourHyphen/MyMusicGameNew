@@ -32,22 +32,32 @@ namespace MyMusicGameNew
         {
             Main = main;
             IsTest = isTest;
-            InitJudgeLine();
-        }
-
-        private void InitJudgeLine()
-        {
-            // TODO: 設定値の外部管理化
-            JudgeLine.X1 = 100;
-            JudgeLine.X2 = (int)PlayArea.ActualWidth - 100;
-            JudgeLine.Y1 = (int)PlayArea.ActualHeight - 100;
-            JudgeLine.Y2 = (int)PlayArea.ActualHeight - 100;
         }
 
         public void GameStart(Music music, double noteSpeedRate, GamePlaying.NoteDirection noteDirection)
         {
+            InitJudgeLine(noteDirection);
             GamePlay = new GamePlaying(this, music, noteSpeedRate, noteDirection, IsTest);
             GameStartCore();
+        }
+
+        private void InitJudgeLine(GamePlaying.NoteDirection noteDirection)
+        {
+            // TODO: 設定値の外部管理化
+            if (noteDirection == GamePlaying.NoteDirection.RightToLeft)
+            {
+                JudgeLine.X1 = 100;
+                JudgeLine.X2 = 100;
+                JudgeLine.Y1 = 100;
+                JudgeLine.Y2 = (int)PlayArea.ActualHeight - 100;
+            }
+            else
+            {
+                JudgeLine.X1 = 100;
+                JudgeLine.X2 = (int)PlayArea.ActualWidth - 100;
+                JudgeLine.Y1 = (int)PlayArea.ActualHeight - 100;
+                JudgeLine.Y2 = (int)PlayArea.ActualHeight - 100;
+            }
         }
 
         private async void GameStartCore()

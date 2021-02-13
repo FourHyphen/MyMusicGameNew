@@ -95,6 +95,11 @@ namespace TestMyMusicGameNew
 
                 MainWindow.MusicSelect.SetNoteSpeedRate(rate);
             }
+
+            public void EmurateChangeNoteDirection(MyMusicGameNew.GamePlaying.NoteDirection noteDirection)
+            {
+                MainWindow.MusicSelect.SetNoteDirection(noteDirection);
+            }
         }
     }
 }

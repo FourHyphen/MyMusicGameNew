@@ -12,32 +12,65 @@ namespace MyMusicGameNew
 
         private static readonly string ImageDirPath = "./GameData/UserInputEffect/";
 
-        private static readonly string EffectImagePath = ImageDirPath + "Effect1.png";
+        private static readonly string EffectTopToBottomImagePath = ImageDirPath + "EffectTopToBottom.png";
 
-        public UserInputEffect(GridPlayArea gridPlayArea, GamePlayingArea gamePlayingArea)
+        private static readonly string EffectRightToLeftImagePath = ImageDirPath + "EffectRightToLeft.png";
+
+        public UserInputEffect(GridPlayArea gridPlayArea, GamePlayingArea gamePlayingArea, GamePlaying.NoteDirection noteDirection)
         {
             _GridPlayArea = gridPlayArea;
-            Init(gamePlayingArea);
+            Init(gamePlayingArea, noteDirection);
         }
 
-        private void Init(GamePlayingArea gamePlayingArea)
+        private void Init(GamePlayingArea gamePlayingArea, GamePlaying.NoteDirection noteDirection)
         {
-            EffectLine1 = new DisplayImagePeriod(_GridPlayArea, EffectImagePath, GetPointLine1(gamePlayingArea));
-            EffectLine2 = new DisplayImagePeriod(_GridPlayArea, EffectImagePath, GetPointLine2(gamePlayingArea));
+            if (noteDirection == GamePlaying.NoteDirection.RightToLeft)
+            {
+                InitRightToLeft(gamePlayingArea);
+            }
+            else
+            {
+                InitTopToBottom(gamePlayingArea);
+            }
         }
 
-        private System.Windows.Point GetPointLine1(GamePlayingArea gamePlayingArea)
+        private void InitRightToLeft(GamePlayingArea gamePlayingArea)
         {
-            // メッセージ：位置がleft, top方向にズレる -> 多分 DisplayImagePeriod の位置計算を共通化できてないか、JudgeLineYFromTop = 462だったから座標系が違うか、かな？
-            double x = gamePlayingArea.GetLinePointX(1);
-            double y = gamePlayingArea.GetLinePointY();
+            EffectLine1 = new DisplayImagePeriod(_GridPlayArea, EffectRightToLeftImagePath, GetPointLine1RightToLeft(gamePlayingArea));
+            EffectLine2 = new DisplayImagePeriod(_GridPlayArea, EffectRightToLeftImagePath, GetPointLine2RightToLeft(gamePlayingArea));
+        }
+
+        private System.Windows.Point GetPointLine1RightToLeft(GamePlayingArea gamePlayingArea)
+        {
+            double x = gamePlayingArea.GetLinePointXRightToLeft();
+            double y = gamePlayingArea.GetLinePointYRightToLeft(1);
             return new System.Windows.Point(x, y);
         }
 
-        private System.Windows.Point GetPointLine2(GamePlayingArea gamePlayingArea)
+        private System.Windows.Point GetPointLine2RightToLeft(GamePlayingArea gamePlayingArea)
         {
-            double x = gamePlayingArea.GetLinePointX(2);
-            double y = gamePlayingArea.GetLinePointY();
+            double x = gamePlayingArea.GetLinePointXRightToLeft();
+            double y = gamePlayingArea.GetLinePointYRightToLeft(2);
+            return new System.Windows.Point(x, y);
+        }
+
+        private void InitTopToBottom(GamePlayingArea gamePlayingArea)
+        {
+            EffectLine1 = new DisplayImagePeriod(_GridPlayArea, EffectTopToBottomImagePath, GetPointLine1TopToBottom(gamePlayingArea));
+            EffectLine2 = new DisplayImagePeriod(_GridPlayArea, EffectTopToBottomImagePath, GetPointLine2TopToBottom(gamePlayingArea));
+        }
+
+        private System.Windows.Point GetPointLine1TopToBottom(GamePlayingArea gamePlayingArea)
+        {
+            double x = gamePlayingArea.GetLinePointXTopToBottom(1);
+            double y = gamePlayingArea.GetLinePointYTopToBottom();
+            return new System.Windows.Point(x, y);
+        }
+
+        private System.Windows.Point GetPointLine2TopToBottom(GamePlayingArea gamePlayingArea)
+        {
+            double x = gamePlayingArea.GetLinePointXTopToBottom(2);
+            double y = gamePlayingArea.GetLinePointYTopToBottom();
             return new System.Windows.Point(x, y);
         }
 

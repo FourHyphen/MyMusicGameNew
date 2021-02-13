@@ -301,9 +301,32 @@ namespace TestMyMusicGameNew
             Assert.AreEqual(expected: 0, actual: Driver.GetDisplayNotesNum(0));    // 0.5倍で画面に残ったことがあったので一応テスト
         }
 
-        private void GameStart(int musicIndex)
+        [TestMethod]
+        public void TestDirectionOfNoteWhenUserSelectModeOfRightToLeft()
+        {
+            // ノートの移動方向が上から下のモードと、右から左のモードをゲーム開始時に設定できること
+            // クリック座標を右から左モード用に設定して、判定が問題なければOKとする
+            MyMusicGameNew.GamePlaying.NoteDirection rightToLeft = MyMusicGameNew.GamePlaying.NoteDirection.RightToLeft;
+            EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
+            System.Windows.Point clickPointNote1 = emurateNote1.EmurateCalcJustJudgeLinePoint(rightToLeft);
+            EmurateNote emurateNote2 = new EmurateNote(PlayAreaX, PlayAreaY, 2);
+            System.Windows.Point clickPointNote2 = emurateNote2.EmurateCalcJustJudgeLinePoint(rightToLeft);
+
+            GameStart(Test1MusicIndex, rightToLeft);
+
+            Sleep(emurateNote1.JustTiming.TotalSeconds);
+            Driver.EmurateLeftClickGamePlaying(clickPointNote1);
+            Assert.AreEqual(expected: 1, actual: Driver.PlayingResultPerfect.Number());
+
+            Sleep(emurateNote2.JustTiming.TotalSeconds - emurateNote1.JustTiming.TotalSeconds);
+            Driver.EmurateLeftClickGamePlaying(clickPointNote2);
+            Assert.AreEqual(expected: 2, actual: Driver.PlayingResultPerfect.Number());
+        }
+
+        private void GameStart(int musicIndex, MyMusicGameNew.GamePlaying.NoteDirection noteDirection = MyMusicGameNew.GamePlaying.NoteDirection.TopToBottom)
         {
             Driver.MusicList.ChangeSelectedIndex(musicIndex);
+            Driver.EmurateChangeNoteDirection(noteDirection);
             GameStart();
         }
 
