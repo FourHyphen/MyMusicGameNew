@@ -34,11 +34,9 @@ namespace MyMusicGameNew
                                                  double noteSpeedXPerSec,
                                                  double noteSpeedYPerSec)
         {
-            double diffMillsec = Common.DiffMillisecond(noteData.JudgeOfJustTiming, now);
             int lineNum = noteData.XJudgeLinePosition;
-            double nowX = _CalcNotePoint.CalcNowX(lineNum, diffMillsec, noteSpeedXPerSec);
-            double nowY = _CalcNotePoint.CalcNowY(lineNum, diffMillsec, noteSpeedYPerSec);
-            return new System.Windows.Point(nowX, nowY);
+            double diffMillsec = Common.DiffMillisecond(noteData.JudgeOfJustTiming, now);
+            return _CalcNotePoint.CalcNowPoint(lineNum, diffMillsec, noteSpeedXPerSec, noteSpeedYPerSec);
         }
 
         public System.Windows.Point GetLinePoint(int lineNum)

@@ -44,13 +44,7 @@ namespace MyMusicGameNew
             }
         }
 
-        public abstract double CalcNowX(int lineNum, double diffMillisec, double noteSpeedXPerSec);
-
-        public abstract double CalcNowX(int lineNum);
-
-        public abstract double CalcNowY(int lineNum, double diffMillisec, double noteSpeedYPerSec);
-
-        public abstract double CalcNowY(int lineNum);
+        public abstract System.Windows.Point CalcNowPoint(int lineNum, double diffMillisec, double noteSpeedXPerSec, double noteSpeedYPerSec);
 
         public abstract System.Windows.Point GetLinePoint(int lineNum);
     }

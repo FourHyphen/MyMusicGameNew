@@ -1,4 +1,6 @@
-﻿namespace MyMusicGameNew
+﻿using System.Windows;
+
+namespace MyMusicGameNew
 {
     internal class CalcNotePointTopToBottom : CalcNotePoint
     {
@@ -10,26 +12,23 @@
         {
         }
 
-        public override double CalcNowX(int lineNum, double diffMillisec, double noteSpeedXPerSec)
+        public override System.Windows.Point CalcNowPoint(int lineNum, double diffMillisec, double noteSpeedXPerSec, double noteSpeedYPerSec)
+        {
+            double x = CalcNowX(lineNum);
+            double y = CalcNowY(diffMillisec, noteSpeedYPerSec);
+            return new System.Windows.Point(x, y);
+        }
+
+        private double CalcNowX(int lineNum)
         {
             int basis = (int)((double)PlayAreaWidth * 0.33333);
             return basis * lineNum;
         }
 
-        public override double CalcNowX(int lineNum)
-        {
-            return CalcNowX(lineNum, 0.0, 0.0);
-        }
-
-        public override double CalcNowY(int lineNum, double diffMillisec, double noteSpeedYPerSec)
+        private double CalcNowY(double diffMillisec, double noteSpeedYPerSec)
         {
             double dist = (diffMillisec / 1000.0) * (noteSpeedYPerSec * NoteSpeedRate);
             return JudgeLineYFromAreaTop - dist;
-        }
-
-        public override double CalcNowY(int lineNum)
-        {
-            throw new System.Exception("到達しないはず");
         }
 
         public override System.Windows.Point GetLinePoint(int lineNum)
