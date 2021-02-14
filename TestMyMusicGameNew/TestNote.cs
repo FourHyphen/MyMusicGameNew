@@ -41,7 +41,8 @@ namespace TestMyMusicGameNew
             NoteData nd = new NoteData(en.LineNum, en.JustTiming);
             Note noteOutside = new Note(nd, PlayAreaX * 10, PlayAreaY * 10);    // 10倍ならNoteSpeedYPerSecによらず、確実に初期値が画面外になる
 
-            GamePlayingArea area = new GamePlayingArea(PlayAreaX, PlayAreaY, JudgeLineXFromAreaLeft, JudgeLineYFromAreaTop, 1.0);
+            CalcNotePoint calcNotePoint = CalcNotePoint.Create(PlayAreaX, PlayAreaY, JudgeLineXFromAreaLeft, JudgeLineYFromAreaTop, 1.0, MyMusicGameNew.GamePlaying.NoteDirection.TopToBottom);
+            GamePlayingArea area = new GamePlayingArea(PlayAreaX, PlayAreaY, calcNotePoint);
             noteOutside.CalcNowPoint(area, ZeroTime);
             Assert.IsFalse(area.IsInsidePlayArea(noteOutside));
 

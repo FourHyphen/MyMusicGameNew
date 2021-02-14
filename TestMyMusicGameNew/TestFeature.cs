@@ -307,9 +307,9 @@ namespace TestMyMusicGameNew
             // ノートの移動方向が上から下のモードと、右から左のモードをゲーム開始時に設定できること
             // クリック座標を右から左モード用に設定して、判定が問題なければOKとする
             MyMusicGameNew.GamePlaying.NoteDirection rightToLeft = MyMusicGameNew.GamePlaying.NoteDirection.RightToLeft;
-            EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1);
+            EmurateNote emurateNote1 = new EmurateNote(PlayAreaX, PlayAreaY, 1, rightToLeft);
             System.Windows.Point clickPointNote1 = emurateNote1.EmurateCalcJustJudgeLinePoint(rightToLeft);
-            EmurateNote emurateNote2 = new EmurateNote(PlayAreaX, PlayAreaY, 2);
+            EmurateNote emurateNote2 = new EmurateNote(PlayAreaX, PlayAreaY, 2, rightToLeft);
             System.Windows.Point clickPointNote2 = emurateNote2.EmurateCalcJustJudgeLinePoint(rightToLeft);
 
             GameStart(Test1MusicIndex, rightToLeft);

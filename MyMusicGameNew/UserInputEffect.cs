@@ -2,7 +2,7 @@
 
 namespace MyMusicGameNew
 {
-    public abstract class UserInputEffect
+    public class UserInputEffect
     {
         protected GridPlayArea _GridPlayArea { get; set; }
 
@@ -12,9 +12,16 @@ namespace MyMusicGameNew
 
         protected static readonly string ImageDirPath = "./GameData/UserInputEffect/";
 
-        protected UserInputEffect(GridPlayArea gridPlayArea)
+        private static readonly string EffectRightToLeftImagePath = ImageDirPath + "EffectRightToLeft.png";
+
+        private static readonly string EffectTopToBottomImagePath = ImageDirPath + "EffectTopToBottom.png";
+
+        private string EffectImagePath { get; } = "";
+
+        private UserInputEffect(GridPlayArea gridPlayArea, string effectImagePath)
         {
             _GridPlayArea = gridPlayArea;
+            EffectImagePath = effectImagePath;
         }
 
         public static UserInputEffect Create(GridPlayArea gridPlayArea, GamePlayingArea gamePlayingArea, GamePlaying.NoteDirection noteDirection)
@@ -22,18 +29,32 @@ namespace MyMusicGameNew
             UserInputEffect ret = null;
             if (noteDirection == GamePlaying.NoteDirection.RightToLeft)
             {
-                ret = new UserInputEffectRightToLeft(gridPlayArea);
+                ret = new UserInputEffect(gridPlayArea, EffectRightToLeftImagePath);
             }
             else
             {
-                ret = new UserInputEffectTopToBottom(gridPlayArea);
+                ret = new UserInputEffect(gridPlayArea, EffectTopToBottomImagePath);
             }
 
             ret.Init(gamePlayingArea);
             return ret;
         }
 
-        public abstract void Init(GamePlayingArea gamePlayingArea);
+        private void Init(GamePlayingArea gamePlayingArea)
+        {
+            EffectLine1 = new DisplayImagePeriod(_GridPlayArea, EffectImagePath, GetPointLine1(gamePlayingArea));
+            EffectLine2 = new DisplayImagePeriod(_GridPlayArea, EffectImagePath, GetPointLine2(gamePlayingArea));
+        }
+
+        private System.Windows.Point GetPointLine1(GamePlayingArea gamePlayingArea)
+        {
+            return gamePlayingArea.GetLinePoint(1);
+        }
+
+        private System.Windows.Point GetPointLine2(GamePlayingArea gamePlayingArea)
+        {
+            return gamePlayingArea.GetLinePoint(2);
+        }
 
         public void Show(int inputLine)
         {

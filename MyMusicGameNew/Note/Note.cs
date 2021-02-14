@@ -52,9 +52,9 @@ namespace MyMusicGameNew
             NoteSpeedYPerSec = noteSpeedYPerSec;
         }
 
-        public void CalcNowPoint(GamePlayingArea area, TimeSpan now, GamePlaying.NoteDirection noteDirection = GamePlaying.NoteDirection.TopToBottom)
+        public void CalcNowPoint(GamePlayingArea area, TimeSpan now)
         {
-            NowPoint = area.CalcNowPoint(_NoteData, now, NoteSpeedXPerSec, NoteSpeedYPerSec, noteDirection);
+            NowPoint = area.CalcNowPoint(_NoteData, now, NoteSpeedXPerSec, NoteSpeedYPerSec);
             
             if (Image != null)
             {

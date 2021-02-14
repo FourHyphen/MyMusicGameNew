@@ -8,27 +8,17 @@ namespace MyMusicGameNew
 {
     public class GamePlayingArea
     {
-        private int JudgeLineXFromAreaLeft { get; set; }
-
-        private int JudgeLineYFromAreaTop { get; set; }
-
         private int PlayAreaWidth { get; set; }
 
         private int PlayAreaHeight { get; set; }
 
-        private double NoteSpeedRate { get; }
+        private CalcNotePoint _CalcNotePoint { get; set; }
 
-        public GamePlayingArea(int playAreaWidth,
-                               int playAreaHeight,
-                               int judgeLineXFromAreaLeft,
-                               int judgeLineYFromAreaTop,
-                               double noteSpeedRate)
+        public GamePlayingArea(int playAreaWidth, int playAreaHeight, CalcNotePoint calcNotePoint)
         {
             PlayAreaWidth = playAreaWidth;
             PlayAreaHeight = playAreaHeight;
-            JudgeLineXFromAreaLeft = judgeLineXFromAreaLeft;
-            JudgeLineYFromAreaTop = judgeLineYFromAreaTop;
-            NoteSpeedRate = noteSpeedRate;
+            _CalcNotePoint = calcNotePoint;
         }
 
         public bool IsInsidePlayArea(Note note)
@@ -42,81 +32,18 @@ namespace MyMusicGameNew
         public System.Windows.Point CalcNowPoint(NoteData noteData,
                                                  TimeSpan now,
                                                  double noteSpeedXPerSec,
-                                                 double noteSpeedYPerSec,
-                                                 GamePlaying.NoteDirection noteDirection)
+                                                 double noteSpeedYPerSec)
         {
             double diffMillsec = Common.DiffMillisecond(noteData.JudgeOfJustTiming, now);
-            double nowX = CalcNowX(noteData, diffMillsec, noteSpeedXPerSec, noteDirection);
-            double nowY = CalcNowY(noteData, diffMillsec, noteSpeedYPerSec, noteDirection);
+            int lineNum = noteData.XJudgeLinePosition;
+            double nowX = _CalcNotePoint.CalcNowX(lineNum, diffMillsec, noteSpeedXPerSec);
+            double nowY = _CalcNotePoint.CalcNowY(lineNum, diffMillsec, noteSpeedYPerSec);
             return new System.Windows.Point(nowX, nowY);
         }
 
-        private double CalcNowX(NoteData noteData, double diffMillisec, double noteSpeedXPerSec, GamePlaying.NoteDirection noteDirection)
+        public System.Windows.Point GetLinePoint(int lineNum)
         {
-            if (noteDirection == GamePlaying.NoteDirection.RightToLeft)
-            {
-                return CalcNowXRightToLeft(diffMillisec, noteSpeedXPerSec);
-            }
-            else
-            {
-                return CalcNowXTopToBottom(noteData.XJudgeLinePosition);
-            }
-        }
-
-        public double CalcNowXRightToLeft(double diffMillisec, double noteSpeedXPerSec)
-        {
-            double dist = (diffMillisec / 1000.0) * (noteSpeedXPerSec * NoteSpeedRate);
-            return dist + JudgeLineXFromAreaLeft;
-        }
-
-        private double CalcNowXTopToBottom(int lineNum)
-        {
-            int basis = (int)((double)PlayAreaWidth * 0.33333);
-            return basis * lineNum;
-        }
-
-        private double CalcNowY(NoteData noteData, double diffMillisec, double noteSpeedYPerSec, GamePlaying.NoteDirection noteDirection)
-        {
-            if (noteDirection == GamePlaying.NoteDirection.RightToLeft)
-            {
-                return CalcNowYRightToLeft(noteData.XJudgeLinePosition);
-            }
-            else
-            {
-                return CalcNowYTopToBottom(diffMillisec, noteSpeedYPerSec);
-            }
-        }
-
-        private double CalcNowYRightToLeft(int lineNum)
-        {
-            int basis = (int)((double)PlayAreaHeight * 0.33333);
-            return basis * lineNum;
-        }
-
-        private double CalcNowYTopToBottom(double diffMillisec, double noteSpeedYPerSec)
-        {
-            double dist = (diffMillisec / 1000.0) * (noteSpeedYPerSec * NoteSpeedRate);
-            return JudgeLineYFromAreaTop - dist;
-        }
-
-        public double GetLinePointXTopToBottom(int lineNum)
-        {
-            return CalcNowXTopToBottom(lineNum);
-        }
-
-        public double GetLinePointYTopToBottom()
-        {
-            return JudgeLineYFromAreaTop;
-        }
-
-        public double GetLinePointXRightToLeft()
-        {
-            return JudgeLineXFromAreaLeft;
-        }
-
-        public double GetLinePointYRightToLeft(int lineNum)
-        {
-            return CalcNowYRightToLeft(lineNum);
+            return _CalcNotePoint.GetLinePoint(lineNum);
         }
 
         public int ConvertLine(System.Windows.Point mouseClicked, GamePlaying.NoteDirection noteDirection)

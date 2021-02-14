@@ -61,6 +61,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CalcNotePoint.cs" />
+    <Compile Include="CalcNotePointRightToLeft.cs" />
+    <Compile Include="CalcNotePointTopToBottom.cs" />
     <Compile Include="UserInputEffect.cs" />
     <Compile Include="UserInputEffectRightToLeft.cs" />
     <Compile Include="UserInputEffectTopToBottom.cs" />

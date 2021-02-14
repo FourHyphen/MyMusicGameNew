@@ -57,16 +57,13 @@ namespace TestMyMusicGameNew
 
         private GamePlayingArea _GamePlayingArea { get; set; }
 
-        public EmurateNote(int playAreaWidth, int playAreaHeight, int noteNumber)
+        public EmurateNote(int playAreaWidth, int playAreaHeight, int noteNumber, GamePlaying.NoteDirection noteDirection = GamePlaying.NoteDirection.TopToBottom)
         {
             Init(noteNumber);
             PlayAreaX = playAreaWidth;
             PlayAreaY = playAreaHeight;
-            _GamePlayingArea = new GamePlayingArea(playAreaWidth,
-                                                   playAreaHeight,
-                                                   (int)JudgeLineXFromAreaLeft,
-                                                   (int)JudgeLineYFromAreaTop,
-                                                   1.0);
+            CalcNotePoint calcNotePoint = CalcNotePoint.Create(playAreaWidth, playAreaHeight, JudgeLineXFromAreaLeft, JudgeLineYFromAreaTop, 1.0, noteDirection);
+            _GamePlayingArea = new GamePlayingArea(playAreaWidth, playAreaHeight, calcNotePoint);
         }
 
         private void Init(int noteNumber)
@@ -85,9 +82,9 @@ namespace TestMyMusicGameNew
             Note = new Note(nd, NoteSpeedXPerSec, NoteSpeedYPerSec);
         }
 
-        public void SetNowPoint(TimeSpan time, GamePlaying.NoteDirection noteDirection = GamePlaying.NoteDirection.TopToBottom)
+        public void SetNowPoint(TimeSpan time)
         {
-            Note.CalcNowPoint(_GamePlayingArea, time, noteDirection);
+            Note.CalcNowPoint(_GamePlayingArea, time);
         }
 
         public System.Windows.Point EmurateCalcPoint(TimeSpan elapsedTimeFromGameStart)

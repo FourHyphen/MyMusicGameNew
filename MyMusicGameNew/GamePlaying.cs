@@ -38,13 +38,12 @@ namespace MyMusicGameNew
 
         public GamePlaying(GridPlayArea playArea, Music music, double noteSpeedRate, NoteDirection noteDirection, bool IsTest)
         {
+            int width = (int)playArea.PlayArea.ActualWidth;
+            int height = (int)playArea.PlayArea.ActualHeight;
+
             _GridPlayArea = playArea;
-            _GamePlayingArea = new GamePlayingArea(
-                                    (int)playArea.PlayArea.ActualWidth,
-                                    (int)playArea.PlayArea.ActualHeight,
-                                    (int)playArea.JudgeLine.X1,
-                                    (int)playArea.JudgeLine.Y1,
-                                    noteSpeedRate);
+            CalcNotePoint calcNotePoint = CalcNotePoint.Create(width, height, (int)playArea.JudgeLine.X1, (int)playArea.JudgeLine.Y1, noteSpeedRate, noteDirection);
+            _GamePlayingArea = new GamePlayingArea(width, height, calcNotePoint);
             _NoteDirection = noteDirection;
             _GamePlayingDisplay = new GamePlayingDisplay(playArea, _GamePlayingArea, _NoteDirection, music.NotesNum);
             Music = music;
@@ -193,7 +192,7 @@ namespace MyMusicGameNew
                 }
                 else
                 {
-                    note.CalcNowPoint(_GamePlayingArea, now, _NoteDirection);
+                    note.CalcNowPoint(_GamePlayingArea, now);
                     DisplayNote(note);
                 }
             }
