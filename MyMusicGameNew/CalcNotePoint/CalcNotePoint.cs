@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MyMusicGameNew
+﻿namespace MyMusicGameNew
 {
     public abstract class CalcNotePoint
     {

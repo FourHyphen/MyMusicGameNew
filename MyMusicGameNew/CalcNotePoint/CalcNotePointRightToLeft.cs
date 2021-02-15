@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace MyMusicGameNew
+﻿namespace MyMusicGameNew
 {
     public class CalcNotePointRightToLeft : CalcNotePoint
     {

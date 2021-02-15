@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace MyMusicGameNew
 {
@@ -28,7 +24,7 @@ namespace MyMusicGameNew
 
         private NoteSE NoteSE { get; }
 
-        private GamePlaying.NoteDirection _NoteDirection { get; set; }
+        private NoteDirection _NoteDirection { get; set; }
 
         private System.Diagnostics.Stopwatch GameTimer { get; set; }
 

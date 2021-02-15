@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MyMusicGameNew
+﻿namespace MyMusicGameNew
 {
     class NoteSEFactory
     {
@@ -12,7 +6,6 @@ namespace MyMusicGameNew
         {
             if (isTest)
             {
-                // メッセージ：実装してテスト側の動作確認
                 return new NoteSEFake();
             }
             else

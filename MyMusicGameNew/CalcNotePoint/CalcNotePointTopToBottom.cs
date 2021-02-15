@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace MyMusicGameNew
+﻿namespace MyMusicGameNew
 {
     internal class CalcNotePointTopToBottom : CalcNotePoint
     {

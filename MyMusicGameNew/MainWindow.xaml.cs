@@ -1,18 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MyMusicGameNew
 {
@@ -35,7 +23,7 @@ namespace MyMusicGameNew
 
         private void SetEnvironmentCurrentDirectory(string environmentDirPath)
         {
-            // TODO: 配布を考えると、ここと同階層にGameDataディレクトリがある場合/ない場合で分岐すべき
+            // TODO: 配布を考えるなら、exeと同階層にGameDataディレクトリがある場合/ない場合で分岐すべき
             Environment.CurrentDirectory = environmentDirPath;
             IsTest = (Environment.CurrentDirectory.Contains("TestMyMusicGameNew"));
         }
