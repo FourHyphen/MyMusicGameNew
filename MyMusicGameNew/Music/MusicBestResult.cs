@@ -70,7 +70,14 @@ namespace MyMusicGameNew
         public void Save()
         {
             string musicResultFilePath = GetMusicResultFilePath(MusicName);
+            CreateSaveDir(musicResultFilePath);
             Common.CreateJsonFile(this, musicResultFilePath);
+        }
+
+        private void CreateSaveDir(string musicResultFilePath)
+        {
+            string dirPath = System.IO.Path.GetDirectoryName(musicResultFilePath);
+            System.IO.Directory.CreateDirectory(dirPath);
         }
 
         public void Reset()
