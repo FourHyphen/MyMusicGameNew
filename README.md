@@ -84,6 +84,14 @@ exe起動後、まず曲選択画面が表示されます
 
 2021/2/16時点でコード公開のみ実施しています。お手数ですがご自身でビルドしてください。
 
+# data
+ - 曲
+   - フリーBGM Music with myuu byみゅうー
+     - http://www.ne.jp/asahi/music/myuu/wave/wave.htm
+ - 効果音
+   - 魔王魂
+     - https://maoudamashii.jokersounds.com/
+
 # Licence
 
 - [MIT](https://github.com/tcnksm/tool/blob/master/LICENCE)
