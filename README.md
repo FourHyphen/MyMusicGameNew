@@ -29,7 +29,7 @@
     - MSTest
       - MSTest.TestAdapter 2.1.2
       - MSTest.TestFramework 2.1.2
-    - exeにアタッチするためのAPI
+    - 自動化API
       - Codeer.Friendly 2.6.1
       - Codeer.Friendly.Windows 2.15.0
       - Codeer.Friendly.Windows.Grasp 2.12.0
