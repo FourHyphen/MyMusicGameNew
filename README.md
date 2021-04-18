@@ -95,7 +95,3 @@ exe起動後、まず曲選択画面が表示されます
 # Licence
 
 - [MIT](https://github.com/tcnksm/tool/blob/master/LICENCE)
-
-# Author
-
-FourHyphen
